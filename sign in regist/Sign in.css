@@ -1,0 +1,71 @@
+:root {
+  --bg:        #F8F6F2;
+  --bg-dark:   #141210;
+  --text:      #1A1816;
+  --text-muted:#6B6460;
+  --accent:    #005a1b;
+  --border:    rgba(26,24,22,0.1);
+  --white:     #FFFFFF;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --radius:    10px;
+  --radius-sm: 6px;
+  --sidebar-w: 220px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-dark);
+  font-family: var(--font-body);
+}
+
+.signin-container {
+  background: #1e1c1a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  color: #00a3b9f5;
+  max-width: 380px;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus { border-color: #028da5; }
+
+button {
+ width: 100%;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  transition: background 0.25s; 
+}
+
+button:hover { 
+ background: var(--white);
+ color: #141210;
+}

@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil user Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/Hero Page/Style.css" />
+  <link rel="stylesheet" href="articles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="Profil CSS.css">
+  <script src="/Database/db.js"></script>
+</head>
+<body>
+ 
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
+      <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/Hero Page/Hero Page.html#profile" class="nav-link">Home</a></li>
+        <li><a href="/articles/articles-new.html" class="nav-link">Articles</a></li>
+        <li><a href="/Hero Page/Hero Page.html#location" class="nav-link">About Us</a></li>
+        <li><a onclick="doLogout()" class="nav-link btn-nav">Log out</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+ 
+  <!-- NOT LOGGED IN -->
+  <div class="not-logged-in" id="notLoggedIn" style="display:none;">
+    <div class="icon">◎</div>
+    <h2>Kamu belum masuk</h2>
+    <p>Silakan masuk atau daftar untuk melihat profil kamu.</p>
+    <div class="btn-row">
+      <a href="sign in.html" class="btn-solid">Masuk</a>
+      <a href="regist.html" class="btn-ghost">Daftar</a>
+    </div>
+  </div>
+ 
+  <!-- PROFILE PAGE -->
+  <div class="profile-page" id="profilePage" style="display:none;">
+ 
+    <!-- SIDEBAR -->
+    <aside class="profile-sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="Klik untuk ganti foto">
+          <div class="profile-avatar-lg" id="sidebarAvatar">??</div>
+          <div class="avatar-overlay">📷</div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(event)" />
+        <div class="avatar-uploading" id="avatarStatus"></div>
+        <div class="profile-name" id="sidebarName">—</div>
+        <div class="profile-email" id="sidebarEmail">—</div>
+        <span class="role-badge" id="sidebarRole">member</span>
+        <div class="profile-stats-mini">
+          <div class="psm-item">
+            <div class="psm-num" id="statArticles">0</div>
+            <div class="psm-label">Artikel</div>
+          </div>
+          <div class="psm-item">
+            <div class="psm-num" id="statLiked">0</div>
+            <div class="psm-label">Disukai</div>
+          </div>
+        </div>
+      </div>
+ 
+      <nav class="sidebar-nav">
+        <button class="active" id="btn-info"     onclick="switchTab('info')">
+          <span class="nav-icon">◈</span> Informasi Akun
+        </button>
+        <button id="btn-written"  onclick="switchTab('written')">
+          <span class="nav-icon">✎</span> Artikel Saya
+        </button>
+        <button id="btn-liked"    onclick="switchTab('liked')">
+          <span class="nav-icon">♡</span> Artikel Disukai
+        </button>
+        <button id="btn-edit"     onclick="switchTab('edit')">
+          <span class="nav-icon">⚙</span> Edit Profil
+        </button>
+      </nav>
+ 
+      <button class="btn-logout" onclick="doLogout()">Keluar dari Akun</button>
+ 
+      <!-- Only visible for admins -->
+      <a href="admin.html" id="adminPanelBtn" style="display:none;
+        width:100%; box-sizing:border-box;
+        background: rgba(45, 196, 83, 0.08);
+        border: 1.5px solid rgba(38, 163, 38, 0.3);
+        border-radius: var(--radius);
+        padding: 0.7rem;
+        font-family: var(--font-body);
+        font-size: 13px;
+        font-weight: 600;
+        color: #2da6c4;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s;">
+        ⚙ Panel Admin
+      </a>
+    </aside>
+ 
+    <!-- MAIN CONTENT -->
+    <main class="profile-main">
+ 
+      <!-- TAB: INFO -->
+      <div class="profile-section active" id="tab-info">
+        <div class="section-head">
+          <h2>Informasi Akun</h2>
+          <p>Detail akun Paramuda kamu saat ini.</p>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Nama Lengkap</label>
+            <span id="infoName">—</span>
+          </div>
+          <div class="info-item">
+            <label>Role</label>
+            <span id="infoRole">—</span>
+          </div>
+          <div class="info-item full">
+            <label>Email</label>
+            <span id="infoEmail">—</span>
+          </div>
+          <div class="info-item">
+            <label>Bergabung Sejak</label>
+            <span id="infoJoined">—</span>
+          </div>
+          <div class="info-item">
+            <label>ID Akun</label>
+            <span id="infoId" style="font-size:11px;word-break:break-all;">—</span>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- TAB: WRITTEN ARTICLES -->
+      <div class="profile-section" id="tab-written">
+        <div class="section-head">
+          <h2>Artikel Saya</h2>
+          <p>Semua artikel yang telah kamu tulis di Paramuda.</p>
+        </div>
+        <div id="writtenList"></div>
+      </div>
+ 
+      <!-- TAB: LIKED ARTICLES -->
+      <div class="profile-section" id="tab-liked">
+        <div class="section-head">
+          <h2>Artikel Disukai</h2>
+          <p>Artikel yang kamu tandai suka di sesi ini.</p>
+        </div>
+        <div id="likedList"></div>
+      </div>
+ 
+      <!-- TAB: EDIT PROFILE -->
+      <div class="profile-section" id="tab-edit">
+        <div class="section-head">
+          <h2>Edit Profil</h2>
+          <p>Perbarui nama atau password akun kamu.</p>
+        </div>
+ 
+        <!-- Edit Name -->
+        <div class="edit-form">
+          <h3>Ubah Nama</h3>
+          <div class="form-row single">
+            <div class="field">
+              <label>Nama Lengkap</label>
+              <input type="text" id="editName" placeholder="Nama lengkap kamu..." />
+            </div>
+          </div>
+          <div class="alert" id="nameAlert"></div>
+          <div class="form-actions">
+            <button class="btn-save" id="saveNameBtn" onclick="saveName()">Simpan Nama</button>
+          </div>
+        </div>
+ 
+        <!-- Change Password -->
+        <div class="edit-form">
+          <h3>Ubah Password</h3>
+          <div class="form-row">
+            <div class="field">
+              <label>Password Baru</label>
+              <input type="password" id="newPassword" placeholder="Min. 8 karakter..." />
+            </div>
+            <div class="field">
+              <label>Konfirmasi Password</label>
+              <input type="password" id="confirmPassword" placeholder="Ulangi password baru..." />
+            </div>
+          </div>
+          <div class="alert" id="passwordAlert"></div>
+          <div class="form-actions">
+            <button class="btn-save" id="savePasswordBtn" onclick="savePassword()">Ubah Password</button>
+          </div>
+        </div>
+      </div>
+ 
+    </main>
+  </div>
+ 
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="logo">Paramuda</span>
+        <p>Organisasi Kemahasiswaan · Bandung</p>
+      </div>
+      <div class="footer-links">
+        <a href="/Hero Page/Hero Page.html#profile">Profile</a>
+        <a href="/articles/articles-new.html">Artikel</a>
+        <a href="/Hero Page/Hero Page.html#location">Lokasi</a>
+        <a href="/Hero Page/Hero Page.html#contact">Kontak</a>
+      </div>
+      <p class="footer-copy">© 2025 Paramuda Bandung. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+ 
+  <script>
+    // ── HAMBURGER ─────────────────────────────────────────────
+    document.getElementById('hamburger').addEventListener('click', function () {
+      this.classList.toggle('active');
+      document.getElementById('navMenu').classList.toggle('active');
+    });
+ 
+    let currentUser = null;
+ 
+    // ── INIT ──────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await authGetCurrentUser();
+ 
+      if (!currentUser) {
+        document.getElementById('notLoggedIn').style.display = 'flex';
+        return;
+      }
+ 
+      document.getElementById('profilePage').style.display = 'grid';
+      populateProfile(currentUser);
+      switchTab('info');
+    });
+ 
+    // ── POPULATE ──────────────────────────────────────────────
+    function populateProfile(user) {
+      const initials = toInitials(user.name || user.email);
+      const roleCls  = user.role === 'admin' ? 'role-admin' : 'role-member';
+ 
+      // Sidebar avatar — show photo if exists, else initials
+      const avatarEl = document.getElementById('sidebarAvatar');
+      if (user.avatar_url) {
+        avatarEl.innerHTML = `<img src="${user.avatar_url}" alt="Foto profil" />`;
+      } else {
+        avatarEl.textContent = initials;
+      }
+ 
+      document.getElementById('sidebarName').textContent  = user.name  || '—';
+      document.getElementById('sidebarEmail').textContent = user.email || '—';
+      const roleBadge = document.getElementById('sidebarRole');
+      roleBadge.textContent = user.role || 'member';
+      roleBadge.className   = 'role-badge ' + roleCls;
+ 
+      // Info tab
+      document.getElementById('infoName').textContent   = user.name   || '—';
+      document.getElementById('infoEmail').textContent  = user.email  || '—';
+      document.getElementById('infoRole').textContent   = user.role   || 'member';
+      document.getElementById('infoId').textContent     = user.id     || '—';
+      document.getElementById('infoJoined').textContent = user.created_at
+        ? new Date(user.created_at).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })
+        : '—';
+ 
+      // Show admin panel button only for admins
+      const adminBtn = document.getElementById('adminPanelBtn');
+      if (adminBtn) adminBtn.style.display = user.role === 'admin' ? 'block' : 'none';
+ 
+      // Pre-fill edit name field
+      document.getElementById('editName').value = user.name || '';
+ 
+      // Liked count from sessionStorage
+      document.getElementById('statLiked').textContent = getLikedIds().length;
+    }
+ 
+    // ── AVATAR UPLOAD ─────────────────────────────────────────
+    async function handleAvatarUpload(e) {
+      const file   = e.target.files[0];
+      const status = document.getElementById('avatarStatus');
+      if (!file) return;
+ 
+      // Validate: image only, max 2 MB
+      if (!file.type.startsWith('image/')) {
+        status.textContent = '⚠ File harus berupa gambar.';
+        status.style.color = '#C4622D';
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        status.textContent = '⚠ Ukuran maksimal 2 MB.';
+        status.style.color = '#C4622D';
+        return;
+      }
+ 
+      status.textContent = 'Mengunggah...';
+      status.style.color = 'var(--text-muted)';
+ 
+      const result = await uploadAvatar(currentUser.id, file);
+ 
+      if (!result.ok) {
+        status.textContent = '⚠ Gagal: ' + result.error;
+        status.style.color = '#C4622D';
+        return;
+      }
+ 
+      // Update UI immediately
+      currentUser.avatar_url = result.url;
+      populateProfile(currentUser);
+      status.textContent = '✓ Foto berhasil diperbarui!';
+      status.style.color = 'var(--accent)';
+      setTimeout(() => status.textContent = '', 3000);
+ 
+      // Reset input so the same file can be re-selected
+      e.target.value = '';
+    }
+ 
+    // ── TAB SWITCHER ──────────────────────────────────────────
+    function switchTab(name) {
+      ['info','written','liked','edit'].forEach(t => {
+        document.getElementById('tab-'  + t).classList.toggle('active', t === name);
+        document.getElementById('btn-'  + t).classList.toggle('active', t === name);
+      });
+      if (name === 'written') loadWritten();
+      if (name === 'liked')   loadLiked();
+    }
+ 
+    // ── WRITTEN ARTICLES ─────────────────────────────────────
+    async function loadWritten() {
+      const wrap = document.getElementById('writtenList');
+      wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+ 
+      const all = await dbGetAll();
+      // Match by author name (case-insensitive)
+      const mine = all.filter(a =>
+        a.author.toLowerCase() === (currentUser.name || '').toLowerCase()
+      );
+ 
+      document.getElementById('statArticles').textContent = mine.length;
+ 
+      if (mine.length === 0) {
+        wrap.innerHTML = `
+          <div class="articles-empty">
+            <div class="empty-icon">✎</div>
+            <h3>Belum ada artikel</h3>
+            <p>Kamu belum menulis artikel apapun di Paramuda.</p>
+          </div>`;
+        return;
+      }
+ 
+      wrap.innerHTML = `
+        <div class="articles-list" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));">
+          ${mine.map(a => articleCard(a)).join('')}
+        </div>`;
+    }
+ 
+    // ── LIKED ARTICLES ────────────────────────────────────────
+    async function loadLiked() {
+      const wrap = document.getElementById('likedList');
+      wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+ 
+      const liked = getLikedIds();
+      if (liked.length === 0) {
+        wrap.innerHTML = `
+          <div class="articles-empty">
+            <div class="empty-icon">♡</div>
+            <h3>Belum ada artikel disukai</h3>
+            <p>Tekan tombol suka saat membaca artikel untuk menyimpannya di sini.</p>
+          </div>`;
+        return;
+      }
+ 
+      const all = await dbGetAll();
+      const likedArticles = all.filter(a => liked.includes(String(a.id)));
+ 
+      if (likedArticles.length === 0) {
+        wrap.innerHTML = `
+          <div class="articles-empty">
+            <div class="empty-icon">♡</div>
+            <h3>Artikel tidak ditemukan</h3>
+            <p>Artikel yang kamu sukai mungkin sudah dihapus.</p>
+          </div>`;
+        return;
+      }
+ 
+      wrap.innerHTML = `
+        <div class="articles-list" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));">
+          ${likedArticles.map(a => articleCard(a)).join('')}
+        </div>`;
+    }
+ 
+    // ── ARTICLE CARD TEMPLATE ─────────────────────────────────
+    function articleCard(a) {
+      return `
+        <a href="/articles/article-detail-new.html?id=${a.id}" class="acard">
+          <div class="acard-top">
+            <div class="article-tag-pill ${catClass(a.category)}">${a.category}</div>
+            <span class="acard-date">${a.date_label || formatDateLabel(a.date)}</span>
+          </div>
+          <h3>${a.title}</h3>
+          <p>${a.subtitle || ''}</p>
+          <div class="acard-footer">
+            <div class="author-chip sm">
+              <div class="author-avatar sm">${a.author_initials || toInitials(a.author)}</div>
+              <span>${a.author}</span>
+            </div>
+            <span class="read-time">${a.read_time || 5} mnt</span>
+          </div>
+        </a>`;
+    }
+ 
+    // ── EDIT: SAVE NAME ───────────────────────────────────────
+    async function saveName() {
+      const name  = document.getElementById('editName').value.trim();
+      const alert = document.getElementById('nameAlert');
+      const btn   = document.getElementById('saveNameBtn');
+ 
+      alert.className = 'alert';
+      if (!name) {
+        alert.textContent = 'Nama tidak boleh kosong.';
+        alert.className   = 'alert error';
+        return;
+      }
+ 
+      btn.textContent = 'Menyimpan...';
+      btn.disabled    = true;
+ 
+      const { error } = await db
+        .from('profiles')
+        .update({ name })
+        .eq('id', currentUser.id);
+ 
+      btn.textContent = 'Simpan Nama';
+      btn.disabled    = false;
+ 
+      if (error) {
+        alert.textContent = 'Gagal menyimpan: ' + error.message;
+        alert.className   = 'alert error';
+        return;
+      }
+ 
+      // Refresh local user data
+      currentUser.name = name;
+      populateProfile(currentUser);
+      alert.textContent = '✓ Nama berhasil diperbarui!';
+      alert.className   = 'alert success';
+      setTimeout(() => alert.className = 'alert', 3000);
+    }
+ 
+    // ── EDIT: CHANGE PASSWORD ─────────────────────────────────
+    async function savePassword() {
+      const newPw  = document.getElementById('newPassword').value;
+      const confPw = document.getElementById('confirmPassword').value;
+      const alert  = document.getElementById('passwordAlert');
+      const btn    = document.getElementById('savePasswordBtn');
+ 
+      alert.className = 'alert';
+ 
+      if (!newPw || newPw.length < 8) {
+        alert.textContent = 'Password minimal 8 karakter.';
+        alert.className   = 'alert error';
+        return;
+      }
+      if (newPw !== confPw) {
+        alert.textContent = 'Konfirmasi password tidak cocok.';
+        alert.className   = 'alert error';
+        return;
+      }
+ 
+      btn.textContent = 'Mengubah...';
+      btn.disabled    = true;
+ 
+      const { error } = await db.auth.updateUser({ password: newPw });
+ 
+      btn.textContent = 'Ubah Password';
+      btn.disabled    = false;
+ 
+      if (error) {
+        alert.textContent = 'Gagal mengubah password: ' + error.message;
+        alert.className   = 'alert error';
+        return;
+      }
+ 
+      document.getElementById('newPassword').value    = '';
+      document.getElementById('confirmPassword').value = '';
+      alert.textContent = '✓ Password berhasil diubah!';
+      alert.className   = 'alert success';
+      setTimeout(() => alert.className = 'alert', 4000);
+    }
+ 
+    // ── LOGOUT ────────────────────────────────────────────────
+    async function doLogout() {
+      await authLogout();
+      window.location.href = '/Hero Page/Hero Page.html';
+    }
+ 
+    // ── LIKED IDS (stored in sessionStorage by article-detail) ─
+    function getLikedIds() {
+      return JSON.parse(sessionStorage.getItem('paramuda_liked') || '[]');
+    }
+  </script>
+</body>
+</html>

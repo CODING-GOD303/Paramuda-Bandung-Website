@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="/Hero Page/Style.css"/>
+  <link rel="stylesheet" href="Sign in.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/Database/db.js"></script>
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
+      <a href="/Pages/Hero Page.html" class="logo">Paramuda.Id</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/Pages/Hero Page.html" class="nav-link">Profile</a></li>
+        <li><a href="/Pages/articles-new.html" class="nav-link">Articles</a></li>
+        <li><a href="#location" class="nav-link">Location</a></li>
+        <li><a href="admin.html" class="nav-link btn-nav">Sign In</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+  <div class="signin-container">
+    <h1>Sign In</h1>
+    <form id="signinForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Password" required />
+      </div>
+      <button type="submit">Sign In</button>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+<script src="Sign in.js"></script>
+</html>
