@@ -340,7 +340,7 @@
 
 /* ACTIVE NAV LINK */
 .nav-link.active {
-  color: var(--text) !important;
+  color: var(--white) !important;
   font-weight: 600;
 }
 
