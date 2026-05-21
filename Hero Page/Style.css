@@ -1,17 +1,17 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:        #F8F6F2;
-  --bg-dark:   #096911bb;
-  --text:      #1A1816;
-  --text-muted:#015c63;
-  --accent:    #164610;
-  --accent-2:  #048600;
-  --border:    rgba(0, 0, 0, 0.74);
-  --white:     #FFFFFF;
-  --font-head: 'Syne', sans-serif;
-  --font-body: 'Manrope', sans-serif;
-  --radius:    12px;
+  --bg: #f8f6f2;
+  --bg-dark: #096911bb;
+  --text: #1a1816;
+  --text-muted: #015c63;
+  --accent: #164610;
+  --accent-2: #048600;
+  --border: rgba(0, 0, 0, 0.74);
+  --white: #ffffff;
+  --font-head: "Syne", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --radius: 12px;
   --radius-sm: 6px;
   --max-w:     1160px;
   --transition:0.3s ease;
