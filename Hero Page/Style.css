@@ -651,7 +651,7 @@ body {
 }
 
 @media (max-width: 640px) {
-  .hamburger  display: flex; }
+  .hamburger { display: flex; }
   .nav-menu {
     display: none;
     position: fixed;
@@ -663,6 +663,7 @@ body {
     gap: 0.25rem;
     border-bottom: 1px solid var(--border);
   }
+}
   .nav-menu.active { display: flex; }
   .nav-link { width: 100%; text-align: left; padding: 0.65rem 0.85rem; }
   .profile-categories { grid-template-columns: 1fr; }
