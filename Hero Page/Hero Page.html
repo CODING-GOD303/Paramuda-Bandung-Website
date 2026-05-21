@@ -1,419 +1,494 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Paramuda Bandung</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/Database/db.js"></script>
-</head>
-<body>
-
-  <!--navbarnya-->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
-      <a href="Hero Page.html" class="logo">Paramuda.Id</a>
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="/sign in regist/profile.html" class="nav-link">Profile</a></li>
-        <li><a href="/articles/articles-new.html" class="nav-link">Articles</a></li>
-        <li><a href="/Hero Page/Hero Page.html#recruitment" class="nav-link">Join Us</a></li>
-        <li><a href="/sign in regist/regist.html" class="nav-link btn-nav">Sign Up</a></li>
-      </ul>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </button>
-    </div>
-  </nav>
-
-  <!--HERO-->
-  <section class="hero" id="home">
-
-    <!-- VIDEO BACKGROUND — replace hero.mp4 with your actual filename -->
-    <video class="hero-video" autoplay muted loop playsinline>
-      <source src="/Images/hero.mp4" type="video/mp4" />
-    </video>
-    <div class="hero-container">
-      <div class="hero-tag">Paramuda!</div>
-      <h1 class="hero-title">
-        Paramuda<br />
-        <span class="hero-accent">Indonesia</span>
-      </h1>
-      <p class="hero-desc">
-        Mari bergabung bersama kami di bandung komunitas terbuka untuk kalian Kaula muda!
-      </p>
-      <div class="hero-actions">
-        <a href="#articles" class="btn-primary">Baca Artikel</a>
-        <a href="#profile" class="btn-secondary">Kenali Kami</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Paramuda Bandung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="Style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/Database/db.js"></script>
+  </head>
+  <body>
+    <!--navbarnya-->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="Hero Page.html" class="logo">
+          <img
+            class="Logo-navbar"
+            src="/Images/Logo Paramuda Indonesia.png"
+            alt="Logo Paramuda"
+          />
+          Paramuda.Id
+        </a>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#profile" class="nav-link">Profile</a></li>
+          <li><a href="#articles" class="nav-link">Articles</a></li>
+          <li><a href="#location" class="nav-link">Location</a></li>
+          <li>
+            <a href="/sign in regist/regist.html" class="nav-link btn-nav"
+              >Sign In</a
+            >
+          </li>
+        </ul>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">676767</span>
-          <span class="stat-label">Artikel Diterbitkan</span>
+    </nav>
+
+    <!--HERO-->
+    <section class="hero" id="home">
+      <!-- VIDEO BACKGROUND — replace hero.mp4 with your actual filename -->
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="/Images/Preview 5 - Finnal - Rev.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-container">
+        <div class="hero-tag">Paramuda!</div>
+        <h1 class="hero-title">
+          Paramuda<br />
+          <span class="hero-accent">Indonesia</span>
+        </h1>
+        <p class="hero-desc">
+          Mari bergabung bersama kami di bandung komunitas terbuka untuk kalian
+          Kaula muda!
+        </p>
+        <div class="hero-actions">
+          <a href="#articles" class="btn-primary">Baca Artikel</a>
+          <a href="#profile" class="btn-secondary">Kenali Kami</a>
         </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num">67</span>
-          <span class="stat-label">Anggota Aktif</span>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat">
-          <span class="stat-num">67</span>
-          <span class="stat-label">Bidang Kajian</span>
-        </div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="visual-card vc1">
-        <div class="vc-icon">✦</div>
-        <p>Jurnal Ilmiah</p>
-      </div>
-      <div class="visual-card vc2">
-        <div class="vc-icon">◈</div>
-        <p>Opini & Esai</p>
-      </div>
-      <div class="visual-card vc3">
-        <div class="vc-icon">◉</div>
-        <p>Riset Mahasiswa</p>
-      </div>
-    </div>
-  </section>
-
-  <!--paramuda teh apa sih-->
-<section class="profile" id="profile">
-  <div class="section-container">
-    <div class="section-label">Tentang Kami</div>
-    
-    <div class="profile-grid">
-      <div class="profile-left">
-        <h2 class="section-title">Bergerak Serempak! Memberi Dampak!</h2>
-      </div>
-      <div class="profile-right">
-        <p>Mari bergabung bersama kami di Bandung, komunitas terbuka untuk kalian Kaula muda!</p>
-        <p>*Short Paragraph</p>
-        <div class="profile-values">
-          <div class="value-item"><span class="value-dot"></span><span>Value 1</span></div>
-          <div class="value-item"><span class="value-dot"></span><span>Value 2</span></div>
-          <div class="value-item"><span class="value-dot"></span><span>Value 3</span></div>
-          <div class="value-item"><span class="value-dot"></span><span>Value 4</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="profile-categories">
-      
-      <div class="cat-card" style="background-image: url('/Images/DAV01813.jpg');">
-        <div class="cat-num">01</div>
-        <div class="cat-info">
-          <h3>Caption</h3>
-          <p>Sub caption</p>
-        </div>
-      </div>
-
-      <div class="cat-card" style="background-image: url('/Images/DAV01925.jpg');">
-        <div class="cat-num">02</div>
-        <div class="cat-info">
-          <h3>Caption</h3>
-          <p>Sub caption</p>
-        </div>
-      </div>
-
-      <div class="cat-card" style="background-image: url('/Images/DAV01942.jpg');">
-        <div class="cat-num">03</div>
-        <div class="cat-info">
-          <h3>Caption</h3>
-          <p>Sub caption</p>
-        </div>
-      </div>
-
-      <div class="cat-card" style="background-image: url('/Images/DSC06126.jpg');">
-        <div class="cat-num">04</div>
-        <div class="cat-info">
-          <h3>Caption</h3>
-          <p>sub caption</p>
-        </div>
-      </div>
-
-    </div> </div>
-</section>
-
-  <!--artikel2-->
-  <section class="articles" id="articles">
-    <div class="section-container">
-      <div class="articles-header">
-        <div>
-          <div class="section-label">Publikasi Terbaru</div>
-          <h2 class="section-title">Artikel & Jurnal</h2>
-        </div>
-        <a href="/articles/articles-new.html" class="btn-outline">Lihat Semua →</a>
-      </div>
-      <div class="articles-grid" id="articlesGrid">
-        <!-- loaded from Supabase -->
-        <div style="grid-column:1/-1; color:rgba(255,255,255,0.4); font-size:13px; padding:2rem 0;">
-          Memuat artikel...
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!--Loktempat-->
-  <!-- ── OPEN RECRUITMENT ── -->
-<section class="recruitment" id="recruitment">
-  <div class="section-container">
-    <div class="section-label">Bergabung Bersama Kami</div>
-    <h2 class="section-title">Open Recruitment 2025</h2>
-    <div class="recruitment-grid">
-
-      <!-- Main doc card -->
-      <div class="recruit-card main-card">
-        <div class="pdf-thumb">
-          <!-- replace with an actual thumbnail image if you have one -->
-          <span style="font-size:2rem;">📄</span>
-          <p>PDF</p>
-        </div>
-        <div>
-          <span class="recruit-badge">Pendaftaran Dibuka</span>
-          <h3>Panduan Open Rekrutmen Paramuda 2025</h3>
-          <p>Unduh atau lihat langsung berkas informasi rekrutmen — alur pendaftaran, syarat, dan jadwal seleksi.</p>
-          <div class="recruit-actions">
-            <a href="/docs/rekrutmen-2025.pdf" target="_blank" class="btn-outline">👁 Lihat Dokumen</a>
-            <a href="/docs/rekrutmen-2025.pdf" download class="btn-outline">⬇ Unduh PDF</a>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">676767</span>
+            <span class="stat-label">Artikel Diterbitkan</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">67</span>
+            <span class="stat-label">Anggota Aktif</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <span class="stat-num">67</span>
+            <span class="stat-label">Bidang Kajian</span>
           </div>
         </div>
       </div>
-
-      <!-- Timeline info -->
-      <div class="recruit-card">
-        <div class="recruit-info-row"><strong>Periode Pendaftaran</strong><span>1 – 15 Juni 2025</span></div>
-        <div class="recruit-info-row"><strong>Pengumuman Seleksi</strong><span>20 Juni 2025</span></div>
-        <div class="recruit-info-row"><strong>Kuota</strong><span>30 anggota baru</span></div>
+      <div class="hero-visual">
+        <div class="visual-card vc1">
+          <div class="vc-icon">✦</div>
+          <p>Jurnal Ilmiah</p>
+        </div>
+        <div class="visual-card vc2">
+          <div class="vc-icon">◈</div>
+          <p>Opini & Esai</p>
+        </div>
+        <div class="visual-card vc3">
+          <div class="vc-icon">◉</div>
+          <p>Riset Mahasiswa</p>
+        </div>
       </div>
+    </section>
 
-      <!-- CTA card -->
-      <div class="recruit-card">
-        <h4>Daftar Sekarang</h4>
-        <p>Isi formulir pendaftaran online atau kunjungi sekretariat langsung.</p>
-        <a href="https://forms.google.com/YOUR_LINK" target="_blank" class="btn-outline">Buka Form →</a>
-      </div>
+    <!--paramuda teh apa sih-->
+    <section class="profile" id="profile">
+      <div class="section-container">
+        <div class="section-label">Tentang Kami</div>
 
-      <!-- Optional: embed PDF/Slides inline -->
-      <div class="recruit-embed">
-        <iframe 
-          src="/Images/BOOKLET PARAMUDA.ID.pdf"
-          width="100%" height="480"
-          style="border:none; border-radius:8px;">
-        </iframe>
-        <!-- OR for Google Slides: replace src with your published embed URL -->
-        <!-- src="https://docs.google.com/presentation/d/YOUR_ID/embed?start=false&loop=false" -->
-      </div>
-
-    </div>
-  </div>
-</section>
-
-  <!--email-->
-  <section class="contact" id="contact">
-    <div class="section-container">
-      <div class="contact-inner">
-        <div class="contact-left">
-          <div class="section-label light">Bergabung & Berkolaborasi</div>
-          <h2 class="section-title light">Ada pertanyaan atau ingin berkontribusi?</h2>
-          <p class="contact-desc">Kami terbuka untuk kolaborasi riset, pengiriman artikel, dan keanggotaan baru. Hubungi kami atau kunjungi sekretariat.</p>
-          <div class="contact-links">
-            <a href="mailto:paramuda@student.ac.id" class="contact-link">
-              <span>✉</span> paramuda@student.ac.id
-            </a>
-            <a href="https://instagram.com/paramudabdg" class="contact-link">
-              <span>◈</span> @paramuda.indonesia
-            </a>
+        <div class="profile-grid">
+          <div class="profile-left">
+            <h2 class="section-title">Bergerak Serempak! Memberi Dampak!</h2>
+          </div>
+          <div class="profile-right">
+            <p>
+              Mari bergabung bersama kami di Bandung, komunitas terbuka untuk
+              kalian Kaula muda!
+            </p>
+            <p>*Short Paragraph</p>
+            <div class="profile-values">
+              <div class="value-item">
+                <span class="value-dot"></span><span>Value 1</span>
+              </div>
+              <div class="value-item">
+                <span class="value-dot"></span><span>Value 2</span>
+              </div>
+              <div class="value-item">
+                <span class="value-dot"></span><span>Value 3</span>
+              </div>
+              <div class="value-item">
+                <span class="value-dot"></span><span>Value 4</span>
+              </div>
+            </div>
           </div>
         </div>
-        <form class="contact-form" id="contactForm">
-          <div class="form-group">
-            <label for="name">Nama Lengkap</label>
-            <input type="text" id="name" placeholder="Masukkan nama Anda" />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="email@contoh.com" />
-          </div>
-          <div class="form-group">
-            <label for="subject">Keperluan</label>
-            <select id="subject">
-              <option value="">Pilih keperluan...</option>
-              <option>Pengiriman Artikel</option>
-              <option>Keanggotaan</option>
-              <option>Kolaborasi Riset</option>
-              <option>Lainnya</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="message">Pesan</label>
-            <textarea id="message" rows="4" placeholder="Tulis pesan Anda..."></textarea>
-          </div>
-          <button type="submit" class="btn-submit">Kirim Pesan</button>
-        </form>
-      </div>
-    </div>
-  </section>
 
-  <!--futer-->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-brand">
-        <span class="logo">Paramuda</span>
-        <p>Organisasi Kemahasiswaan · Bandung</p>
-      </div>
-      <div class="footer-links">
-        <a href="#profile">Profile</a>
-        <a href="#articles">Artikel</a>
-        <a href="#location">Lokasi</a>
-        <a href="#contact">Kontak</a>
-      </div>
-      <p class="footer-copy">© 2025 Paramuda Bandung. Semua hak dilindungi.</p>
-    </div>
-  </footer>
+        <div class="profile-categories">
+          <div
+            class="cat-card"
+            style="background-image: url(&quot;/Images/DAV01813.jpg&quot;)"
+          >
+            <div class="cat-num">01</div>
+            <div class="cat-info">
+              <h3>Caption</h3>
+              <p>Sub caption</p>
+            </div>
+          </div>
 
-  <script>
-    //epek napbar
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 50);
-    });
+          <div
+            class="cat-card"
+            style="background-image: url(&quot;/Images/DAV01925.jpg&quot;)"
+          >
+            <div class="cat-num">02</div>
+            <div class="cat-info">
+              <h3>Caption</h3>
+              <p>Sub caption</p>
+            </div>
+          </div>
 
-    //Hamburgermenu
-    const hamburger = document.getElementById('hamburger');
-    const navMenu = document.getElementById('navMenu');
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-    navMenu.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+          <div
+            class="cat-card"
+            style="background-image: url(&quot;/Images/DAV01942.jpg&quot;)"
+          >
+            <div class="cat-num">03</div>
+            <div class="cat-info">
+              <h3>Caption</h3>
+              <p>Sub caption</p>
+            </div>
+          </div>
+
+          <div
+            class="cat-card"
+            style="background-image: url(&quot;/Images/DSC06126.jpg&quot;)"
+          >
+            <div class="cat-num">04</div>
+            <div class="cat-info">
+              <h3>Caption</h3>
+              <p>sub caption</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--artikel2-->
+    <section class="articles" id="articles">
+      <div class="section-container">
+        <div class="articles-header">
+          <div>
+            <div class="section-label">Publikasi Terbaru</div>
+            <h2 class="section-title">Artikel & Jurnal</h2>
+          </div>
+          <a href="/articles/articles-new.html" class="btn-outline"
+            >Lihat Semua →</a
+          >
+        </div>
+        <div class="articles-grid" id="articlesGrid">
+          <!-- loaded from Supabase -->
+          <div
+            style="
+              grid-column: 1/-1;
+              color: rgba(255, 255, 255, 0.4);
+              font-size: 13px;
+              padding: 2rem 0;
+            "
+          >
+            Memuat artikel...
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── OPEN RECRUITMENT ── -->
+    <section class="recruitment" id="recruitment">
+      <div class="section-container">
+        <div class="section-label">Bergabung Bersama Kami</div>
+        <h2 class="section-title">Open Recruitment 2025</h2>
+        <div class="recruitment-grid">
+          <!-- Main doc card -->
+          <div class="recruit-card main-card">
+            <div class="pdf-thumb">
+              <!-- replace with an actual thumbnail image if you have one -->
+              <span style="font-size: 2rem">📄</span>
+              <p>PDF</p>
+            </div>
+            <div>
+              <span class="recruit-badge">Pendaftaran Dibuka</span>
+              <h3>Panduan Open Rekrutmen Paramuda 2025</h3>
+              <p>
+                Unduh atau lihat langsung berkas informasi rekrutmen — alur
+                pendaftaran, syarat, dan jadwal seleksi.
+              </p>
+              <div class="recruit-actions">
+                <a
+                  href="/docs/rekrutmen-2025.pdf"
+                  target="_blank"
+                  class="btn-outline"
+                  >👁 Lihat Dokumen</a
+                >
+                <a href="/docs/rekrutmen-2025.pdf" download class="btn-outline"
+                  >⬇ Unduh PDF</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline info -->
+          <div class="recruit-card">
+            <div class="recruit-info-row">
+              <strong>Periode Pendaftaran</strong><span>1 – 15 Juni 2025</span>
+            </div>
+            <div class="recruit-info-row">
+              <strong>Pengumuman Seleksi</strong><span>20 Juni 2025</span>
+            </div>
+            <div class="recruit-info-row">
+              <strong>Kuota</strong><span>30 anggota baru</span>
+            </div>
+          </div>
+
+          <!-- CTA card -->
+          <div class="recruit-card">
+            <h4>Daftar Sekarang</h4>
+            <p>
+              Isi formulir pendaftaran online atau kunjungi sekretariat
+              langsung.
+            </p>
+            <a
+              href="https://forms.google.com/YOUR_LINK"
+              target="_blank"
+              class="btn-outline"
+              >Buka Form →</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--email-->
+    <section class="contact" id="contact">
+      <div class="section-container">
+        <div class="contact-inner">
+          <div class="contact-left">
+            <div class="section-label light">Bergabung & Berkolaborasi</div>
+            <h2 class="section-title light">
+              Ada pertanyaan atau ingin berkontribusi?
+            </h2>
+            <p class="contact-desc">
+              Kami terbuka untuk kolaborasi riset, pengiriman artikel, dan
+              keanggotaan baru. Hubungi kami atau kunjungi sekretariat.
+            </p>
+            <div class="contact-links">
+              <a href="mailto:paramuda@student.ac.id" class="contact-link">
+                <span>✉</span> paramuda@student.ac.id
+              </a>
+              <a href="https://instagram.com/paramudabdg" class="contact-link">
+                <span>◈</span> @paramuda.indonesia
+              </a>
+            </div>
+          </div>
+          <form class="contact-form" id="contactForm">
+            <div class="form-group">
+              <label for="name">Nama Lengkap</label>
+              <input type="text" id="name" placeholder="Masukkan nama Anda" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="email@contoh.com" />
+            </div>
+            <div class="form-group">
+              <label for="subject">Keperluan</label>
+              <select id="subject">
+                <option value="">Pilih keperluan...</option>
+                <option>Pengiriman Artikel</option>
+                <option>Keanggotaan</option>
+                <option>Kolaborasi Riset</option>
+                <option>Lainnya</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Pesan</label>
+              <textarea
+                id="message"
+                rows="4"
+                placeholder="Tulis pesan Anda..."
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Kirim Pesan</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!--futer-->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <span class="logo">Paramuda</span>
+          <p>Organisasi Kemahasiswaan · Bandung</p>
+        </div>
+        <div class="footer-links">
+          <a href="#profile">Profile</a>
+          <a href="#articles">Artikel</a>
+          <a href="#location">Lokasi</a>
+          <a href="#contact">Kontak</a>
+        </div>
+        <p class="footer-copy">
+          © 2025 Paramuda Bandung. Semua hak dilindungi.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      //epek napbar
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 50);
       });
-    });
 
-    //Scrollreveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add('visible');
+      //Hamburgermenu
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("navMenu");
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
       });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.cat-card, .article-card, .loc-item').forEach(el => {
-      el.classList.add('reveal');
-      observer.observe(el);
-    });
+      navMenu.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
 
-    //Formsubmit
-    document.getElementById('contactForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('.btn-submit');
-      btn.textContent = 'Terkirim ✓';
-      btn.style.background = '#2D6B5A';
-      setTimeout(() => {
-        btn.textContent = 'Kirim Pesan';
-        btn.style.background = '';
-        e.target.reset();
-      }, 3000);
-    });
+      //Scrollreveal
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".cat-card, .article-card, .loc-item")
+        .forEach((el) => {
+          el.classList.add("reveal");
+          observer.observe(el);
+        });
 
-    // ── LOAD ARTICLES FROM SUPABASE ───────────────────────────
-    (async () => {
-      const grid = document.getElementById('articlesGrid');
-      const articles = await dbGetAll();
+      //Formsubmit
+      document.getElementById("contactForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector(".btn-submit");
+        btn.textContent = "Terkirim ✓";
+        btn.style.background = "#2D6B5A";
+        setTimeout(() => {
+          btn.textContent = "Kirim Pesan";
+          btn.style.background = "";
+          e.target.reset();
+        }, 3000);
+      });
 
-      if (!articles || articles.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1; color:rgba(255,255,255,0.4); font-size:13px; padding:2rem 0;">
+      // ── LOAD ARTICLES FROM SUPABASE ───────────────────────────
+      (async () => {
+        const grid = document.getElementById("articlesGrid");
+        const articles = await dbGetAll();
+
+        if (!articles || articles.length === 0) {
+          grid.innerHTML = `<div style="grid-column:1/-1; color:rgba(255,255,255,0.4); font-size:13px; padding:2rem 0;">
           Belum ada artikel.
         </div>`;
-        return;
-      }
+          return;
+        }
 
-      // Featured = first article marked featured, or fallback to latest
-      const featured = articles.find(a => a.featured) || articles[0];
-      // Regular = up to 4 latest articles excluding featured
-      const regular  = articles.filter(a => a.id !== featured.id).slice(0, 4);
+        // Featured = first article marked featured, or fallback to latest
+        const featured = articles.find((a) => a.featured) || articles[0];
+        // Regular = up to 4 latest articles excluding featured
+        const regular = articles
+          .filter((a) => a.id !== featured.id)
+          .slice(0, 4);
 
-      const featuredHtml = `
+        const featuredHtml = `
         <a href="/articles/article-detail-new.html?id=${featured.id}" class="article-card featured" style="text-decoration:none;">
           <div class="article-tag">${featured.category}</div>
           <h3>${featured.title}</h3>
-          <p>${featured.subtitle || ''}</p>
+          <p>${featured.subtitle || ""}</p>
           <div class="article-meta">
             <span class="article-author">${featured.author}</span>
             <span class="article-date">${featured.date_label || formatDateLabel(featured.date)}</span>
           </div>
         </a>`;
 
-      const regularHtml = regular.map(a => `
+        const regularHtml = regular
+          .map(
+            (a) => `
         <a href="/articles/article-detail-new.html?id=${a.id}" class="article-card" style="text-decoration:none;">
           <div class="article-tag">${a.category}</div>
           <h3>${a.title}</h3>
-          <p>${a.subtitle || ''}</p>
+          <p>${a.subtitle || ""}</p>
           <div class="article-meta">
             <span class="article-author">${a.author}</span>
             <span class="article-date">${a.date_label || formatDateLabel(a.date)}</span>
           </div>
-        </a>`).join('');
+        </a>`,
+          )
+          .join("");
 
-      grid.innerHTML = featuredHtml + regularHtml;
+        grid.innerHTML = featuredHtml + regularHtml;
 
-      // Re-run scroll reveal on dynamically added cards
-      grid.querySelectorAll('.article-card').forEach(el => {
-        el.classList.add('reveal');
-        observer.observe(el);
+        // Re-run scroll reveal on dynamically added cards
+        grid.querySelectorAll(".article-card").forEach((el) => {
+          el.classList.add("reveal");
+          observer.observe(el);
+        });
+      })();
+
+      const scrollContainer = document.querySelector(".profile-categories");
+
+      let scrollSpeed = 0;
+      let animationId = null;
+
+      const startScrolling = () => {
+        if (animationId) return; // Prevent multiple loops
+        const animate = () => {
+          if (scrollSpeed !== 0) {
+            scrollContainer.scrollLeft += scrollSpeed;
+            animationId = requestAnimationFrame(animate);
+          } else {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+        };
+        animate();
+      };
+
+      scrollContainer.addEventListener("mousemove", (e) => {
+        const rect = scrollContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const edgeSize = 200; // Increase this if you want a larger trigger area
+
+        if (x < edgeSize) {
+          // Left edge: Speed increases the closer you get to the wall
+          scrollSpeed = -((edgeSize - x) / 15);
+          startScrolling();
+        } else if (x > rect.width - edgeSize) {
+          // Right edge: Speed increases the closer you get to the wall
+          scrollSpeed = (x - (rect.width - edgeSize)) / 15;
+          startScrolling();
+        } else {
+          scrollSpeed = 0; // Stop moving in the center
+        }
       });
-    })();
 
-const scrollContainer = document.querySelector('.profile-categories');
-
-let scrollSpeed = 0;
-let animationId = null;
-
-const startScrolling = () => {
-  if (animationId) return; // Prevent multiple loops
-  const animate = () => {
-    if (scrollSpeed !== 0) {
-      scrollContainer.scrollLeft += scrollSpeed;
-      animationId = requestAnimationFrame(animate);
-    } else {
-      cancelAnimationFrame(animationId);
-      animationId = null;
-    }
-  };
-  animate();
-};
-
-scrollContainer.addEventListener('mousemove', (e) => {
-  const rect = scrollContainer.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const edgeSize = 200; // Increase this if you want a larger trigger area
-  
-  if (x < edgeSize) {
-    // Left edge: Speed increases the closer you get to the wall
-    scrollSpeed = -((edgeSize - x) / 15); 
-    startScrolling();
-  } else if (x > rect.width - edgeSize) {
-    // Right edge: Speed increases the closer you get to the wall
-    scrollSpeed = (x - (rect.width - edgeSize)) / 15;
-    startScrolling();
-  } else {
-    scrollSpeed = 0; // Stop moving in the center
-  }
-});
-
-scrollContainer.addEventListener('mouseleave', () => {
-  scrollSpeed = 0;
-});
-  </script>
-</body>
+      scrollContainer.addEventListener("mouseleave", () => {
+        scrollSpeed = 0;
+      });
+    </script>
+  </body>
 </html>
