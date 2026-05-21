@@ -651,7 +651,7 @@ body {
 }
 
 @media (max-width: 640px) {
-  .hamburger { display: flex; }
+  .hamburger  display: flex; }
   .nav-menu {
     display: none;
     position: fixed;
