@@ -50,6 +50,11 @@
         <button class="snav-btn" onclick="showView('manage')" id="btn-manage">
           <span>☰</span> Kelola Artikel
         </button>
+        <!-- NEW: Requests -->
+        <button class="snav-btn" onclick="showView('requests')" id="btn-requests" style="display:flex;align-items:center;gap:.6rem;">
+          <span>🕭</span> Permintaan
+          <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
+        </button>
       </nav>
       <div class="sidebar-bottom">
         <a href="/articles/articles-new.html" target="_blank" class="sidebar-link">Lihat Website →</a>
@@ -60,7 +65,7 @@
     <!--MAIN CONTENT-->
     <main class="admin-main">
 
-      <!-- DASHBOR -->
+      <!-- DASHBOARD -->
       <div class="view" id="view-dashboard">
         <div class="view-header">
           <h1>Dashboard</h1>
@@ -75,6 +80,15 @@
             <button class="btn-sm" onclick="showView('write')">+ Tulis Baru</button>
           </div>
           <div class="recent-list" id="recentList"></div>
+        </div>
+
+        <!-- NEW: Pending requests preview on dashboard -->
+        <div class="dash-section" style="margin-top:1.5rem;" id="dashReqSection">
+          <div class="dash-section-header">
+            <h3>Permintaan Terbaru</h3>
+            <button class="btn-sm" onclick="showView('requests')">Lihat Semua →</button>
+          </div>
+          <div id="dashReqList"></div>
         </div>
       </div>
 
@@ -224,10 +238,65 @@ Gunakan format:
         <p class="manage-count" id="manageCount"></p>
       </div>
 
+      <!-- ══════════════════════════════════════════════
+           NEW VIEW: PERMINTAAN (Contact Requests)
+           ══════════════════════════════════════════ -->
+      <div class="view" id="view-requests" style="display:none;">
+        <div class="view-header">
+          <h1>Permintaan Masuk</h1>
+          <div class="header-actions">
+            <button class="btn-sm" onclick="markAllRead()">✓ Tandai Semua Dibaca</button>
+          </div>
+        </div>
+
+        <!-- Stats pills -->
+        <div class="stats-row" id="reqStatsRow" style="margin-bottom:1.5rem;"></div>
+
+        <!-- Filter + search -->
+        <div class="req-controls">
+          <input type="text" id="reqSearch" placeholder="Cari nama / email..." oninput="renderRequests()" />
+          <select id="reqStatusFilter" onchange="renderRequests()">
+            <option value="">Semua Status</option>
+            <option value="baru">🔴 Baru</option>
+            <option value="dibaca">🟣 Dibaca</option>
+            <option value="selesai">🟢 Selesai</option>
+          </select>
+          <select id="reqSubjectFilter" onchange="renderRequests()">
+            <option value="">Semua Keperluan</option>
+            <option>Pengiriman Artikel</option>
+            <option>Edit Artikel</option>
+            <option>Hapus Artikel</option>
+            <option>Keanggotaan</option>
+            <option>Kolaborasi Riset</option>
+            <option>Perpanjangan</option>
+            <option>Lainnya</option>
+          </select>
+        </div>
+
+        <!-- Table -->
+        <div class="manage-table-wrap">
+          <table class="manage-table">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Keperluan</th>
+                <th>Pesan</th>
+                <th>Tanggal</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="requestsBody"></tbody>
+          </table>
+        </div>
+        <p class="manage-count" id="requestsCount"></p>
+      </div>
+
     </main>
   </div>
 
-  <!--DELETE CONFIRM MODAL-->
+  <!--DELETE CONFIRM MODAL (articles)-->
   <div class="modal-overlay" id="modalOverlay" style="display:none;">
     <div class="modal">
       <div class="modal-icon">⚠</div>
@@ -240,13 +309,29 @@ Gunakan format:
     </div>
   </div>
 
+  <!-- MESSAGE DETAIL MODAL (requests) -->
+  <div class="req-detail-modal" id="reqDetailModal" style="display:none;">
+    <div class="req-detail-card">
+      <h3 id="rdName"></h3>
+      <div class="req-detail-row"><strong>Email</strong><span id="rdEmail"></span></div>
+      <div class="req-detail-row"><strong>Keperluan</strong><span id="rdSubject"></span></div>
+      <div class="req-detail-row"><strong>Tanggal</strong><span id="rdDate"></span></div>
+      <div class="req-detail-row"><strong>Status</strong><span id="rdStatus"></span></div>
+      <div class="req-detail-msg" id="rdMessage"></div>
+      <div class="req-detail-actions">
+        <button class="btn-cancel" onclick="closeReqDetail()">Tutup</button>
+        <button class="btn-sm" id="rdMarkDone" onclick="">Tandai Selesai</button>
+        <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;" id="rdDelete" onclick="">Hapus</button>
+      </div>
+    </div>
+  </div>
+
   <!--TOAST-->
   <div class="toast" id="toast"></div>
 
   <script>
     // ── AUTH ──────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', async () => {
-      // Check for an existing Supabase session
       const user = await authGetCurrentUser();
       if (user && user.role === 'admin') {
         showPanel();
@@ -308,6 +393,7 @@ Gunakan format:
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'flex';
       renderDashboard();
+      refreshPendingBadge();
     }
 
     function togglePw() {
@@ -317,13 +403,27 @@ Gunakan format:
 
     // ── VIEWS ─────────────────────────────────────────────────
     function showView(name) {
-      ['dashboard','write','manage'].forEach(v => {
+      ['dashboard','write','manage','requests'].forEach(v => {
         document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none';
         document.getElementById('btn-' + v).classList.toggle('active', v === name);
       });
       if (name === 'dashboard') renderDashboard();
       if (name === 'manage')    renderManage();
+      if (name === 'requests')  renderRequests();
       if (name === 'write' && !document.getElementById('editingId').value) clearForm();
+    }
+
+    // ── PENDING BADGE (sidebar) ───────────────────────────────
+    async function refreshPendingBadge() {
+      const all    = await dbGetContactRequests();
+      const count  = all.filter(r => r.status === 'baru').length;
+      const badge  = document.getElementById('pendingBadge');
+      if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.style.display = 'inline-flex';
+      } else {
+        badge.style.display = 'none';
+      }
     }
 
     // ── DASHBOARD ─────────────────────────────────────────────
@@ -331,17 +431,23 @@ Gunakan format:
       document.getElementById('statsRow').innerHTML =
         '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
 
-      const articles = await dbGetAll();
-      const cats = [...new Set(articles.map(a => a.category))].length;
-      const totalViews = articles.reduce((s, a) => s + (a.views || 0), 0);
+      const [articles, requests] = await Promise.all([dbGetAll(), dbGetContactRequests()]);
+
+      const cats        = [...new Set(articles.map(a => a.category))].length;
+      const totalViews  = articles.reduce((s, a) => s + (a.views || 0), 0);
+      const pendingReqs = requests.filter(r => r.status === 'baru').length;
 
       document.getElementById('statsRow').innerHTML = `
         <div class="stat-card"><div class="sc-num">${articles.length}</div><div class="sc-label">Total Artikel</div></div>
         <div class="stat-card"><div class="sc-num">${cats}</div><div class="sc-label">Kategori Aktif</div></div>
         <div class="stat-card"><div class="sc-num">${totalViews.toLocaleString()}</div><div class="sc-label">Total Dilihat</div></div>
-        <div class="stat-card"><div class="sc-num">${articles.filter(a => a.featured).length}</div><div class="sc-label">Artikel Unggulan</div></div>
+        <div class="stat-card" style="border-color:${pendingReqs > 0 ? 'rgba(196,68,68,.4)' : 'var(--border)'};">
+          <div class="sc-num" style="color:${pendingReqs > 0 ? '#C44444' : 'var(--text)'};">${pendingReqs}</div>
+          <div class="sc-label">Permintaan Baru</div>
+        </div>
       `;
 
+      // Recent articles
       const recent = articles.slice(0, 5);
       document.getElementById('recentList').innerHTML = recent.map(a => `
         <div class="recent-item">
@@ -356,9 +462,33 @@ Gunakan format:
           </div>
         </div>
       `).join('');
+
+      // Recent requests preview (latest 5)
+      const recentReqs = requests.slice(0, 5);
+      if (recentReqs.length === 0) {
+        document.getElementById('dashReqList').innerHTML =
+          '<div style="padding:1rem 1.5rem;font-size:13px;color:var(--text-muted);">Belum ada permintaan masuk.</div>';
+      } else {
+        document.getElementById('dashReqList').innerHTML = recentReqs.map(r => {
+          const statusCls = { baru:'req-status-baru', dibaca:'req-status-dibaca', selesai:'req-status-selesai' }[r.status] || 'req-status-baru';
+          const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
+          return `
+            <div class="recent-item">
+              <div class="ri-left">
+                <span class="${statusCls}">${statusLabel}</span>
+                <span class="ri-title">${r.name} — <span style="font-weight:400;color:var(--text-muted);">${r.subject || 'Tanpa keperluan'}</span></span>
+              </div>
+              <div class="ri-right">
+                <span class="ri-author" style="font-size:12px;">${r.email}</span>
+                <span class="ri-date">${fmtReqDate(r.created_at)}</span>
+                <button class="btn-icon" onclick="openReqDetail('${r.id}')">👁 Lihat</button>
+              </div>
+            </div>`;
+        }).join('');
+      }
     }
 
-    // ── MANAGE ────────────────────────────────────────────────
+    // ── MANAGE ARTICLES ───────────────────────────────────────
     async function renderManage() {
       const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
       const cat = document.getElementById('manageCat').value;
@@ -371,8 +501,7 @@ Gunakan format:
         .filter(a => (!cat || a.category === cat))
         .filter(a => !q || a.title.toLowerCase().includes(q) || a.author.toLowerCase().includes(q));
 
-      document.getElementById('manageCount').textContent =
-        articles.length + ' artikel ditampilkan';
+      document.getElementById('manageCount').textContent = articles.length + ' artikel ditampilkan';
 
       document.getElementById('manageBody').innerHTML = articles.map(a => `
         <tr>
@@ -389,6 +518,168 @@ Gunakan format:
       `).join('');
     }
 
+    // ── REQUESTS VIEW ─────────────────────────────────────────
+    async function renderRequests() {
+      const q          = (document.getElementById('reqSearch').value || '').toLowerCase();
+      const statusF    = document.getElementById('reqStatusFilter').value;
+      const subjectF   = document.getElementById('reqSubjectFilter').value;
+      const tbody      = document.getElementById('requestsBody');
+
+      tbody.innerHTML =
+        '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+
+      let all = await dbGetContactRequests();
+
+      // Stats
+      const counts = { baru: 0, dibaca: 0, selesai: 0 };
+      all.forEach(r => { counts[r.status] = (counts[r.status] || 0) + 1; });
+      document.getElementById('reqStatsRow').innerHTML = `
+        <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
+          <div class="sc-num" style="color:#C44444;">${counts.baru}</div>
+          <div class="sc-label">🔴 Baru</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(127,119,221,.3);">
+          <div class="sc-num" style="color:#533AB7;">${counts.dibaca}</div>
+          <div class="sc-label">🟣 Dibaca</div>
+        </div>
+        <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
+          <div class="sc-num" style="color:#0F6E56;">${counts.selesai}</div>
+          <div class="sc-label">🟢 Selesai</div>
+        </div>
+        <div class="stat-card">
+          <div class="sc-num">${all.length}</div>
+          <div class="sc-label">Total Permintaan</div>
+        </div>
+      `;
+
+      // Filter
+      let filtered = all
+        .filter(r => !statusF  || r.status  === statusF)
+        .filter(r => !subjectF || r.subject === subjectF)
+        .filter(r => !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q) || (r.message || '').toLowerCase().includes(q));
+
+      document.getElementById('requestsCount').textContent = filtered.length + ' permintaan ditampilkan';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML =
+          '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada permintaan ditemukan.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(r => {
+        const statusCls = {
+          baru:    'req-status-baru',
+          dibaca:  'req-status-dibaca',
+          selesai: 'req-status-selesai',
+        }[r.status] || 'req-status-baru';
+        const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
+        const msgPreview  = (r.message || '').slice(0, 60) + ((r.message || '').length > 60 ? '…' : '');
+
+        return `
+          <tr style="${r.status === 'baru' ? 'background:rgba(196,68,68,.02);' : ''}">
+            <td style="font-weight:600;">${r.name}</td>
+            <td style="font-size:12px;color:var(--text-muted);">${r.email}</td>
+            <td><span class="req-subject">${r.subject || '—'}</span></td>
+            <td class="req-message-cell" onclick="openReqDetail('${r.id}')" title="Klik untuk lihat pesan lengkap">
+              ${msgPreview || '<span style="color:var(--text-muted);font-style:italic;">Tidak ada pesan</span>'}
+            </td>
+            <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${fmtReqDate(r.created_at)}</td>
+            <td><span class="${statusCls}">${statusLabel}</span></td>
+            <td class="td-actions">
+              <button class="btn-icon" onclick="openReqDetail('${r.id}')" title="Lihat detail">👁</button>
+              ${r.status === 'baru'    ? `<button class="btn-icon" onclick="markRequest('${r.id}','dibaca')">Baca</button>` : ''}
+              ${r.status !== 'selesai' ? `<button class="btn-icon" onclick="markRequest('${r.id}','selesai')">✓ Selesai</button>` : ''}
+              <button class="btn-icon danger" onclick="askDeleteRequest('${r.id}')">✕</button>
+            </td>
+          </tr>`;
+      }).join('');
+
+      // Refresh sidebar badge
+      refreshPendingBadge();
+    }
+
+    async function markRequest(id, status) {
+      await dbUpdateContactRequest(id, { status });
+      showToast('✓ Status diperbarui: ' + { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[status]);
+      renderRequests();
+    }
+
+    async function markAllRead() {
+      const all     = await dbGetContactRequests();
+      const newOnes = all.filter(r => r.status === 'baru');
+      await Promise.all(newOnes.map(r => dbUpdateContactRequest(r.id, { status: 'dibaca' })));
+      showToast(`✓ ${newOnes.length} permintaan ditandai dibaca.`);
+      renderRequests();
+    }
+
+    // ── REQUEST DETAIL MODAL ──────────────────────────────────
+    let _allReqCache = [];
+
+    async function openReqDetail(id) {
+      _allReqCache = await dbGetContactRequests();
+      const r = _allReqCache.find(x => x.id === id);
+      if (!r) return;
+
+      document.getElementById('rdName').textContent    = r.name;
+      document.getElementById('rdEmail').textContent   = r.email;
+      document.getElementById('rdSubject').textContent = r.subject || '—';
+      document.getElementById('rdDate').textContent    = fmtReqDate(r.created_at);
+      document.getElementById('rdMessage').innerHTML = linkify(r.message || '(Tidak ada pesan)');
+
+      const statusLabel = { baru:'🔴 Baru', dibaca:'🟣 Dibaca', selesai:'🟢 Selesai' }[r.status] || '—';
+      document.getElementById('rdStatus').textContent = statusLabel;
+
+      const doneBtn = document.getElementById('rdMarkDone');
+      if (r.status !== 'selesai') {
+        doneBtn.style.display = 'inline-flex';
+        doneBtn.onclick = async () => {
+          await markRequest(r.id, 'selesai');
+          closeReqDetail();
+        };
+      } else {
+        doneBtn.style.display = 'none';
+      }
+
+      document.getElementById('rdDelete').onclick = async () => {
+        await askDeleteRequest(r.id);
+        closeReqDetail();
+      };
+
+      document.getElementById('reqDetailModal').style.display = 'flex';
+
+      // Auto-mark as read when opened
+      if (r.status === 'baru') {
+        await dbUpdateContactRequest(r.id, { status: 'dibaca' });
+        renderRequests();
+      }
+    }
+
+    function closeReqDetail() {
+      document.getElementById('reqDetailModal').style.display = 'none';
+    }
+
+    // ── DELETE REQUEST ────────────────────────────────────────
+    let pendingDeleteReqId = null;
+
+    function askDeleteRequest(id) {
+      pendingDeleteReqId = id;
+      // Re-use the same modal with different title
+      document.getElementById('modalArticleTitle').textContent = 'Permintaan ini akan dihapus permanen.';
+      document.getElementById('modalOverlay').style.display = 'flex';
+      // Override confirm button to delete request instead of article
+      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDeleteRequest;
+    }
+
+    async function confirmDeleteRequest() {
+      if (!pendingDeleteReqId) return;
+      await dbDeleteContactRequest(pendingDeleteReqId);
+      showToast('✓ Permintaan dihapus.');
+      pendingDeleteReqId = null;
+      document.getElementById('modalOverlay').style.display = 'none';
+      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete; // restore
+      renderRequests();
+    }
+
     // ── WRITE / EDIT ──────────────────────────────────────────
     function setTodayDate() {
       document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
@@ -398,13 +689,13 @@ Gunakan format:
       ['fTitle','fSubtitle','fAuthor','fAuthorRole','fBody'].forEach(id => {
         document.getElementById(id).value = '';
       });
-      document.getElementById('fCategory').value  = '';
-      document.getElementById('fReadTime').value  = '5';
+      document.getElementById('fCategory').value   = '';
+      document.getElementById('fReadTime').value   = '5';
       document.getElementById('fFeatured').checked = false;
       document.getElementById('featuredLabel').textContent = 'Tidak';
-      document.getElementById('editingId').value  = '';
-      document.getElementById('writeTitle').textContent    = 'Tulis Artikel Baru';
-      document.getElementById('publishLabel').textContent  = 'Terbitkan Artikel';
+      document.getElementById('editingId').value   = '';
+      document.getElementById('writeTitle').textContent   = 'Tulis Artikel Baru';
+      document.getElementById('publishLabel').textContent = 'Terbitkan Artikel';
       setTodayDate();
       updateCounts();
       document.getElementById('previewPanel').style.display = 'none';
@@ -415,17 +706,17 @@ Gunakan format:
       const a = await dbGetById(id);
       if (!a) return;
       showView('write');
-      document.getElementById('fTitle').value       = a.title;
-      document.getElementById('fSubtitle').value    = a.subtitle || '';
-      document.getElementById('fCategory').value    = a.category;
-      document.getElementById('fReadTime').value    = a.read_time || 5;
-      document.getElementById('fAuthor').value      = a.author;
-      document.getElementById('fAuthorRole').value  = a.author_role || '';
-      document.getElementById('fDate').value        = a.date || '';
-      document.getElementById('fFeatured').checked  = !!a.featured;
+      document.getElementById('fTitle').value      = a.title;
+      document.getElementById('fSubtitle').value   = a.subtitle || '';
+      document.getElementById('fCategory').value   = a.category;
+      document.getElementById('fReadTime').value   = a.read_time || 5;
+      document.getElementById('fAuthor').value     = a.author;
+      document.getElementById('fAuthorRole').value = a.author_role || '';
+      document.getElementById('fDate').value       = a.date || '';
+      document.getElementById('fFeatured').checked = !!a.featured;
       document.getElementById('featuredLabel').textContent = a.featured ? 'Ya' : 'Tidak';
-      document.getElementById('fBody').value        = a.body || '';
-      document.getElementById('editingId').value    = a.id;
+      document.getElementById('fBody').value       = a.body || '';
+      document.getElementById('editingId').value   = a.id;
       document.getElementById('writeTitle').textContent   = 'Edit Artikel';
       document.getElementById('publishLabel').textContent = 'Simpan Perubahan';
       updateCounts();
@@ -439,17 +730,17 @@ Gunakan format:
     }
 
     async function publishArticle() {
-      const title      = document.getElementById('fTitle').value.trim();
-      const subtitle   = document.getElementById('fSubtitle').value.trim();
-      const category   = document.getElementById('fCategory').value;
-      const author     = document.getElementById('fAuthor').value.trim();
-      const body       = document.getElementById('fBody').value.trim();
-      const read_time  = parseInt(document.getElementById('fReadTime').value) || 5;
+      const title       = document.getElementById('fTitle').value.trim();
+      const subtitle    = document.getElementById('fSubtitle').value.trim();
+      const category    = document.getElementById('fCategory').value;
+      const author      = document.getElementById('fAuthor').value.trim();
+      const body        = document.getElementById('fBody').value.trim();
+      const read_time   = parseInt(document.getElementById('fReadTime').value) || 5;
       const author_role = document.getElementById('fAuthorRole').value.trim();
-      const date       = document.getElementById('fDate').value;
-      const featured   = document.getElementById('fFeatured').checked;
-      const editingId  = document.getElementById('editingId').value;
-      const btn        = document.getElementById('publishBtn');
+      const date        = document.getElementById('fDate').value;
+      const featured    = document.getElementById('fFeatured').checked;
+      const editingId   = document.getElementById('editingId').value;
+      const btn         = document.getElementById('publishBtn');
 
       if (!title || !subtitle || !category || !author || !body) {
         showToast('⚠ Lengkapi semua kolom wajib.', 'error');
@@ -457,7 +748,7 @@ Gunakan format:
       }
 
       const date_label = date
-        ? new Date(date).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
+        ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
         : formatDateLabel(new Date().toISOString());
 
       const payload = {
@@ -513,7 +804,7 @@ Gunakan format:
       const body     = document.getElementById('fBody').value     || '';
       const date     = document.getElementById('fDate').value;
       const date_label = date
-        ? new Date(date).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
+        ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
         : 'Hari ini';
 
       document.getElementById('previewContent').innerHTML = `
@@ -527,17 +818,23 @@ Gunakan format:
       `;
     }
 
-    // ── DELETE ────────────────────────────────────────────────
+    // ── DELETE ARTICLE ────────────────────────────────────────
     let pendingDeleteId = null;
+
     function askDelete(id, title) {
       pendingDeleteId = id;
       document.getElementById('modalArticleTitle').textContent = '"' + title + '"';
       document.getElementById('modalOverlay').style.display = 'flex';
+      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
     }
+
     function closeModal() {
       pendingDeleteId = null;
+      pendingDeleteReqId = null;
       document.getElementById('modalOverlay').style.display = 'none';
+      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
     }
+
     async function confirmDelete() {
       if (!pendingDeleteId) return;
       await dbDelete(pendingDeleteId);
@@ -571,6 +868,30 @@ Gunakan format:
         document.getElementById('featuredLabel').textContent = this.checked ? 'Ya' : 'Tidak';
       });
     });
+
+    /**
+     * linkify — escapes HTML, then wraps URLs in clickable <a> tags.
+     * Handles https://, http://, and bare www. addresses.
+     */
+    function linkify(text) {
+      const escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+      const urlPattern = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+      return escaped.replace(urlPattern, url => {
+        const href = url.startsWith('http') ? url : 'https://' + url;
+        return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" '
+             + 'style="color:var(--accent);text-decoration:underline;word-break:break-all;">'
+             + url + '</a>';
+      });
+    }
+
+        function fmtReqDate(iso) {
+      if (!iso) return '—';
+      return new Date(iso).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
 
     function showToast(msg, type = 'success') {
       const t = document.getElementById('toast');

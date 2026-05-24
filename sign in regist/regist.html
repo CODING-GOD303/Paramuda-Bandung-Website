@@ -1,44 +1,338 @@
-<!DOCTYPE html>
-<html lang="id">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Register</title>
-  <link rel="stylesheet" href="/Hero Page/Style.css"/>
-  <link rel="stylesheet" href="regist.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar | Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="auth.css" />
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/Database/db.js"></script>
+  <script src="../Database/db.js"></script>
 </head>
+<body>
 
-  <body>
-    <div claslogs="login-screen" id="registerScreen">
-        <div class="login-card">
-        <div class="login-logo">Paramuda.Id</div>
-        <div class="login-sub">Buat Akun</div>
-        <div class="login-form">
-           <label>Nama Lengkap</label>
-              <input type="text" id="regName" placeholder="Nama lengkap..." />
-
-          <label>Email</label>
-              <input type="email" id="regEmail" placeholder="email@contoh.com" />
-
-              <label>Password</label>
-                 <div class="pw-wrap">
-        <input type="password" id="regPassword" placeholder="Min. 8 karakter..." />
-        <button class="pw-toggle" onclick="togglePw('regPassword')">👁</button>
-    </div>
-
-      <label>Konfirmasi Password</label>
-      <div class="pw-wrap">
-        <input type="password" id="regConfirm" placeholder="Ulangi password..." />
-        <button class="pw-toggle" onclick="togglePw('regConfirm')">👁</button>
+  <!-- ── EMAIL VERIFICATION POPUP ──────────────────────────── -->
+  <div class="verify-overlay" id="verifyOverlay" style="display:none;">
+    <div class="verify-modal" id="verifyModal">
+      <div class="verify-icon-wrap">
+        <div class="verify-envelope">
+          <div class="env-body"></div>
+          <div class="env-flap"></div>
+          <div class="env-letter"><span>✉</span></div>
+        </div>
+        <div class="verify-rings">
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
+        </div>
       </div>
-
-      <div class="login-error" id="regError"></div>
-      <button class="btn-login" onclick="doRegister()">Daftar →</button>
+      <h2 class="verify-title">Cek email kamu!</h2>
+      <p class="verify-desc">
+        Kami telah mengirimkan tautan verifikasi ke
+        <strong id="verifyEmail"></strong>.
+        Buka email tersebut dan klik tautan untuk mengaktifkan akunmu.
+      </p>
+      <div class="verify-steps">
+        <div class="vstep">
+          <div class="vstep-num">1</div>
+          <span>Buka aplikasi email kamu</span>
         </div>
-        <p class="login-hint">Sudah punya akun? <a href="sign in.html">Masuk</a></p>
+        <div class="vstep-connector"></div>
+        <div class="vstep">
+          <div class="vstep-num">2</div>
+          <span>Cari email dari <strong>Paramuda</strong></span>
         </div>
+        <div class="vstep-connector"></div>
+        <div class="vstep">
+          <div class="vstep-num">3</div>
+          <span>Klik <strong>Verifikasi Akun</strong></span>
+        </div>
+      </div>
+      <div class="verify-actions">
+        <!-- FIX: was <a href="articles-newlass="btn-verify-primary"> — href and class were fused -->
+        <a href="../articles/articles-new.html" class="btn-verify-primary">Lanjut ke Website →</a>
+        <button class="btn-verify-resend" id="resendBtn" onclick="resendEmail()">Kirim ulang email</button>
+      </div>
+      <p class="verify-hint">Tidak menemukan email? Cek folder <strong>Spam</strong> atau <strong>Promosi</strong>.</p>
+      <button class="verify-close" onclick="closeVerify()" aria-label="Tutup">✕</button>
     </div>
-  </body>
-    <script src="Regist.js"></script>
+  </div>
+
+  <!-- ── AUTH PAGE ──────────────────────────────────────────── -->
+  <div class="auth-page">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <a href="/Hero Page/Hero Page.html" class="auth-logo">Paramuda</a>
+      <div class="auth-left-body">
+        <div class="auth-decoration">
+          <div class="deco-card dc1"><span class="deco-icon">✦</span><span>Jurnal Ilmiah</span></div>
+          <div class="deco-card dc2"><span class="deco-icon">◈</span><span>Opini & Esai</span></div>
+          <div class="deco-card dc3"><span class="deco-icon">◉</span><span>Riset Mahasiswa</span></div>
+        </div>
+        <h2 class="auth-left-title">Mulai berkontribusi untuk generasi penerus bangsa.</h2>
+        <p class="auth-left-desc">Bergabunglah dengan mahasiswa yang aktif menulis, meneliti, dan berbagi gagasan di Paramuda Bandung.</p>
+        <div class="auth-perks">
+          <div class="perk-item">
+            <span class="perk-icon">✦</span>
+            <div><strong>Akses Semua Artikel</strong><span>Baca seluruh publikasi anggota Paramuda</span></div>
+          </div>
+          <div class="perk-item">
+            <span class="perk-icon">◈</span>
+            <div><strong>Kirim Tulisanmu</strong><span>Publikasikan artikel dan jurnalmu</span></div>
+          </div>
+          <div class="perk-item">
+            <span class="perk-icon">◉</span>
+            <div><strong>Jaringan Akademik</strong><span>Terhubung dengan mahasiswa peneliti se-Bandung</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+        <div class="auth-header">
+          <h1>Buat akun baru</h1>
+          <p>Bergabung dengan komunitas Paramuda Bandung</p>
+        </div>
+
+        <div class="auth-banner error"   id="errorBanner"   style="display:none;"></div>
+        <div class="auth-banner success" id="successBanner" style="display:none;"></div>
+
+        <form id="registerForm" novalidate>
+
+          <div class="form-field">
+            <label for="name">Nama Lengkap <span class="req">*</span></label>
+            <input type="text" id="name" placeholder="Masukkan nama lengkapmu" autocomplete="name" />
+            <span class="field-error" id="nameError"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="email@contoh.com" autocomplete="email" />
+            <span class="field-error" id="emailError"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="password">Password <span class="req">*</span></label>
+            <div class="input-wrap">
+              <input type="password" id="password" placeholder="Minimal 8 karakter" autocomplete="new-password" oninput="checkStrength()" />
+              <button type="button" class="eye-btn" onclick="toggleEye('password')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <span class="strength-label" id="strengthLabel"></span>
+            <span class="field-error" id="passwordError"></span>
+          </div>
+
+          <div class="form-field">
+            <label for="confirm">Konfirmasi Password <span class="req">*</span></label>
+            <div class="input-wrap">
+              <input type="password" id="confirm" placeholder="Ulangi password" autocomplete="new-password" />
+              <button type="button" class="eye-btn" onclick="toggleEye('confirm')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span class="field-error" id="confirmError"></span>
+          </div>
+
+          <div class="form-check" style="margin-bottom:1.25rem;">
+            <label class="check-label">
+              <input type="checkbox" id="agreeTerms" />
+              <span class="check-box"></span>
+              <span>Saya setuju dengan <a href="#" class="inline-link">ketentuan penggunaan</a> Paramuda</span>
+            </label>
+            <span class="field-error" id="termsError"></span>
+          </div>
+
+          <button type="submit" class="btn-auth" id="submitBtn">
+            <span id="btnText">Buat Akun</span>
+            <span id="btnLoader" class="btn-loader" style="display:none;"></span>
+          </button>
+
+        </form>
+
+        <div class="auth-divider"><span>atau</span></div>
+        <div class="auth-footer">Sudah punya akun? <a href="sign in.html">Masuk di sini →</a></div>
+        <a href="../Hero Page/Hero Page.html" class="back-link">← Kembali ke beranda</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── REDIRECT IF ALREADY LOGGED IN ─────────────────────────
+    (async () => {
+      const { data: { session } } = await db.auth.getSession();
+      if (session) window.location.href = '../articles/articles-new.html';
+    })();
+
+    let registeredEmail = '';
+    let registeredName  = '';
+
+    // ── FORM SUBMIT ───────────────────────────────────────────
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearErrors();
+
+      const name     = document.getElementById('name').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm  = document.getElementById('confirm').value;
+      const agreed   = document.getElementById('agreeTerms').checked;
+      let valid = true;
+
+      if (!name || name.length < 2)         { showFieldError('nameError',     'Nama wajib diisi (minimal 2 karakter).'); valid = false; }
+      if (!email)                            { showFieldError('emailError',    'Email wajib diisi.'); valid = false; }
+      else if (!/\S+@\S+\.\S+/.test(email)) { showFieldError('emailError',    'Format email tidak valid.'); valid = false; }
+      if (!password || password.length < 8) { showFieldError('passwordError', 'Password minimal 8 karakter.'); valid = false; }
+      else if (password !== confirm)         { showFieldError('confirmError',  'Password tidak cocok.'); valid = false; }
+      if (!agreed)                           { showFieldError('termsError',    'Kamu harus menyetujui ketentuan penggunaan.'); valid = false; }
+      if (!valid) return;
+
+      setLoading(true);
+
+      try {
+        // Use authRegister() from db.js — keeps auth logic centralised
+        const result = await authRegister(name, email, password);
+
+        if (!result.ok) {
+          const msg = result.error || '';
+          if (msg.includes('already registered') || msg.includes('User already registered')) {
+            showFieldError('emailError', 'Email sudah terdaftar. Silakan masuk.');
+          } else {
+            showBanner('error', 'Pendaftaran gagal: ' + msg);
+          }
+          setLoading(false);
+          return;
+        }
+
+        registeredEmail = email;
+        registeredName  = name;
+
+        setLoading(false);
+        showVerifyPopup(email);
+
+      } catch (err) {
+        // Catches unexpected errors (network failure, invalid key, etc.)
+        // so the button never stays stuck in loading state
+        console.error('Registration error:', err);
+        showBanner('error', 'Terjadi kesalahan. Periksa koneksi dan coba lagi.');
+        setLoading(false);
+      }
+    });
+
+    // ── POPUP ─────────────────────────────────────────────────
+    function showVerifyPopup(email) {
+      document.getElementById('verifyEmail').textContent = email;
+      const overlay = document.getElementById('verifyOverlay');
+      const modal   = document.getElementById('verifyModal');
+      overlay.style.display = 'flex';
+      requestAnimationFrame(() => {
+        overlay.classList.add('active');
+        modal.classList.add('active');
+      });
+    }
+
+    function closeVerify() {
+      const overlay = document.getElementById('verifyOverlay');
+      const modal   = document.getElementById('verifyModal');
+      overlay.classList.remove('active');
+      modal.classList.remove('active');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        window.location.href = '../articles/articles-new.html';
+      }, 350);
+    }
+
+    document.getElementById('verifyOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeVerify();
+    });
+
+    // Resend verification email with cooldown
+    let resendCooldown = false;
+    async function resendEmail() {
+      if (resendCooldown || !registeredEmail) return;
+      resendCooldown = true;
+      const btn = document.getElementById('resendBtn');
+      btn.classList.add('sent');
+
+      // Ask Supabase to resend the confirmation email
+      await supabase.auth.resend({ type: 'signup', email: registeredEmail });
+
+      let secs = 30;
+      btn.textContent = `Terkirim! Kirim ulang (${secs}s)`;
+      const interval = setInterval(() => {
+        secs--;
+        btn.textContent = `Kirim ulang (${secs}s)`;
+        if (secs <= 0) {
+          clearInterval(interval);
+          btn.textContent = 'Kirim ulang email';
+          btn.classList.remove('sent');
+          resendCooldown = false;
+        }
+      }, 1000);
+    }
+
+    // ── HELPERS ───────────────────────────────────────────────
+    function toggleEye(id) {
+      const el = document.getElementById(id);
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    function checkStrength() {
+      const pw    = document.getElementById('password').value;
+      const fill  = document.getElementById('strengthFill');
+      const label = document.getElementById('strengthLabel');
+      let score = 0;
+      if (pw.length >= 8)           score++;
+      if (/[A-Z]/.test(pw))         score++;
+      if (/[0-9]/.test(pw))         score++;
+      if (/[^A-Za-z0-9]/.test(pw))  score++;
+      const levels = [
+        { pct:'25%',  color:'#E05252', text:'Lemah' },
+        { pct:'50%',  color:'#E08C52', text:'Cukup' },
+        { pct:'75%',  color:'#D4B84A', text:'Baik'  },
+        { pct:'100%', color:'#2D6B5A', text:'Kuat'  },
+      ];
+      const lvl = levels[Math.max(0, score - 1)];
+      fill.style.width      = pw.length ? lvl.pct   : '0%';
+      fill.style.background = pw.length ? lvl.color : '';
+      label.textContent     = pw.length ? lvl.text  : '';
+      label.style.color     = lvl.color;
+    }
+
+    function setLoading(on) {
+      document.getElementById('btnText').style.display   = on ? 'none'         : 'inline';
+      document.getElementById('btnLoader').style.display = on ? 'inline-block' : 'none';
+      document.getElementById('submitBtn').disabled = on;
+    }
+
+    function showFieldError(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = 'block';
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.style.display = 'none'; });
+      ['errorBanner','successBanner'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+    }
+
+    function showBanner(type, msg) {
+      const el = document.getElementById(type + 'Banner');
+      el.textContent = msg;
+      el.style.display = 'flex';
+    }
+  </script>
+</body>
 </html>

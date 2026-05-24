@@ -175,8 +175,15 @@
         <span class="meta-sep">·</span>
         <span>${(article.views || 0).toLocaleString()} pembaca</span>`;
 
-      // Like button
+      // Like button — restore state from sessionStorage
+      currentArticleId = article.id;
+      const _likedIds = JSON.parse(sessionStorage.getItem('paramuda_liked') || '[]');
+      liked = _likedIds.includes(String(article.id));
       document.getElementById('likeCount').textContent = article.likes || 0;
+      if (liked) {
+        document.getElementById('likeIcon').textContent = '♥';
+        document.getElementById('likeIcon').style.color = '#C4622D';
+      }
 
       // Body
       document.getElementById('articleBody').innerHTML = bodyToHtml(article.body);
@@ -241,12 +248,32 @@
 
     // ── INTERACTIONS ──────────────────────────────────────────
     let liked = false;
+    let currentArticleId = null;   // set when the article finishes loading
+
     function toggleLike() {
+      if (!currentArticleId) return;
       liked = !liked;
-      document.getElementById('likeIcon').textContent   = liked ? '♥' : '♡';
-      document.getElementById('likeIcon').style.color   = liked ? '#C4622D' : '';
+
+      // Update UI
+      document.getElementById('likeIcon').textContent = liked ? '♥' : '♡';
+      document.getElementById('likeIcon').style.color = liked ? '#C4622D' : '';
       const cur = parseInt(document.getElementById('likeCount').textContent) || 0;
-      document.getElementById('likeCount').textContent  = liked ? cur + 1 : cur - 1;
+      document.getElementById('likeCount').textContent = liked ? cur + 1 : cur - 1;
+
+      // Persist in sessionStorage so profile page can read it
+      const stored = JSON.parse(sessionStorage.getItem('paramuda_liked') || '[]');
+      const idStr  = String(currentArticleId);
+      if (liked) {
+        if (!stored.includes(idStr)) stored.push(idStr);
+      } else {
+        const idx = stored.indexOf(idStr);
+        if (idx > -1) stored.splice(idx, 1);
+      }
+      sessionStorage.setItem('paramuda_liked', JSON.stringify(stored));
+
+      // Update liked-count on profile sidebar (same session)
+      const likedCountEl = document.getElementById('statLiked');
+      if (likedCountEl) likedCountEl.textContent = stored.length;
     }
 
     function copyLink() {

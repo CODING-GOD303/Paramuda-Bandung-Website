@@ -47,3 +47,6 @@ function togglePw(inputId) {
   const input = document.getElementById(inputId);
   input.type = input.type === 'password' ? 'text' : 'password';
 }
+const EMAILJS_PUBLIC_KEY  = 'abc123...';   // Account → API Keys
+const EMAILJS_SERVICE_ID  = 'service_xyz'; // Email Services
+const EMAILJS_TEMPLATE_ID = 'template_xyz';// Email Templates
