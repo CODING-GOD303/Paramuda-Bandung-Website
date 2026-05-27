@@ -64,7 +64,7 @@
     }
     .btn-ghost:hover { border-color: var(--text); }
  
-    /* PAGE LAYOUT */
+    /*PAGE LAYOUT*/
     .profile-page {
       max-width: var(--max-w);
       margin: 0 auto;
@@ -75,7 +75,7 @@
       align-items: start;
     }
  
-    /* LEFT SIDEBAR */
+    /*LEFT SIDEBAR*/
     .profile-sidebar {
       position: sticky;
       top: 5.5rem;
