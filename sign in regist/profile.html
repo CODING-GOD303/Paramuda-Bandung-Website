@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="id">
+<<<<<<< HEAD
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -137,6 +138,102 @@
         border: 1px solid rgba(196, 68, 68, 0.25);
         border-radius: 8px;
         padding: 0.9rem 1rem;
+=======
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil user Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/Hero Page/Style.css" />
+  <link rel="stylesheet" href="/articles/articles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="Profil CSS.css">
+  <script src="/Database/db.js"></script>
+</head>
+<body>
+ 
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
+      <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/Hero Page/Hero Page.html#profile" class="nav-link">Home</a></li>
+        <li><a href="/articles/articles-new.html" class="nav-link">Articles</a></li>
+        <li><a href="/Hero Page/Hero Page.html#location" class="nav-link">About Us</a></li>
+        <li><a onclick="doLogout()" class="nav-link btn-nav">Log out</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+ 
+  <!-- NOT LOGGED IN -->
+  <div class="not-logged-in" id="notLoggedIn" style="display:none;">
+    <div class="icon">◎</div>
+    <h2>Kamu belum masuk</h2>
+    <p>Silakan masuk atau daftar untuk melihat profil kamu.</p>
+    <div class="btn-row">
+      <a href="sign in.html" class="btn-solid">Masuk</a>
+      <a href="regist.html" class="btn-ghost">Daftar</a>
+    </div>
+  </div>
+ 
+  <!-- PROFILE PAGE -->
+  <div class="profile-page" id="profilePage" style="display:none;">
+ 
+    <!-- SIDEBAR -->
+    <aside class="profile-sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="Klik untuk ganti foto">
+          <div class="profile-avatar-lg" id="sidebarAvatar">??</div>
+          <div class="avatar-overlay">📷</div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(event)" />
+        <div class="avatar-uploading" id="avatarStatus"></div>
+        <div class="profile-name" id="sidebarName">—</div>
+        <div class="profile-email" id="sidebarEmail">—</div>
+        <span class="role-badge" id="sidebarRole">member</span>
+        <div class="profile-stats-mini">
+          <div class="psm-item">
+            <div class="psm-num" id="statArticles">0</div>
+            <div class="psm-label">Artikel</div>
+          </div>
+          <div class="psm-item">
+            <div class="psm-num" id="statLiked">0</div>
+            <div class="psm-label">Disukai</div>
+          </div>
+        </div>
+      </div>
+ 
+      <nav class="sidebar-nav">
+        <button class="active" id="btn-info"     onclick="switchTab('info')">
+          <span class="nav-icon">◈</span> Informasi Akun
+        </button>
+        <button id="btn-written"  onclick="switchTab('written')">
+          <span class="nav-icon">✎</span> Artikel Saya
+        </button>
+        <button id="btn-liked"    onclick="switchTab('liked')">
+          <span class="nav-icon">♡</span> Artikel Disukai
+        </button>
+        <button id="btn-edit"     onclick="switchTab('edit')">
+          <span class="nav-icon">⚙</span> Edit Profil
+        </button>
+      </nav>
+ 
+      <button class="btn-logout" onclick="doLogout()">Keluar dari Akun</button>
+ 
+      <!-- Only visible for admins -->
+      <a href="admin.html" id="adminPanelBtn" style="display:none;
+        width:100%; box-sizing:border-box;
+        background: rgba(45, 196, 83, 0.08);
+        border: 1.5px solid rgba(38, 163, 38, 0.3);
+        border-radius: var(--radius);
+        padding: 0.7rem;
+        font-family: var(--font-body);
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
         font-size: 13px;
         color: #c44444;
         line-height: 1.6;

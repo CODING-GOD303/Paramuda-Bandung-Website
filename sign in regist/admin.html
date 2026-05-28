@@ -183,6 +183,7 @@
         </button>
         <!-- NEW: Requests -->
         <button class="snav-btn" onclick="showView('requests')" id="btn-requests" style="display:flex;align-items:center;gap:.6rem;">
+<<<<<<< HEAD
           <span>📋</span> Permintaan
           <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
         </button>
@@ -190,6 +191,11 @@
           <span>✦</span> Kiriman Artikel
           <span class="snav-badge" id="kirimBadge" style="display:none;">0</span>
         </button>
+=======
+          <span>🕭</span> Permintaan
+          <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
+        </button>
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
       </nav>
       <div class="sidebar-bottom">
         <a href="/articles/articles-new.html" target="_blank" class="sidebar-link">Lihat Website →</a>
@@ -428,6 +434,7 @@ Gunakan format:
         <p class="manage-count" id="requestsCount"></p>
       </div>
 
+<<<<<<< HEAD
 
       <!-- ══════════════════════════════════════════════
            KIRIMAN — Member Article Submissions
@@ -468,6 +475,8 @@ Gunakan format:
         </div>
       </div>
 
+=======
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
     </main>
   </div>
 
@@ -501,6 +510,7 @@ Gunakan format:
     </div>
   </div>
 
+<<<<<<< HEAD
 
   <!-- DIFF / REVIEW MODAL -->
   <div class="diff-modal" id="diffModal" style="display:none;">
@@ -526,6 +536,8 @@ Gunakan format:
     </div>
   </div>
 
+=======
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
   <!--TOAST-->
   <div class="toast" id="toast"></div>
 
@@ -603,19 +615,27 @@ Gunakan format:
 
     // ── VIEWS ─────────────────────────────────────────────────
     function showView(name) {
+<<<<<<< HEAD
       ['dashboard','write','manage','requests','kiriman'].forEach(v => {
+=======
+      ['dashboard','write','manage','requests'].forEach(v => {
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
         document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none';
         document.getElementById('btn-' + v).classList.toggle('active', v === name);
       });
       if (name === 'dashboard') renderDashboard();
       if (name === 'manage')    renderManage();
       if (name === 'requests')  renderRequests();
+<<<<<<< HEAD
       if (name === 'kiriman')   renderKiriman();
+=======
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
       if (name === 'write' && !document.getElementById('editingId').value) clearForm();
     }
 
     // ── PENDING BADGE (sidebar) ───────────────────────────────
     async function refreshPendingBadge() {
+<<<<<<< HEAD
       const [reqs, subs] = await Promise.all([dbGetContactRequests(), dbGetPendingSubmissions()]);
 
       // Contact requests badge
@@ -629,6 +649,17 @@ Gunakan format:
       const kirimBadge = document.getElementById('kirimBadge');
       if (subCount > 0) { kirimBadge.textContent = subCount > 99 ? '99+' : subCount; kirimBadge.style.display = 'inline-flex'; }
       else { kirimBadge.style.display = 'none'; }
+=======
+      const all    = await dbGetContactRequests();
+      const count  = all.filter(r => r.status === 'baru').length;
+      const badge  = document.getElementById('pendingBadge');
+      if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.style.display = 'inline-flex';
+      } else {
+        badge.style.display = 'none';
+      }
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
     }
 
     // ── DASHBOARD ─────────────────────────────────────────────
@@ -1098,6 +1129,7 @@ Gunakan format:
       return new Date(iso).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
     }
 
+<<<<<<< HEAD
 
     // ── KIRIMAN (Article Submissions) ─────────────────────────
     let _pendingSubs = [];
@@ -1278,6 +1310,9 @@ Gunakan format:
     }
 
         function showToast(msg, type = 'success') {
+=======
+    function showToast(msg, type = 'success') {
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.className = 'toast show ' + type;

@@ -1,4 +1,5 @@
 const SUPABASE_URL = 'https://zirnkxkrwgifkjaimafq.supabase.co';
+<<<<<<< HEAD
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inppcm5reGtyd2dpZmtqYWltYWZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTc4NzgsImV4cCI6MjA5Mzk5Mzg3OH0.GTPZOHvnPJh5b6sib4urdTwyls9Q1-cg3xwvRJb-JD8';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -14,6 +15,13 @@ async function dbGetPublished() {
   if (error) { console.error(error); return []; }
   return data;
 }
+=======
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inppcm5reGtyd2dpZmtqYWltYWZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MTc4NzgsImV4cCI6MjA5Mzk5Mzg3OH0.GTPZOHvnPJh5b6sib4urdTwyls9Q1-cg3xwvRJb-JD8';           
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── ARTICLES ──────────────────────────────────────────────────
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
 
 async function dbGetAll() {
   const { data, error } = await db
@@ -48,6 +56,7 @@ async function dbDelete(id) {
   if (error) console.error(error);
 }
 
+<<<<<<< HEAD
 // ── SUBMISSION WORKFLOW ───────────────────────────────────────
 
 async function dbSubmitArticle(payload, status = 'pending') {
@@ -155,14 +164,27 @@ async function dbDeleteContactRequest(id) {
   if (error) console.error(error);
 }
 
+=======
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
 // ── AUTH ──────────────────────────────────────────────────────
 
 async function authRegister(name, email, password) {
   const { data, error } = await db.auth.signUp({
+<<<<<<< HEAD
     email, password, options: { data: { name } }
   });
   if (error) return { ok: false, error: error.message };
   if (!data.user) return { ok: false, error: 'Email sudah terdaftar. Silakan masuk.' };
+=======
+    email,
+    password,
+    options: { data: { name } }
+  });
+  if (error) return { ok: false, error: error.message };
+
+  if (!data.user) return { ok: false, error: 'Email sudah terdaftar. Silakan masuk.' };
+
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
   await new Promise(r => setTimeout(r, 800));
   const { data: profile } = await db.from('profiles').select('*').eq('id', data.user.id).single();
   return { ok: true, user: { ...data.user, ...profile } };
@@ -171,7 +193,17 @@ async function authRegister(name, email, password) {
 async function authLogin(email, password) {
   const { data, error } = await db.auth.signInWithPassword({ email, password });
   if (error) return { ok: false, error: error.message };
+<<<<<<< HEAD
   const { data: profile } = await db.from('profiles').select('*').eq('id', data.user.id).single();
+=======
+
+  const { data: profile } = await db
+    .from('profiles')
+    .select('*')
+    .eq('id', data.user.id)
+    .single();
+
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
   return { ok: true, user: { ...data.user, ...profile } };
 }
 
@@ -187,13 +219,77 @@ async function authGetCurrentUser() {
   return profile ? { ...data.user, ...profile } : null;
 }
 
+<<<<<<< HEAD
+=======
+// ── CONTACT REQUESTS ─────────────────────────────────────────
+
+/**
+ * Submit a contact / request form from the public site.
+ * Called by the #contactForm in Hero_Page.html.
+ */
+async function dbSubmitContact({ name, email, subject, message }) {
+  const { data, error } = await db
+    .from('contact_requests')
+    .insert([{ name, email, subject, message, status: 'baru' }])
+    .select()
+    .single();
+  if (error) { console.error(error); return { ok: false, error: error.message }; }
+  return { ok: true, data };
+}
+
+/**
+ * Fetch all contact requests (newest first).
+ * Used by the Admin Panel.
+ */
+async function dbGetContactRequests() {
+  const { data, error } = await db
+    .from('contact_requests')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) { console.error(error); return []; }
+  return data;
+}
+
+/**
+ * Update a contact request's status or any other field.
+ * status values: 'baru' | 'dibaca' | 'selesai'
+ */
+async function dbUpdateContactRequest(id, updates) {
+  const { error } = await db
+    .from('contact_requests')
+    .update(updates)
+    .eq('id', id);
+  if (error) console.error(error);
+}
+
+/**
+ * Hard-delete a contact request.
+ */
+async function dbDeleteContactRequest(id) {
+  const { error } = await db
+    .from('contact_requests')
+    .delete()
+    .eq('id', id);
+  if (error) console.error(error);
+}
+
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
 // ── HELPERS ───────────────────────────────────────────────────
 
 function catClass(cat) {
   const map = {
+<<<<<<< HEAD
     'Sains & Teknologi':'tag-sains','Sosial & Humaniora':'tag-sosial',
     'Ekonomi & Bisnis':'tag-ekonomi','Hukum & Kebijakan':'tag-hukum',
     'Kesehatan & Lingkungan':'tag-lingkungan','Seni & Kreativitas':'tag-seni',
+=======
+    'Sains & Teknologi':      'tag-sains',
+    'Sosial & Humaniora':     'tag-sosial',
+    'Ekonomi & Bisnis':       'tag-ekonomi',
+    'Hukum & Kebijakan':      'tag-hukum',
+    'Kesehatan & Lingkungan': 'tag-lingkungan',
+    'Seni & Kreativitas':     'tag-seni',
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
   };
   return map[cat] || 'tag-sains';
 }
@@ -208,6 +304,7 @@ function toInitials(name) {
   return name.trim().split(' ').slice(0,2).map(w => w[0].toUpperCase()).join('');
 }
 
+<<<<<<< HEAD
 async function uploadAvatar(userId, file) {
   const ext = file.name.split('.').pop();
   const path = `${userId}/avatar.${ext}`;
@@ -222,6 +319,33 @@ async function uploadAvatar(userId, file) {
 }
 
 function getAvatarUrl(user) { return user?.avatar_url || null; }
+=======
+// ── AVATAR STORAGE ────────────────────────────────────────────
+
+async function uploadAvatar(userId, file) {
+  const ext  = file.name.split('.').pop();
+  const path = `${userId}/avatar.${ext}`;
+
+  await db.storage.from('avatars').remove([path]);
+
+  const { error } = await db.storage
+    .from('avatars')
+    .upload(path, file, { upsert: true, contentType: file.type });
+
+  if (error) return { ok: false, error: error.message };
+
+  const { data } = db.storage.from('avatars').getPublicUrl(path);
+  const avatarUrl = data.publicUrl + '?t=' + Date.now();
+
+  await db.from('profiles').update({ avatar_url: avatarUrl }).eq('id', userId);
+
+  return { ok: true, url: avatarUrl };
+}
+
+function getAvatarUrl(user) {
+  return user?.avatar_url || null;
+}
+>>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
 
 function bodyToHtml(text) {
   if (!text) return '';
