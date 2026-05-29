@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="id">
-<<<<<<< HEAD
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -138,102 +137,6 @@
         border: 1px solid rgba(196, 68, 68, 0.25);
         border-radius: 8px;
         padding: 0.9rem 1rem;
-=======
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profil user Paramuda Bandung</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/Hero Page/Style.css" />
-  <link rel="stylesheet" href="/articles/articles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link rel="stylesheet" href="Profil CSS.css">
-  <script src="/Database/db.js"></script>
-</head>
-<body>
- 
-  <nav class="navbar scrolled" id="navbar">
-    <div class="nav-container">
-      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
-      <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="/Hero Page/Hero Page.html#profile" class="nav-link">Home</a></li>
-        <li><a href="/articles/articles-new.html" class="nav-link">Articles</a></li>
-        <li><a href="/Hero Page/Hero Page.html#location" class="nav-link">About Us</a></li>
-        <li><a onclick="doLogout()" class="nav-link btn-nav">Log out</a></li>
-      </ul>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-      </button>
-    </div>
-  </nav>
- 
-  <!-- NOT LOGGED IN -->
-  <div class="not-logged-in" id="notLoggedIn" style="display:none;">
-    <div class="icon">◎</div>
-    <h2>Kamu belum masuk</h2>
-    <p>Silakan masuk atau daftar untuk melihat profil kamu.</p>
-    <div class="btn-row">
-      <a href="sign in.html" class="btn-solid">Masuk</a>
-      <a href="regist.html" class="btn-ghost">Daftar</a>
-    </div>
-  </div>
- 
-  <!-- PROFILE PAGE -->
-  <div class="profile-page" id="profilePage" style="display:none;">
- 
-    <!-- SIDEBAR -->
-    <aside class="profile-sidebar">
-      <div class="profile-card">
-        <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="Klik untuk ganti foto">
-          <div class="profile-avatar-lg" id="sidebarAvatar">??</div>
-          <div class="avatar-overlay">📷</div>
-        </div>
-        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(event)" />
-        <div class="avatar-uploading" id="avatarStatus"></div>
-        <div class="profile-name" id="sidebarName">—</div>
-        <div class="profile-email" id="sidebarEmail">—</div>
-        <span class="role-badge" id="sidebarRole">member</span>
-        <div class="profile-stats-mini">
-          <div class="psm-item">
-            <div class="psm-num" id="statArticles">0</div>
-            <div class="psm-label">Artikel</div>
-          </div>
-          <div class="psm-item">
-            <div class="psm-num" id="statLiked">0</div>
-            <div class="psm-label">Disukai</div>
-          </div>
-        </div>
-      </div>
- 
-      <nav class="sidebar-nav">
-        <button class="active" id="btn-info"     onclick="switchTab('info')">
-          <span class="nav-icon">◈</span> Informasi Akun
-        </button>
-        <button id="btn-written"  onclick="switchTab('written')">
-          <span class="nav-icon">✎</span> Artikel Saya
-        </button>
-        <button id="btn-liked"    onclick="switchTab('liked')">
-          <span class="nav-icon">♡</span> Artikel Disukai
-        </button>
-        <button id="btn-edit"     onclick="switchTab('edit')">
-          <span class="nav-icon">⚙</span> Edit Profil
-        </button>
-      </nav>
- 
-      <button class="btn-logout" onclick="doLogout()">Keluar dari Akun</button>
- 
-      <!-- Only visible for admins -->
-      <a href="admin.html" id="adminPanelBtn" style="display:none;
-        width:100%; box-sizing:border-box;
-        background: rgba(45, 196, 83, 0.08);
-        border: 1.5px solid rgba(38, 163, 38, 0.3);
-        border-radius: var(--radius);
-        padding: 0.7rem;
-        font-family: var(--font-body);
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
         font-size: 13px;
         color: #c44444;
         line-height: 1.6;
@@ -280,16 +183,29 @@
         grid-template-columns: 1fr 1fr;
         gap: 1rem;
       }
+      /* ── EDITOR WRAPPER ─────────────────────── */
+      .sp-editor-wrap {
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        transition: border-color 0.2s;
+      }
+      .sp-editor-wrap:focus-within {
+        border-color: var(--accent);
+      }
+
       /* toolbar */
       .sp-toolbar {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: 0.3rem;
-        padding: 0.45rem 0.7rem;
-        background: rgba(26, 24, 22, 0.04);
-        border: 1.5px solid var(--border);
-        border-bottom: none;
-        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        padding: 0.5rem 0.75rem;
+        background: rgba(26, 24, 22, 0.03);
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
       }
       .sp-toolbar button {
         font-family: var(--font-body);
@@ -298,19 +214,158 @@
         color: var(--text-muted);
         background: #fff;
         border: 1px solid var(--border);
-        border-radius: 3px;
-        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
+        padding: 0.2rem 0.55rem;
         cursor: pointer;
         transition: all 0.15s;
+        line-height: 1.4;
       }
       .sp-toolbar button:hover {
         color: var(--text);
         border-color: var(--text);
+        background: #f5f5f3;
+      }
+      .sp-toolbar-sep {
+        width: 1px;
+        height: 16px;
+        background: var(--border);
+        margin: 0 0.15rem;
+        flex-shrink: 0;
+      }
+      .sp-preview-toggle {
+        margin-left: auto;
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--accent);
+        background: rgba(0, 128, 38, 0.07);
+        border: 1px solid rgba(0, 128, 38, 0.25);
+        border-radius: 4px;
+        padding: 0.2rem 0.65rem;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .sp-preview-toggle:hover {
+        background: rgba(0, 128, 38, 0.13);
+      }
+      .sp-preview-toggle.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+
+      /* editor / preview panes */
+      .sp-editor-pane,
+      .sp-preview-pane {
+        width: 100%;
+        display: block;
       }
       .sp-body-textarea {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+        width: 100%;
+        min-height: 260px;
+        max-height: 420px;
+        padding: 0.9rem 1rem;
+        font-family: "Georgia", serif;
+        font-size: 14.5px;
+        line-height: 1.85;
+        color: var(--text);
+        background: #fdfcfa;
+        border: none;
+        outline: none;
+        resize: none;
+        overflow-y: auto;
+        /* KEY: proper wrapping — no horizontal overflow */
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
+      .sp-body-textarea::placeholder {
+        color: rgba(26, 24, 22, 0.3);
+        font-style: italic;
+      }
+
+      /* live preview pane */
+      .sp-preview-pane {
+        display: none;
+        min-height: 260px;
+        max-height: 420px;
+        overflow-y: auto;
+        padding: 1rem 1.25rem;
+        background: #fff;
+        font-family: "Georgia", serif;
+        font-size: 14.5px;
+        line-height: 1.85;
+        color: var(--text);
+      }
+      .sp-preview-pane.visible {
+        display: block;
+      }
+      .sp-preview-pane h2 {
+        font-family: var(--font-head);
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin: 1.5rem 0 0.5rem;
+        color: var(--text);
+        line-height: 1.25;
+      }
+      .sp-preview-pane h3 {
+        font-family: var(--font-head);
+        font-size: 0.98rem;
+        font-weight: 700;
+        margin: 1.1rem 0 0.4rem;
+        color: var(--text);
+      }
+      .sp-preview-pane p {
+        margin-bottom: 1rem;
+      }
+      .sp-preview-pane blockquote {
+        border-left: 3px solid var(--accent);
+        background: rgba(0, 128, 38, 0.04);
+        padding: 0.65rem 1rem;
+        margin: 0.75rem 0;
+        border-radius: 0 4px 4px 0;
+        font-style: italic;
+        color: var(--text-muted);
+      }
+      .sp-preview-pane ul {
+        margin: 0.5rem 0 1rem 1.25rem;
+      }
+      .sp-preview-pane li {
+        margin-bottom: 0.3rem;
+      }
+      .sp-preview-pane strong {
+        font-weight: 700;
+      }
+      .sp-preview-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         min-height: 200px;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-style: italic;
+      }
+
+      /* word / char counter */
+      .sp-editor-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.35rem 0.75rem;
+        background: rgba(26, 24, 22, 0.02);
+        border-top: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .sp-editor-footer span {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+      .sp-hint {
+        font-size: 11px;
+        color: var(--text-muted);
+        font-style: italic;
       }
       .submit-panel-footer {
         display: flex;
@@ -1140,15 +1195,118 @@
         openSubmitPanel(a, null, originalId);
       }
 
+      // ── EDITOR HELPERS ───────────────────────────────────────
       function spInsert(before, after = "") {
         const ta = document.getElementById("spBody");
         const s = ta.selectionStart,
           e = ta.selectionEnd;
         const sel = ta.value.slice(s, e);
-        const rep = before + sel + after;
+        // For block-level prefixes (H2, H3, list, quote), insert on new line
+        const needsNewline = ["## ", "### ", "- ", "> "].includes(before);
+        let prefix = "";
+        if (needsNewline && s > 0) {
+          // Check if we're already at the start of a line
+          const charBefore = ta.value[s - 1];
+          if (charBefore !== "\n") prefix = "\n";
+        }
+        const rep = prefix + before + sel + after;
         ta.value = ta.value.slice(0, s) + rep + ta.value.slice(e);
         ta.focus();
-        ta.selectionStart = ta.selectionEnd = s + rep.length;
+        const cursor = s + rep.length - after.length;
+        ta.selectionStart = ta.selectionEnd = cursor;
+        spUpdateCounts();
+      }
+
+      function spInsertDivider() {
+        const ta = document.getElementById("spBody");
+        const s = ta.selectionStart;
+        const ins = "\n---\n\n";
+        ta.value = ta.value.slice(0, s) + ins + ta.value.slice(s);
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = s + ins.length;
+        spUpdateCounts();
+      }
+
+      function spUpdateCounts() {
+        const val = document.getElementById("spBody").value;
+        const words = val.trim() ? val.trim().split(/\s+/).length : 0;
+        document.getElementById("spWordCount").textContent = words + " kata";
+        document.getElementById("spCharCount").textContent =
+          val.length + " karakter";
+        // Update preview if open
+        if (
+          document.getElementById("spPreviewPane").classList.contains("visible")
+        ) {
+          _renderPreview();
+        }
+      }
+
+      function toggleEditorPreview() {
+        const btn = document.getElementById("spPreviewToggle");
+        const editor = document.getElementById("spEditorPane");
+        const preview = document.getElementById("spPreviewPane");
+        const isOpen = preview.classList.contains("visible");
+        if (isOpen) {
+          preview.classList.remove("visible");
+          editor.style.display = "block";
+          btn.classList.remove("active");
+          btn.textContent = "👁 Pratinjau";
+        } else {
+          _renderPreview();
+          editor.style.display = "none";
+          preview.classList.add("visible");
+          btn.classList.add("active");
+          btn.textContent = "✎ Editor";
+        }
+      }
+
+      function _renderPreview() {
+        const val = document.getElementById("spBody").value.trim();
+        const pane = document.getElementById("spPreviewPane");
+        if (!val) {
+          pane.innerHTML =
+            '<div class="sp-preview-empty">Belum ada konten untuk ditampilkan.</div>';
+          return;
+        }
+        pane.innerHTML = bodyToHtml(val);
+      }
+
+      // ── ENTER KEY = paragraph, Shift+Enter = line break ──────
+      document.addEventListener("DOMContentLoaded", () => {
+        const ta = document.getElementById("spBody");
+        if (!ta) return;
+
+        ta.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            const s = ta.selectionStart,
+              end = ta.selectionEnd;
+            if (e.shiftKey) {
+              // Shift+Enter → single line break
+              const ins = "\n";
+              ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
+              ta.selectionStart = ta.selectionEnd = s + ins.length;
+            } else {
+              // Enter → paragraph break (blank line)
+              const ins = "\n\n";
+              ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
+              ta.selectionStart = ta.selectionEnd = s + ins.length;
+            }
+            spUpdateCounts();
+            autoGrow(ta);
+          }
+        });
+
+        ta.addEventListener("input", () => {
+          spUpdateCounts();
+          autoGrow(ta);
+        });
+      });
+
+      function autoGrow(ta) {
+        ta.style.height = "auto";
+        const max = 420;
+        ta.style.height = Math.min(ta.scrollHeight, max) + "px";
       }
 
       function _spPayload() {
@@ -1430,23 +1588,105 @@
           </div>
 
           <div class="sp-field">
-            <label
-              >Isi Artikel <span style="color: var(--accent)">*</span></label
-            >
-            <div class="sp-toolbar">
-              <button type="button" onclick="spInsert('## ')">H2</button>
-              <button type="button" onclick="spInsert('### ')">H3</button>
-              <button type="button" onclick="spInsert('**', '**')">
-                <b>B</b>
-              </button>
-              <button type="button" onclick="spInsert('>  ')">❝</button>
-              <button type="button" onclick="spInsert('- ')">• List</button>
+            <label>
+              Isi Artikel <span style="color: var(--accent)">*</span>
+              <span
+                class="sp-hint"
+                style="margin-left: 0.5rem; font-weight: 400"
+              >
+                Enter = paragraf baru &nbsp;·&nbsp; Shift+Enter = baris baru
+              </span>
+            </label>
+
+            <div class="sp-editor-wrap">
+              <!-- Toolbar -->
+              <div class="sp-toolbar">
+                <button
+                  type="button"
+                  onclick="spInsert('## ', '')"
+                  title="Heading besar"
+                >
+                  H2
+                </button>
+                <button
+                  type="button"
+                  onclick="spInsert('### ', '')"
+                  title="Heading kecil"
+                >
+                  H3
+                </button>
+                <div class="sp-toolbar-sep"></div>
+                <button
+                  type="button"
+                  onclick="spInsert('**', '**')"
+                  title="Tebal"
+                >
+                  <b>B</b>
+                </button>
+                <button
+                  type="button"
+                  onclick="spInsert('_', '_')"
+                  title="Miring"
+                >
+                  <i>I</i>
+                </button>
+                <div class="sp-toolbar-sep"></div>
+                <button
+                  type="button"
+                  onclick="spInsert('> ', '')"
+                  title="Kutipan"
+                >
+                  ❝
+                </button>
+                <button type="button" onclick="spInsert('- ', '')" title="List">
+                  • List
+                </button>
+                <button
+                  type="button"
+                  onclick="spInsertDivider()"
+                  title="Garis pemisah"
+                >
+                  —
+                </button>
+                <div class="sp-toolbar-sep"></div>
+                <button
+                  type="button"
+                  class="sp-preview-toggle"
+                  id="spPreviewToggle"
+                  onclick="toggleEditorPreview()"
+                >
+                  👁 Pratinjau
+                </button>
+              </div>
+
+              <!-- Editor pane -->
+              <div class="sp-editor-pane" id="spEditorPane">
+                <textarea
+                  id="spBody"
+                  class="sp-body-textarea"
+                  placeholder="Mulai menulis artikel kamu di sini...
+
+Tekan Enter untuk paragraf baru.
+
+Gunakan toolbar di atas untuk format:
+  H2 / H3 → Judul seksi
+  B → **teks tebal**
+  I → _teks miring_
+  ❝ → > kutipan
+  • → - item list"
+                ></textarea>
+              </div>
+
+              <!-- Preview pane -->
+              <div class="sp-preview-pane" id="spPreviewPane"></div>
+
+              <!-- Footer: word count + hint -->
+              <div class="sp-editor-footer">
+                <span id="spWordCount">0 kata</span>
+                <span id="spCharCount">0 karakter</span>
+              </div>
             </div>
-            <textarea
-              id="spBody"
-              class="sp-body-textarea"
-              placeholder="Tulis isi artikel...&#10;&#10;Gunakan:&#10;## Judul Seksi&#10;**teks tebal**&#10;> kutipan&#10;- list"
-            ></textarea>
+            <!-- /.sp-editor-wrap -->
           </div>
 
           <div class="sp-alert" id="spAlert"></div>

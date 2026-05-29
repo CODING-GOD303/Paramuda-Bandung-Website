@@ -1,691 +1,1047 @@
 <!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel Paramuda Bandung</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="admin.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="/Database/db.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel Paramuda Bandung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/Database/db.js"></script>
 
-  <style>
-    /* ── REQUEST-SPECIFIC STYLES ───────────────────────────── */
-    .req-status-baru    { color:#C44444; background:rgba(196,68,68,.1);   padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-    .req-status-dibaca  { color:#533AB7; background:rgba(127,119,221,.1); padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-    .req-status-selesai { color:#0F6E56; background:rgba(29,158,117,.1);  padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
+    <style>
+      /* ── REQUEST-SPECIFIC STYLES ───────────────────────────── */
+      .req-status-baru {
+        color: #c44444;
+        background: rgba(196, 68, 68, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .req-status-dibaca {
+        color: #533ab7;
+        background: rgba(127, 119, 221, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .req-status-selesai {
+        color: #0f6e56;
+        background: rgba(29, 158, 117, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
 
-    .req-subject {
-      display: inline-block;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .05em; text-transform: uppercase;
-      padding: .2rem .55rem; border-radius: 4px;
-      color: #185FA5; background: rgba(55,138,221,.1);
-      white-space: nowrap;
-    }
+      .req-subject {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 0.2rem 0.55rem;
+        border-radius: 4px;
+        color: #185fa5;
+        background: rgba(55, 138, 221, 0.1);
+        white-space: nowrap;
+      }
 
-    .req-message-cell {
-      max-width: 220px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 13px;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-    .req-message-cell:hover { color: var(--text); }
+      .req-message-cell {
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 13px;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+      .req-message-cell:hover {
+        color: var(--text);
+      }
 
-    /* Inline message expand */
-    .req-expanded td { white-space: normal !important; }
+      /* Inline message expand */
+      .req-expanded td {
+        white-space: normal !important;
+      }
 
-    /* Dot badge on sidebar button */
-    .snav-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 18px; height: 18px; border-radius: 50%;
-      font-size: 10px; font-weight: 700;
-      background: #C44444; color: #fff;
-      margin-left: auto; flex-shrink: 0;
-    }
+      /* Dot badge on sidebar button */
+      .snav-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: 700;
+        background: #c44444;
+        color: #fff;
+        margin-left: auto;
+        flex-shrink: 0;
+      }
 
-    /* Filter row in requests view */
-    .req-controls {
-      display: flex;
-      gap: .75rem;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .req-controls select,
-    .req-controls input {
-      font-family: var(--font-body);
-      font-size: 13px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: .5rem .9rem;
-      color: var(--text);
-      outline: none;
-    }
-    .req-controls input { flex: 1; min-width: 160px; }
+      /* Filter row in requests view */
+      .req-controls {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .req-controls select,
+      .req-controls input {
+        font-family: var(--font-body);
+        font-size: 13px;
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.5rem 0.9rem;
+        color: var(--text);
+        outline: none;
+      }
+      .req-controls input {
+        flex: 1;
+        min-width: 160px;
+      }
 
-    /* Message detail modal */
-    .req-detail-modal {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.45);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; padding: 1.5rem;
-    }
-    .req-detail-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 2rem;
-      width: 100%; max-width: 480px;
-      display: flex; flex-direction: column; gap: .75rem;
-    }
-    .req-detail-card h3 {
-      font-family: var(--font-head);
-      font-size: 1rem; font-weight: 800; color: var(--text);
-    }
-    .req-detail-row { display: flex; gap: .5rem; font-size: 13px; }
-    .req-detail-row strong { color: var(--text-muted); min-width: 80px; flex-shrink: 0; }
-    .req-detail-msg {
-      background: rgba(26,24,22,.04);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: .9rem 1rem;
-      font-size: 14px; line-height: 1.7;
-      color: var(--text);
-      white-space: pre-wrap;
-    }
-    .req-detail-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: .5rem; }
+      /* Message detail modal */
+      .req-detail-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 1.5rem;
+      }
+      .req-detail-card {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 2rem;
+        width: 100%;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .req-detail-card h3 {
+        font-family: var(--font-head);
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .req-detail-row {
+        display: flex;
+        gap: 0.5rem;
+        font-size: 13px;
+      }
+      .req-detail-row strong {
+        color: var(--text-muted);
+        min-width: 80px;
+        flex-shrink: 0;
+      }
+      .req-detail-msg {
+        background: rgba(26, 24, 22, 0.04);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.9rem 1rem;
+        font-size: 14px;
+        line-height: 1.7;
+        color: var(--text);
+        white-space: pre-wrap;
+      }
+      .req-detail-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+      }
 
-    /* ── SUBMISSION REVIEW STYLES ──────────────────────────── */
-    .sub-type-new  { color:#0F6E56; background:rgba(29,158,117,.1); padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-    .sub-type-edit { color:#185FA5; background:rgba(55,138,221,.1); padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
+      /* ── SUBMISSION REVIEW STYLES ──────────────────────────── */
+      .sub-type-new {
+        color: #0f6e56;
+        background: rgba(29, 158, 117, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .sub-type-edit {
+        color: #185fa5;
+        background: rgba(55, 138, 221, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
 
-    /* Diff viewer */
-    .diff-modal {
-      position:fixed; inset:0; background:rgba(0,0,0,.5);
-      display:flex; align-items:flex-start; justify-content:center;
-      z-index:9999; padding:2rem 1rem; overflow-y:auto;
-    }
-    .diff-card {
-      background:var(--white); border-radius:var(--radius); padding:0;
-      width:100%; max-width:800px; overflow:hidden;
-      box-shadow:0 24px 64px rgba(0,0,0,.18);
-    }
-    .diff-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:1.25rem 1.75rem; border-bottom:1px solid var(--border);
-    }
-    .diff-header h3 { font-family:var(--font-head); font-size:1rem; font-weight:800; color:var(--text); }
-    .diff-body { padding:1.5rem 1.75rem; display:flex; flex-direction:column; gap:1.25rem; overflow-y:auto; max-height:70vh; }
-    .diff-section h4 {
-      font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
-      color:var(--text-muted); margin-bottom:.5rem;
-    }
-    .diff-cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    .diff-col { background:rgba(26,24,22,.03); border:1px solid var(--border); border-radius:6px; padding:.9rem 1rem; font-size:13px; line-height:1.7; color:var(--text); }
-    .diff-col.original { border-color:rgba(196,68,68,.3); background:rgba(196,68,68,.03); }
-    .diff-col.proposed { border-color:rgba(29,158,117,.3); background:rgba(29,158,117,.03); }
-    .diff-col-label { font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.4rem; }
-    .diff-col.original .diff-col-label { color:#C44444; }
-    .diff-col.proposed .diff-col-label { color:#0F6E56; }
-    .diff-footer { display:flex; gap:.75rem; justify-content:flex-end; padding:1rem 1.75rem; border-top:1px solid var(--border); }
+      /* Diff viewer */
+      .diff-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        z-index: 9999;
+        padding: 2rem 1rem;
+        overflow-y: auto;
+      }
+      .diff-card {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 0;
+        width: 100%;
+        max-width: 800px;
+        overflow: hidden;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.18);
+      }
+      .diff-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 1.75rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .diff-header h3 {
+        font-family: var(--font-head);
+        font-size: 1rem;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .diff-body {
+        padding: 1.5rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        overflow-y: auto;
+        max-height: 70vh;
+      }
+      .diff-section h4 {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+      }
+      .diff-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .diff-col {
+        background: rgba(26, 24, 22, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.9rem 1rem;
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--text);
+      }
+      .diff-col.original {
+        border-color: rgba(196, 68, 68, 0.3);
+        background: rgba(196, 68, 68, 0.03);
+      }
+      .diff-col.proposed {
+        border-color: rgba(29, 158, 117, 0.3);
+        background: rgba(29, 158, 117, 0.03);
+      }
+      .diff-col-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+      }
+      .diff-col.original .diff-col-label {
+        color: #c44444;
+      }
+      .diff-col.proposed .diff-col-label {
+        color: #0f6e56;
+      }
+      .diff-footer {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+        padding: 1rem 1.75rem;
+        border-top: 1px solid var(--border);
+      }
 
-    /* Reject reason input */
-    .reject-input-wrap { display:flex; flex-direction:column; gap:.5rem; padding:1rem 1.75rem; border-top:1px solid var(--border); background:rgba(196,68,68,.03); }
-    .reject-input-wrap label { font-size:12px; font-weight:600; color:#C44444; }
-    .reject-input-wrap textarea { font-family:var(--font-body); font-size:13px; padding:.6rem .9rem; border:1.5px solid rgba(196,68,68,.3); border-radius:6px; outline:none; resize:none; }
-    .reject-input-wrap textarea:focus { border-color:#C44444; }
-  </style>
-</head>
-<body>
-
-  <!--LOGIN SCREEN-->
-  <div class="login-screen" id="loginScreen">
-    <div class="login-card">
-      <div class="login-logo">Paramuda</div>
-      <div class="login-sub">Panel Admin</div>
-      <div class="login-form">
-        <label>Email</label>
-        <input type="email" id="emailInput" placeholder="Email admin..." />
-        <label style="margin-top:.75rem;">Password</label>
-        <div class="pw-wrap">
-          <input type="password" id="pwInput" placeholder="Password..." />
-          <button class="pw-toggle" id="pwToggle" onclick="togglePw()">👁</button>
+      /* Reject reason input */
+      .reject-input-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1rem 1.75rem;
+        border-top: 1px solid var(--border);
+        background: rgba(196, 68, 68, 0.03);
+      }
+      .reject-input-wrap label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #c44444;
+      }
+      .reject-input-wrap textarea {
+        font-family: var(--font-body);
+        font-size: 13px;
+        padding: 0.6rem 0.9rem;
+        border: 1.5px solid rgba(196, 68, 68, 0.3);
+        border-radius: 6px;
+        outline: none;
+        resize: none;
+      }
+      .reject-input-wrap textarea:focus {
+        border-color: #c44444;
+      }
+    </style>
+  </head>
+  <body>
+    <!--LOGIN SCREEN-->
+    <div class="login-screen" id="loginScreen">
+      <div class="login-card">
+        <div class="login-logo">Paramuda</div>
+        <div class="login-sub">Panel Admin</div>
+        <div class="login-form">
+          <label>Email</label>
+          <input type="email" id="emailInput" placeholder="Email admin..." />
+          <label style="margin-top: 0.75rem">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="pwInput" placeholder="Password..." />
+            <button class="pw-toggle" id="pwToggle" onclick="togglePw()">
+              👁
+            </button>
+          </div>
+          <div class="login-error" id="loginError">
+            Email atau password salah.
+          </div>
+          <button class="btn-login" id="loginBtn" onclick="doLogin()">
+            Masuk →
+          </button>
         </div>
-        <div class="login-error" id="loginError">Email atau password salah.</div>
-        <button class="btn-login" id="loginBtn" onclick="doLogin()">Masuk →</button>
+        <p class="login-hint">Hanya untuk admin Paramuda yang berwenang.</p>
       </div>
-      <p class="login-hint">Hanya untuk admin Paramuda yang berwenang.</p>
     </div>
-  </div>
 
-  <!--ADMIN PANEL-->
-  <div class="admin-panel" id="adminPanel" style="display:none;">
-
-    <!-- SIDEBAR -->
-    <aside class="admin-sidebar">
-      <div class="sidebar-logo">Paramuda.Id</div>
-      <div class="sidebar-label">Menu</div>
-      <nav class="sidebar-nav">
-        <button class="snav-btn active" onclick="showView('dashboard')" id="btn-dashboard">
-          <span>◈</span> Dashboard
-        </button>
-        <button class="snav-btn" onclick="showView('write')" id="btn-write">
-          <span>✦</span> Tulis Artikel
-        </button>
-        <button class="snav-btn" onclick="showView('manage')" id="btn-manage">
-          <span>☰</span> Kelola Artikel
-        </button>
-        <!-- NEW: Requests -->
-        <button class="snav-btn" onclick="showView('requests')" id="btn-requests" style="display:flex;align-items:center;gap:.6rem;">
-<<<<<<< HEAD
-          <span>📋</span> Permintaan
-          <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
-        </button>
-        <button class="snav-btn" onclick="showView('kiriman')" id="btn-kiriman" style="display:flex;align-items:center;gap:.6rem;">
-          <span>✦</span> Kiriman Artikel
-          <span class="snav-badge" id="kirimBadge" style="display:none;">0</span>
-        </button>
-=======
-          <span>🕭</span> Permintaan
-          <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
-        </button>
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-      </nav>
-      <div class="sidebar-bottom">
-        <a href="/articles/articles-new.html" target="_blank" class="sidebar-link">Lihat Website →</a>
-        <button class="btn-logout" onclick="doLogout()">Keluar</button>
-      </div>
-    </aside>
-
-    <!--MAIN CONTENT-->
-    <main class="admin-main">
-
-      <!-- DASHBOARD -->
-      <div class="view" id="view-dashboard">
-        <div class="view-header">
-          <h1>Dashboard</h1>
-          <span class="view-date" id="todayDate"></span>
+    <!--ADMIN PANEL-->
+    <div class="admin-panel" id="adminPanel" style="display: none">
+      <!-- SIDEBAR -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-logo">Paramuda.Id</div>
+        <div class="sidebar-label">Menu</div>
+        <nav class="sidebar-nav">
+          <button
+            class="snav-btn active"
+            onclick="showView('dashboard')"
+            id="btn-dashboard"
+          >
+            <span>◈</span> Dashboard
+          </button>
+          <button class="snav-btn" onclick="showView('write')" id="btn-write">
+            <span>✦</span> Tulis Artikel
+          </button>
+          <button class="snav-btn" onclick="showView('manage')" id="btn-manage">
+            <span>☰</span> Kelola Artikel
+          </button>
+          <!-- NEW: Requests -->
+          <button
+            class="snav-btn"
+            onclick="showView('requests')"
+            id="btn-requests"
+            style="display: flex; align-items: center; gap: 0.6rem"
+          >
+            <span>📋</span> Permintaan
+            <span class="snav-badge" id="pendingBadge" style="display: none"
+              >0</span
+            >
+          </button>
+          <button
+            class="snav-btn"
+            onclick="showView('kiriman')"
+            id="btn-kiriman"
+            style="display: flex; align-items: center; gap: 0.6rem"
+          >
+            <span>✦</span> Kiriman Artikel
+            <span class="snav-badge" id="kirimBadge" style="display: none"
+              >0</span
+            >
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <a
+            href="/articles/articles-new.html"
+            target="_blank"
+            class="sidebar-link"
+            >Lihat Website →</a
+          >
+          <button class="btn-logout" onclick="doLogout()">Keluar</button>
         </div>
+      </aside>
 
-        <div class="stats-row" id="statsRow"></div>
-
-        <div class="dash-section">
-          <div class="dash-section-header">
-            <h3>Artikel Terbaru</h3>
-            <button class="btn-sm" onclick="showView('write')">+ Tulis Baru</button>
+      <!--MAIN CONTENT-->
+      <main class="admin-main">
+        <!-- DASHBOARD -->
+        <div class="view" id="view-dashboard">
+          <div class="view-header">
+            <h1>Dashboard</h1>
+            <span class="view-date" id="todayDate"></span>
           </div>
-          <div class="recent-list" id="recentList"></div>
-        </div>
 
-        <!-- NEW: Pending requests preview on dashboard -->
-        <div class="dash-section" style="margin-top:1.5rem;" id="dashReqSection">
-          <div class="dash-section-header">
-            <h3>Permintaan Terbaru</h3>
-            <button class="btn-sm" onclick="showView('requests')">Lihat Semua →</button>
+          <div class="stats-row" id="statsRow"></div>
+
+          <div class="dash-section">
+            <div class="dash-section-header">
+              <h3>Artikel Terbaru</h3>
+              <button class="btn-sm" onclick="showView('write')">
+                + Tulis Baru
+              </button>
+            </div>
+            <div class="recent-list" id="recentList"></div>
           </div>
-          <div id="dashReqList"></div>
-        </div>
-      </div>
 
-      <!--WRITE/EDIT-->
-      <div class="view" id="view-write" style="display:none;">
-        <div class="view-header">
-          <h1 id="writeTitle">Tulis Artikel Baru</h1>
-          <div class="header-actions">
-            <button class="btn-preview" onclick="togglePreview()" id="previewBtn">Pratinjau</button>
-            <button class="btn-publish" onclick="publishArticle()" id="publishBtn">Terbitkan</button>
+          <!-- NEW: Pending requests preview on dashboard -->
+          <div
+            class="dash-section"
+            style="margin-top: 1.5rem"
+            id="dashReqSection"
+          >
+            <div class="dash-section-header">
+              <h3>Permintaan Terbaru</h3>
+              <button class="btn-sm" onclick="showView('requests')">
+                Lihat Semua →
+              </button>
+            </div>
+            <div id="dashReqList"></div>
           </div>
         </div>
 
-        <div class="write-layout">
-          <!--EDITOR-->
-          <div class="editor-panel" id="editorPanel">
-            <div class="field-group">
-              <label>Judul Artikel <span class="req">*</span></label>
-              <input type="text" id="fTitle" placeholder="Tulis judul yang menarik..." maxlength="120" />
-              <span class="char-count" id="titleCount">0 / 120</span>
+        <!--WRITE/EDIT-->
+        <div class="view" id="view-write" style="display: none">
+          <div class="view-header">
+            <h1 id="writeTitle">Tulis Artikel Baru</h1>
+            <div class="header-actions">
+              <button
+                class="btn-preview"
+                onclick="togglePreview()"
+                id="previewBtn"
+              >
+                Pratinjau
+              </button>
+              <button
+                class="btn-publish"
+                onclick="publishArticle()"
+                id="publishBtn"
+              >
+                Terbitkan
+              </button>
             </div>
-            <div class="field-group">
-              <label>Subjudul / Ringkasan <span class="req">*</span></label>
-              <textarea id="fSubtitle" rows="2" placeholder="Satu atau dua kalimat yang menggambarkan artikel..." maxlength="220"></textarea>
-              <span class="char-count" id="subtitleCount">0 / 220</span>
-            </div>
-            <div class="field-row">
+          </div>
+
+          <div class="write-layout">
+            <!--EDITOR-->
+            <div class="editor-panel" id="editorPanel">
               <div class="field-group">
-                <label>Kategori <span class="req">*</span></label>
-                <select id="fCategory">
-                  <option value="">Pilih kategori...</option>
-                  <option>Sains & Teknologi</option>
-                  <option>Sosial & Humaniora</option>
-                  <option>Ekonomi & Bisnis</option>
-                  <option>Hukum & Kebijakan</option>
-                  <option>Kesehatan & Lingkungan</option>
-                  <option>Seni & Kreativitas</option>
-                </select>
+                <label>Judul Artikel <span class="req">*</span></label>
+                <input
+                  type="text"
+                  id="fTitle"
+                  placeholder="Tulis judul yang menarik..."
+                  maxlength="120"
+                />
+                <span class="char-count" id="titleCount">0 / 120</span>
               </div>
               <div class="field-group">
-                <label>Perkiraan Waktu Baca (menit)</label>
-                <input type="number" id="fReadTime" placeholder="5" min="1" max="60" value="5" />
+                <label>Subjudul / Ringkasan <span class="req">*</span></label>
+                <textarea
+                  id="fSubtitle"
+                  rows="2"
+                  placeholder="Satu atau dua kalimat yang menggambarkan artikel..."
+                  maxlength="220"
+                ></textarea>
+                <span class="char-count" id="subtitleCount">0 / 220</span>
               </div>
-            </div>
-            <div class="field-row">
-              <div class="field-group">
-                <label>Nama Penulis <span class="req">*</span></label>
-                <input type="text" id="fAuthor" placeholder="Nama lengkap..." />
-              </div>
-              <div class="field-group">
-                <label>Jabatan / Prodi</label>
-                <input type="text" id="fAuthorRole" placeholder="Mahasiswa Teknik Informatika..." />
-              </div>
-            </div>
-            <div class="field-row">
-              <div class="field-group">
-                <label>Tanggal Terbit</label>
-                <input type="date" id="fDate" />
-              </div>
-              <div class="field-group">
-                <label>Tandai sebagai Unggulan?</label>
-                <div class="toggle-wrap">
-                  <label class="toggle">
-                    <input type="checkbox" id="fFeatured" />
-                    <span class="toggle-slider"></span>
-                  </label>
-                  <span class="toggle-label" id="featuredLabel">Tidak</span>
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Kategori <span class="req">*</span></label>
+                  <select id="fCategory">
+                    <option value="">Pilih kategori...</option>
+                    <option>Sains & Teknologi</option>
+                    <option>Sosial & Humaniora</option>
+                    <option>Ekonomi & Bisnis</option>
+                    <option>Hukum & Kebijakan</option>
+                    <option>Kesehatan & Lingkungan</option>
+                    <option>Seni & Kreativitas</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label>Perkiraan Waktu Baca (menit)</label>
+                  <input
+                    type="number"
+                    id="fReadTime"
+                    placeholder="5"
+                    min="1"
+                    max="60"
+                    value="5"
+                  />
                 </div>
               </div>
-            </div>
-
-            <!--BODY EDITOR-->
-            <div class="field-group body-field">
-              <label>Isi Artikel <span class="req">*</span></label>
-              <div class="toolbar">
-                <button type="button" onclick="insertMd('## ')" title="Heading 2">H2</button>
-                <button type="button" onclick="insertMd('### ')" title="Heading 3">H3</button>
-                <button type="button" onclick="insertMd('**', '**')" title="Bold"><b>B</b></button>
-                <button type="button" onclick="insertMd('> ')" title="Quote">❝</button>
-                <button type="button" onclick="insertMd('- ')" title="List">• List</button>
-                <span class="toolbar-hint">Gunakan ## untuk judul seksi, ### untuk sub-judul, **teks** untuk tebal, > untuk kutipan</span>
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Nama Penulis <span class="req">*</span></label>
+                  <input
+                    type="text"
+                    id="fAuthor"
+                    placeholder="Nama lengkap..."
+                  />
+                </div>
+                <div class="field-group">
+                  <label>Jabatan / Prodi</label>
+                  <input
+                    type="text"
+                    id="fAuthorRole"
+                    placeholder="Mahasiswa Teknik Informatika..."
+                  />
+                </div>
               </div>
-              <textarea id="fBody" rows="20" placeholder="Tulis isi artikel di sini...
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Tanggal Terbit</label>
+                  <input type="date" id="fDate" />
+                </div>
+                <div class="field-group">
+                  <label>Tandai sebagai Unggulan?</label>
+                  <div class="toggle-wrap">
+                    <label class="toggle">
+                      <input type="checkbox" id="fFeatured" />
+                      <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" id="featuredLabel">Tidak</span>
+                  </div>
+                </div>
+              </div>
+
+              <!--BODY EDITOR-->
+              <div class="field-group body-field">
+                <label>Isi Artikel <span class="req">*</span></label>
+                <div class="toolbar">
+                  <button
+                    type="button"
+                    onclick="insertMd('## ')"
+                    title="Heading 2"
+                  >
+                    H2
+                  </button>
+                  <button
+                    type="button"
+                    onclick="insertMd('### ')"
+                    title="Heading 3"
+                  >
+                    H3
+                  </button>
+                  <button
+                    type="button"
+                    onclick="insertMd('**', '**')"
+                    title="Bold"
+                  >
+                    <b>B</b>
+                  </button>
+                  <button type="button" onclick="insertMd('> ')" title="Quote">
+                    ❝
+                  </button>
+                  <button type="button" onclick="insertMd('- ')" title="List">
+                    • List
+                  </button>
+                  <span class="toolbar-hint"
+                    >Gunakan ## untuk judul seksi, ### untuk sub-judul, **teks**
+                    untuk tebal, > untuk kutipan</span
+                  >
+                </div>
+                <textarea
+                  id="fBody"
+                  rows="20"
+                  placeholder="Tulis isi artikel di sini...
 
 Gunakan format:
 ## Judul Seksi
 ### Sub Judul
 **teks tebal**
 > kutipan
-- item list"></textarea>
+- item list"
+                ></textarea>
+              </div>
+
+              <input type="hidden" id="editingId" value="" />
             </div>
 
-            <input type="hidden" id="editingId" value="" />
+            <!--PREVIEW-->
+            <div class="preview-panel" id="previewPanel" style="display: none">
+              <div class="preview-badge">Pratinjau</div>
+              <div id="previewContent"></div>
+            </div>
           </div>
 
-          <!--PREVIEW-->
-          <div class="preview-panel" id="previewPanel" style="display:none;">
-            <div class="preview-badge">Pratinjau</div>
-            <div id="previewContent"></div>
+          <div class="write-footer">
+            <button class="btn-cancel" onclick="cancelEdit()">Batal</button>
+            <div class="footer-right">
+              <button
+                class="btn-preview"
+                onclick="togglePreview()"
+                id="previewBtn2"
+              >
+                Pratinjau
+              </button>
+              <button class="btn-publish" onclick="publishArticle()">
+                <span id="publishLabel">Terbitkan Artikel</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="write-footer">
-          <button class="btn-cancel" onclick="cancelEdit()">Batal</button>
-          <div class="footer-right">
-            <button class="btn-preview" onclick="togglePreview()" id="previewBtn2">Pratinjau</button>
-            <button class="btn-publish" onclick="publishArticle()">
-              <span id="publishLabel">Terbitkan Artikel</span>
+        <!--MANAGE-->
+        <div class="view" id="view-manage" style="display: none">
+          <div class="view-header">
+            <h1>Kelola Artikel</h1>
+            <button class="btn-publish" onclick="showView('write')">
+              + Tulis Baru
             </button>
           </div>
+          <div class="manage-controls">
+            <input
+              type="text"
+              id="manageSearch"
+              placeholder="Cari artikel..."
+              oninput="renderManage()"
+            />
+            <select id="manageCat" onchange="renderManage()">
+              <option value="">Semua Kategori</option>
+              <option>Sains & Teknologi</option>
+              <option>Sosial & Humaniora</option>
+              <option>Ekonomi & Bisnis</option>
+              <option>Hukum & Kebijakan</option>
+              <option>Kesehatan & Lingkungan</option>
+              <option>Seni & Kreativitas</option>
+            </select>
+          </div>
+          <div class="manage-table-wrap">
+            <table class="manage-table">
+              <thead>
+                <tr>
+                  <th>Judul</th>
+                  <th>Kategori</th>
+                  <th>Penulis</th>
+                  <th>Tanggal</th>
+                  <th>Unggulan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="manageBody"></tbody>
+            </table>
+          </div>
+          <p class="manage-count" id="manageCount"></p>
         </div>
-      </div>
 
-      <!--MANAGE-->
-      <div class="view" id="view-manage" style="display:none;">
-        <div class="view-header">
-          <h1>Kelola Artikel</h1>
-          <button class="btn-publish" onclick="showView('write')">+ Tulis Baru</button>
-        </div>
-        <div class="manage-controls">
-          <input type="text" id="manageSearch" placeholder="Cari artikel..." oninput="renderManage()" />
-          <select id="manageCat" onchange="renderManage()">
-            <option value="">Semua Kategori</option>
-            <option>Sains & Teknologi</option>
-            <option>Sosial & Humaniora</option>
-            <option>Ekonomi & Bisnis</option>
-            <option>Hukum & Kebijakan</option>
-            <option>Kesehatan & Lingkungan</option>
-            <option>Seni & Kreativitas</option>
-          </select>
-        </div>
-        <div class="manage-table-wrap">
-          <table class="manage-table">
-            <thead>
-              <tr>
-                <th>Judul</th>
-                <th>Kategori</th>
-                <th>Penulis</th>
-                <th>Tanggal</th>
-                <th>Unggulan</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="manageBody"></tbody>
-          </table>
-        </div>
-        <p class="manage-count" id="manageCount"></p>
-      </div>
-
-      <!-- ══════════════════════════════════════════════
+        <!-- ══════════════════════════════════════════════
            NEW VIEW: PERMINTAAN (Contact Requests)
            ══════════════════════════════════════════ -->
-      <div class="view" id="view-requests" style="display:none;">
-        <div class="view-header">
-          <h1>Permintaan Masuk</h1>
-          <div class="header-actions">
-            <button class="btn-sm" onclick="markAllRead()">✓ Tandai Semua Dibaca</button>
+        <div class="view" id="view-requests" style="display: none">
+          <div class="view-header">
+            <h1>Permintaan Masuk</h1>
+            <div class="header-actions">
+              <button class="btn-sm" onclick="markAllRead()">
+                ✓ Tandai Semua Dibaca
+              </button>
+            </div>
           </div>
+
+          <!-- Stats pills -->
+          <div
+            class="stats-row"
+            id="reqStatsRow"
+            style="margin-bottom: 1.5rem"
+          ></div>
+
+          <!-- Filter + search -->
+          <div class="req-controls">
+            <input
+              type="text"
+              id="reqSearch"
+              placeholder="Cari nama / email..."
+              oninput="renderRequests()"
+            />
+            <select id="reqStatusFilter" onchange="renderRequests()">
+              <option value="">Semua Status</option>
+              <option value="baru">🔴 Baru</option>
+              <option value="dibaca">🟣 Dibaca</option>
+              <option value="selesai">🟢 Selesai</option>
+            </select>
+            <select id="reqSubjectFilter" onchange="renderRequests()">
+              <option value="">Semua Keperluan</option>
+              <option>Pengiriman Artikel</option>
+              <option>Edit Artikel</option>
+              <option>Hapus Artikel</option>
+              <option>Keanggotaan</option>
+              <option>Kolaborasi Riset</option>
+              <option>Perpanjangan</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+
+          <!-- Table -->
+          <div class="manage-table-wrap">
+            <table class="manage-table">
+              <thead>
+                <tr>
+                  <th>Nama</th>
+                  <th>Email</th>
+                  <th>Keperluan</th>
+                  <th>Pesan</th>
+                  <th>Tanggal</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="requestsBody"></tbody>
+            </table>
+          </div>
+          <p class="manage-count" id="requestsCount"></p>
         </div>
 
-        <!-- Stats pills -->
-        <div class="stats-row" id="reqStatsRow" style="margin-bottom:1.5rem;"></div>
-
-        <!-- Filter + search -->
-        <div class="req-controls">
-          <input type="text" id="reqSearch" placeholder="Cari nama / email..." oninput="renderRequests()" />
-          <select id="reqStatusFilter" onchange="renderRequests()">
-            <option value="">Semua Status</option>
-            <option value="baru">🔴 Baru</option>
-            <option value="dibaca">🟣 Dibaca</option>
-            <option value="selesai">🟢 Selesai</option>
-          </select>
-          <select id="reqSubjectFilter" onchange="renderRequests()">
-            <option value="">Semua Keperluan</option>
-            <option>Pengiriman Artikel</option>
-            <option>Edit Artikel</option>
-            <option>Hapus Artikel</option>
-            <option>Keanggotaan</option>
-            <option>Kolaborasi Riset</option>
-            <option>Perpanjangan</option>
-            <option>Lainnya</option>
-          </select>
-        </div>
-
-        <!-- Table -->
-        <div class="manage-table-wrap">
-          <table class="manage-table">
-            <thead>
-              <tr>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Keperluan</th>
-                <th>Pesan</th>
-                <th>Tanggal</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="requestsBody"></tbody>
-          </table>
-        </div>
-        <p class="manage-count" id="requestsCount"></p>
-      </div>
-
-<<<<<<< HEAD
-
-      <!-- ══════════════════════════════════════════════
+        <!-- ══════════════════════════════════════════════
            KIRIMAN — Member Article Submissions
            ══════════════════════════════════════════ -->
-      <div class="view" id="view-kiriman" style="display:none;">
-        <div class="view-header">
-          <h1>Kiriman Artikel</h1>
-          <div class="header-actions">
-            <span style="font-size:13px;color:var(--text-muted);" id="kirimCount"></span>
+        <div class="view" id="view-kiriman" style="display: none">
+          <div class="view-header">
+            <h1>Kiriman Artikel</h1>
+            <div class="header-actions">
+              <span
+                style="font-size: 13px; color: var(--text-muted)"
+                id="kirimCount"
+              ></span>
+            </div>
+          </div>
+
+          <div
+            class="stats-row"
+            id="kirimStats"
+            style="margin-bottom: 1.5rem"
+          ></div>
+
+          <div class="manage-controls">
+            <input
+              type="text"
+              id="kirimSearch"
+              placeholder="Cari judul / penulis..."
+              oninput="renderKiriman()"
+            />
+            <select id="kirimFilter" onchange="renderKiriman()">
+              <option value="">Semua Pending</option>
+              <option value="pending">✦ Artikel Baru</option>
+              <option value="pending_edit">✎ Permintaan Edit</option>
+            </select>
+          </div>
+
+          <div class="manage-table-wrap">
+            <table class="manage-table">
+              <thead>
+                <tr>
+                  <th>Judul</th>
+                  <th>Jenis</th>
+                  <th>Penulis</th>
+                  <th>Kategori</th>
+                  <th>Dikirim</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="kirimBody"></tbody>
+            </table>
           </div>
         </div>
+      </main>
+    </div>
 
-        <div class="stats-row" id="kirimStats" style="margin-bottom:1.5rem;"></div>
-
-        <div class="manage-controls">
-          <input type="text" id="kirimSearch" placeholder="Cari judul / penulis..." oninput="renderKiriman()" />
-          <select id="kirimFilter" onchange="renderKiriman()">
-            <option value="">Semua Pending</option>
-            <option value="pending">✦ Artikel Baru</option>
-            <option value="pending_edit">✎ Permintaan Edit</option>
-          </select>
-        </div>
-
-        <div class="manage-table-wrap">
-          <table class="manage-table">
-            <thead>
-              <tr>
-                <th>Judul</th>
-                <th>Jenis</th>
-                <th>Penulis</th>
-                <th>Kategori</th>
-                <th>Dikirim</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="kirimBody"></tbody>
-          </table>
+    <!--DELETE CONFIRM MODAL (articles)-->
+    <div class="modal-overlay" id="modalOverlay" style="display: none">
+      <div class="modal">
+        <div class="modal-icon">⚠</div>
+        <h3>Hapus Artikel?</h3>
+        <p id="modalArticleTitle"></p>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal()">Batal</button>
+          <button class="btn-delete" onclick="confirmDelete()">
+            Ya, Hapus
+          </button>
         </div>
       </div>
-
-=======
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-    </main>
-  </div>
-
-  <!--DELETE CONFIRM MODAL (articles)-->
-  <div class="modal-overlay" id="modalOverlay" style="display:none;">
-    <div class="modal">
-      <div class="modal-icon">⚠</div>
-      <h3>Hapus Artikel?</h3>
-      <p id="modalArticleTitle"></p>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeModal()">Batal</button>
-        <button class="btn-delete" onclick="confirmDelete()">Ya, Hapus</button>
-      </div>
     </div>
-  </div>
 
-  <!-- MESSAGE DETAIL MODAL (requests) -->
-  <div class="req-detail-modal" id="reqDetailModal" style="display:none;">
-    <div class="req-detail-card">
-      <h3 id="rdName"></h3>
-      <div class="req-detail-row"><strong>Email</strong><span id="rdEmail"></span></div>
-      <div class="req-detail-row"><strong>Keperluan</strong><span id="rdSubject"></span></div>
-      <div class="req-detail-row"><strong>Tanggal</strong><span id="rdDate"></span></div>
-      <div class="req-detail-row"><strong>Status</strong><span id="rdStatus"></span></div>
-      <div class="req-detail-msg" id="rdMessage"></div>
-      <div class="req-detail-actions">
-        <button class="btn-cancel" onclick="closeReqDetail()">Tutup</button>
-        <button class="btn-sm" id="rdMarkDone" onclick="">Tandai Selesai</button>
-        <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;" id="rdDelete" onclick="">Hapus</button>
-      </div>
-    </div>
-  </div>
-
-<<<<<<< HEAD
-
-  <!-- DIFF / REVIEW MODAL -->
-  <div class="diff-modal" id="diffModal" style="display:none;">
-    <div class="diff-card">
-      <div class="diff-header">
-        <div>
-          <h3 id="diffTitle">Review Kiriman</h3>
-          <p style="font-size:12px;color:var(--text-muted);margin-top:.2rem;" id="diffMeta"></p>
+    <!-- MESSAGE DETAIL MODAL (requests) -->
+    <div class="req-detail-modal" id="reqDetailModal" style="display: none">
+      <div class="req-detail-card">
+        <h3 id="rdName"></h3>
+        <div class="req-detail-row">
+          <strong>Email</strong><span id="rdEmail"></span>
         </div>
-        <button class="btn-cancel" onclick="closeDiff()" style="font-size:18px;padding:.2rem .5rem;">✕</button>
-      </div>
-      <div class="diff-body" id="diffBody"></div>
-      <div class="reject-input-wrap" id="rejectInputWrap" style="display:none;">
-        <label>Alasan penolakan (opsional)</label>
-        <textarea id="rejectReasonInput" rows="3" placeholder="Tulis alasan penolakan untuk member..."></textarea>
-      </div>
-      <div class="diff-footer">
-        <button class="btn-cancel" onclick="closeDiff()">Tutup</button>
-        <button class="btn-sm" id="diffRejectToggle" onclick="toggleRejectInput()">✕ Tolak</button>
-        <button class="btn-delete" id="diffConfirmReject" onclick="confirmReject()" style="display:none;">Kirim Penolakan</button>
-        <button class="btn-publish" id="diffApproveBtn" onclick="approveFromDiff()">✓ Terbitkan</button>
+        <div class="req-detail-row">
+          <strong>Keperluan</strong><span id="rdSubject"></span>
+        </div>
+        <div class="req-detail-row">
+          <strong>Tanggal</strong><span id="rdDate"></span>
+        </div>
+        <div class="req-detail-row">
+          <strong>Status</strong><span id="rdStatus"></span>
+        </div>
+        <div class="req-detail-msg" id="rdMessage"></div>
+        <div class="req-detail-actions">
+          <button class="btn-cancel" onclick="closeReqDetail()">Tutup</button>
+          <button class="btn-sm" id="rdMarkDone" onclick="">
+            Tandai Selesai
+          </button>
+          <button
+            class="btn-delete"
+            style="font-size: 12px; padding: 0.4rem 1rem"
+            id="rdDelete"
+            onclick=""
+          >
+            Hapus
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-=======
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-  <!--TOAST-->
-  <div class="toast" id="toast"></div>
+    <!-- DIFF / REVIEW MODAL -->
+    <div class="diff-modal" id="diffModal" style="display: none">
+      <div class="diff-card">
+        <div class="diff-header">
+          <div>
+            <h3 id="diffTitle">Review Kiriman</h3>
+            <p
+              style="
+                font-size: 12px;
+                color: var(--text-muted);
+                margin-top: 0.2rem;
+              "
+              id="diffMeta"
+            ></p>
+          </div>
+          <button
+            class="btn-cancel"
+            onclick="closeDiff()"
+            style="font-size: 18px; padding: 0.2rem 0.5rem"
+          >
+            ✕
+          </button>
+        </div>
+        <div class="diff-body" id="diffBody"></div>
+        <div
+          class="reject-input-wrap"
+          id="rejectInputWrap"
+          style="display: none"
+        >
+          <label>Alasan penolakan (opsional)</label>
+          <textarea
+            id="rejectReasonInput"
+            rows="3"
+            placeholder="Tulis alasan penolakan untuk member..."
+          ></textarea>
+        </div>
+        <div class="diff-footer">
+          <button class="btn-cancel" onclick="closeDiff()">Tutup</button>
+          <button
+            class="btn-sm"
+            id="diffRejectToggle"
+            onclick="toggleRejectInput()"
+          >
+            ✕ Tolak
+          </button>
+          <button
+            class="btn-delete"
+            id="diffConfirmReject"
+            onclick="confirmReject()"
+            style="display: none"
+          >
+            Kirim Penolakan
+          </button>
+          <button
+            class="btn-publish"
+            id="diffApproveBtn"
+            onclick="approveFromDiff()"
+          >
+            ✓ Terbitkan
+          </button>
+        </div>
+      </div>
+    </div>
 
-  <script>
-    // ── AUTH ──────────────────────────────────────────────────
-    window.addEventListener('DOMContentLoaded', async () => {
-      const user = await authGetCurrentUser();
-      if (user && user.role === 'admin') {
+    <!--TOAST-->
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // ── AUTH ──────────────────────────────────────────────────
+      window.addEventListener("DOMContentLoaded", async () => {
+        const user = await authGetCurrentUser();
+        if (user && user.role === "admin") {
+          showPanel();
+        }
+
+        document.getElementById("pwInput").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") doLogin();
+        });
+        document
+          .getElementById("emailInput")
+          .addEventListener("keydown", (e) => {
+            if (e.key === "Enter") doLogin();
+          });
+        document.getElementById("todayDate").textContent =
+          new Date().toLocaleDateString("id-ID", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+        setTodayDate();
+      });
+
+      async function doLogin() {
+        const email = document.getElementById("emailInput").value.trim();
+        const pw = document.getElementById("pwInput").value;
+        const btn = document.getElementById("loginBtn");
+        const errEl = document.getElementById("loginError");
+
+        errEl.style.display = "none";
+        btn.textContent = "Masuk...";
+        btn.disabled = true;
+
+        const result = await authLogin(email, pw);
+
+        btn.textContent = "Masuk →";
+        btn.disabled = false;
+
+        if (!result.ok) {
+          errEl.textContent = result.error || "Email atau password salah.";
+          errEl.style.display = "block";
+          document.getElementById("pwInput").value = "";
+          return;
+        }
+
+        if (result.user.role !== "admin") {
+          errEl.textContent = "Akun ini tidak memiliki akses admin.";
+          errEl.style.display = "block";
+          await authLogout();
+          return;
+        }
+
         showPanel();
       }
 
-      document.getElementById('pwInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
-      });
-      document.getElementById('emailInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
-      });
-      document.getElementById('todayDate').textContent =
-        new Date().toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-      setTodayDate();
-    });
-
-    async function doLogin() {
-      const email = document.getElementById('emailInput').value.trim();
-      const pw    = document.getElementById('pwInput').value;
-      const btn   = document.getElementById('loginBtn');
-      const errEl = document.getElementById('loginError');
-
-      errEl.style.display = 'none';
-      btn.textContent = 'Masuk...';
-      btn.disabled = true;
-
-      const result = await authLogin(email, pw);
-
-      btn.textContent = 'Masuk →';
-      btn.disabled = false;
-
-      if (!result.ok) {
-        errEl.textContent = result.error || 'Email atau password salah.';
-        errEl.style.display = 'block';
-        document.getElementById('pwInput').value = '';
-        return;
-      }
-
-      if (result.user.role !== 'admin') {
-        errEl.textContent = 'Akun ini tidak memiliki akses admin.';
-        errEl.style.display = 'block';
+      async function doLogout() {
         await authLogout();
-        return;
+        document.getElementById("adminPanel").style.display = "none";
+        document.getElementById("loginScreen").style.display = "flex";
+        document.getElementById("pwInput").value = "";
+        document.getElementById("emailInput").value = "";
+        document.getElementById("loginError").style.display = "none";
       }
 
-      showPanel();
-    }
-
-    async function doLogout() {
-      await authLogout();
-      document.getElementById('adminPanel').style.display = 'none';
-      document.getElementById('loginScreen').style.display = 'flex';
-      document.getElementById('pwInput').value = '';
-      document.getElementById('emailInput').value = '';
-      document.getElementById('loginError').style.display = 'none';
-    }
-
-    function showPanel() {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminPanel').style.display = 'flex';
-      renderDashboard();
-      refreshPendingBadge();
-    }
-
-    function togglePw() {
-      const input = document.getElementById('pwInput');
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
-
-    // ── VIEWS ─────────────────────────────────────────────────
-    function showView(name) {
-<<<<<<< HEAD
-      ['dashboard','write','manage','requests','kiriman'].forEach(v => {
-=======
-      ['dashboard','write','manage','requests'].forEach(v => {
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-        document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none';
-        document.getElementById('btn-' + v).classList.toggle('active', v === name);
-      });
-      if (name === 'dashboard') renderDashboard();
-      if (name === 'manage')    renderManage();
-      if (name === 'requests')  renderRequests();
-<<<<<<< HEAD
-      if (name === 'kiriman')   renderKiriman();
-=======
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-      if (name === 'write' && !document.getElementById('editingId').value) clearForm();
-    }
-
-    // ── PENDING BADGE (sidebar) ───────────────────────────────
-    async function refreshPendingBadge() {
-<<<<<<< HEAD
-      const [reqs, subs] = await Promise.all([dbGetContactRequests(), dbGetPendingSubmissions()]);
-
-      // Contact requests badge
-      const reqCount = reqs.filter(r => r.status === 'baru').length;
-      const badge = document.getElementById('pendingBadge');
-      if (reqCount > 0) { badge.textContent = reqCount > 99 ? '99+' : reqCount; badge.style.display = 'inline-flex'; }
-      else { badge.style.display = 'none'; }
-
-      // Submissions badge
-      const subCount = subs.length;
-      const kirimBadge = document.getElementById('kirimBadge');
-      if (subCount > 0) { kirimBadge.textContent = subCount > 99 ? '99+' : subCount; kirimBadge.style.display = 'inline-flex'; }
-      else { kirimBadge.style.display = 'none'; }
-=======
-      const all    = await dbGetContactRequests();
-      const count  = all.filter(r => r.status === 'baru').length;
-      const badge  = document.getElementById('pendingBadge');
-      if (count > 0) {
-        badge.textContent = count > 99 ? '99+' : count;
-        badge.style.display = 'inline-flex';
-      } else {
-        badge.style.display = 'none';
+      function showPanel() {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("adminPanel").style.display = "flex";
+        renderDashboard();
+        refreshPendingBadge();
       }
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-    }
 
-    // ── DASHBOARD ─────────────────────────────────────────────
-    async function renderDashboard() {
-      document.getElementById('statsRow').innerHTML =
-        '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+      function togglePw() {
+        const input = document.getElementById("pwInput");
+        input.type = input.type === "password" ? "text" : "password";
+      }
 
-      const [articles, requests] = await Promise.all([dbGetAll(), dbGetContactRequests()]);
+      // ── VIEWS ─────────────────────────────────────────────────
+      function showView(name) {
+        ["dashboard", "write", "manage", "requests", "kiriman"].forEach((v) => {
+          document.getElementById("view-" + v).style.display =
+            v === name ? "block" : "none";
+          document
+            .getElementById("btn-" + v)
+            .classList.toggle("active", v === name);
+        });
+        if (name === "dashboard") renderDashboard();
+        if (name === "manage") renderManage();
+        if (name === "requests") renderRequests();
+        if (name === "kiriman") renderKiriman();
+        if (name === "write" && !document.getElementById("editingId").value)
+          clearForm();
+      }
 
-      const cats        = [...new Set(articles.map(a => a.category))].length;
-      const totalViews  = articles.reduce((s, a) => s + (a.views || 0), 0);
-      const pendingReqs = requests.filter(r => r.status === 'baru').length;
+      // ── PENDING BADGE (sidebar) ───────────────────────────────
+      async function refreshPendingBadge() {
+        const [reqs, subs] = await Promise.all([
+          dbGetContactRequests(),
+          dbGetPendingSubmissions(),
+        ]);
 
-      document.getElementById('statsRow').innerHTML = `
+        // Contact requests badge
+        const reqCount = reqs.filter((r) => r.status === "baru").length;
+        const badge = document.getElementById("pendingBadge");
+        if (reqCount > 0) {
+          badge.textContent = reqCount > 99 ? "99+" : reqCount;
+          badge.style.display = "inline-flex";
+        } else {
+          badge.style.display = "none";
+        }
+
+        // Submissions badge
+        const subCount = subs.length;
+        const kirimBadge = document.getElementById("kirimBadge");
+        if (subCount > 0) {
+          kirimBadge.textContent = subCount > 99 ? "99+" : subCount;
+          kirimBadge.style.display = "inline-flex";
+        } else {
+          kirimBadge.style.display = "none";
+        }
+      }
+
+      // ── DASHBOARD ─────────────────────────────────────────────
+      async function renderDashboard() {
+        document.getElementById("statsRow").innerHTML =
+          '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+
+        const [articles, requests] = await Promise.all([
+          dbGetAll(),
+          dbGetContactRequests(),
+        ]);
+
+        const cats = [...new Set(articles.map((a) => a.category))].length;
+        const totalViews = articles.reduce((s, a) => s + (a.views || 0), 0);
+        const pendingReqs = requests.filter((r) => r.status === "baru").length;
+
+        document.getElementById("statsRow").innerHTML = `
         <div class="stat-card"><div class="sc-num">${articles.length}</div><div class="sc-label">Total Artikel</div></div>
         <div class="stat-card"><div class="sc-num">${cats}</div><div class="sc-label">Kategori Aktif</div></div>
         <div class="stat-card"><div class="sc-num">${totalViews.toLocaleString()}</div><div class="sc-label">Total Dilihat</div></div>
-        <div class="stat-card" style="border-color:${pendingReqs > 0 ? 'rgba(196,68,68,.4)' : 'var(--border)'};">
-          <div class="sc-num" style="color:${pendingReqs > 0 ? '#C44444' : 'var(--text)'};">${pendingReqs}</div>
+        <div class="stat-card" style="border-color:${pendingReqs > 0 ? "rgba(196,68,68,.4)" : "var(--border)"};">
+          <div class="sc-num" style="color:${pendingReqs > 0 ? "#C44444" : "var(--text)"};">${pendingReqs}</div>
           <div class="sc-label">Permintaan Baru</div>
         </div>
       `;
 
-      // Recent articles
-      const recent = articles.slice(0, 5);
-      document.getElementById('recentList').innerHTML = recent.map(a => `
+        // Recent articles
+        const recent = articles.slice(0, 5);
+        document.getElementById("recentList").innerHTML = recent
+          .map(
+            (a) => `
         <div class="recent-item">
           <div class="ri-left">
             <span class="ri-tag ${catClass(a.category)}">${a.category}</span>
@@ -697,22 +1053,33 @@ Gunakan format:
             <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎</button>
           </div>
         </div>
-      `).join('');
+      `,
+          )
+          .join("");
 
-      // Recent requests preview (latest 5)
-      const recentReqs = requests.slice(0, 5);
-      if (recentReqs.length === 0) {
-        document.getElementById('dashReqList').innerHTML =
-          '<div style="padding:1rem 1.5rem;font-size:13px;color:var(--text-muted);">Belum ada permintaan masuk.</div>';
-      } else {
-        document.getElementById('dashReqList').innerHTML = recentReqs.map(r => {
-          const statusCls = { baru:'req-status-baru', dibaca:'req-status-dibaca', selesai:'req-status-selesai' }[r.status] || 'req-status-baru';
-          const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
-          return `
+        // Recent requests preview (latest 5)
+        const recentReqs = requests.slice(0, 5);
+        if (recentReqs.length === 0) {
+          document.getElementById("dashReqList").innerHTML =
+            '<div style="padding:1rem 1.5rem;font-size:13px;color:var(--text-muted);">Belum ada permintaan masuk.</div>';
+        } else {
+          document.getElementById("dashReqList").innerHTML = recentReqs
+            .map((r) => {
+              const statusCls =
+                {
+                  baru: "req-status-baru",
+                  dibaca: "req-status-dibaca",
+                  selesai: "req-status-selesai",
+                }[r.status] || "req-status-baru";
+              const statusLabel =
+                { baru: "Baru", dibaca: "Dibaca", selesai: "Selesai" }[
+                  r.status
+                ] || "Baru";
+              return `
             <div class="recent-item">
               <div class="ri-left">
                 <span class="${statusCls}">${statusLabel}</span>
-                <span class="ri-title">${r.name} — <span style="font-weight:400;color:var(--text-muted);">${r.subject || 'Tanpa keperluan'}</span></span>
+                <span class="ri-title">${r.name} — <span style="font-weight:400;color:var(--text-muted);">${r.subject || "Tanpa keperluan"}</span></span>
               </div>
               <div class="ri-right">
                 <span class="ri-author" style="font-size:12px;">${r.email}</span>
@@ -720,56 +1087,73 @@ Gunakan format:
                 <button class="btn-icon" onclick="openReqDetail('${r.id}')">👁 Lihat</button>
               </div>
             </div>`;
-        }).join('');
+            })
+            .join("");
+        }
       }
-    }
 
-    // ── MANAGE ARTICLES ───────────────────────────────────────
-    async function renderManage() {
-      const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
-      const cat = document.getElementById('manageCat').value;
+      // ── MANAGE ARTICLES ───────────────────────────────────────
+      async function renderManage() {
+        const q = (
+          document.getElementById("manageSearch").value || ""
+        ).toLowerCase();
+        const cat = document.getElementById("manageCat").value;
 
-      document.getElementById('manageBody').innerHTML =
-        '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+        document.getElementById("manageBody").innerHTML =
+          '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
 
-      const all = await dbGetAll();
-      const articles = all
-        .filter(a => (!cat || a.category === cat))
-        .filter(a => !q || a.title.toLowerCase().includes(q) || a.author.toLowerCase().includes(q));
+        const all = await dbGetAll();
+        const articles = all
+          .filter((a) => !cat || a.category === cat)
+          .filter(
+            (a) =>
+              !q ||
+              a.title.toLowerCase().includes(q) ||
+              a.author.toLowerCase().includes(q),
+          );
 
-      document.getElementById('manageCount').textContent = articles.length + ' artikel ditampilkan';
+        document.getElementById("manageCount").textContent =
+          articles.length + " artikel ditampilkan";
 
-      document.getElementById('manageBody').innerHTML = articles.map(a => `
+        document.getElementById("manageBody").innerHTML = articles
+          .map(
+            (a) => `
         <tr>
           <td class="td-title" title="${a.title}">${a.title}</td>
           <td><span class="article-tag-pill ${catClass(a.category)}">${a.category}</span></td>
           <td>${a.author}</td>
           <td>${a.date_label || formatDateLabel(a.date)}</td>
-          <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : '—'}</td>
+          <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : "—"}</td>
           <td class="td-actions">
             <button class="btn-icon" onclick="editArticle(${a.id})">✎ Edit</button>
-            <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g,"\\'")}')">✕ Hapus</button>
+            <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g, "\\'")}')">✕ Hapus</button>
           </td>
         </tr>
-      `).join('');
-    }
+      `,
+          )
+          .join("");
+      }
 
-    // ── REQUESTS VIEW ─────────────────────────────────────────
-    async function renderRequests() {
-      const q          = (document.getElementById('reqSearch').value || '').toLowerCase();
-      const statusF    = document.getElementById('reqStatusFilter').value;
-      const subjectF   = document.getElementById('reqSubjectFilter').value;
-      const tbody      = document.getElementById('requestsBody');
+      // ── REQUESTS VIEW ─────────────────────────────────────────
+      async function renderRequests() {
+        const q = (
+          document.getElementById("reqSearch").value || ""
+        ).toLowerCase();
+        const statusF = document.getElementById("reqStatusFilter").value;
+        const subjectF = document.getElementById("reqSubjectFilter").value;
+        const tbody = document.getElementById("requestsBody");
 
-      tbody.innerHTML =
-        '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+        tbody.innerHTML =
+          '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
 
-      let all = await dbGetContactRequests();
+        let all = await dbGetContactRequests();
 
-      // Stats
-      const counts = { baru: 0, dibaca: 0, selesai: 0 };
-      all.forEach(r => { counts[r.status] = (counts[r.status] || 0) + 1; });
-      document.getElementById('reqStatsRow').innerHTML = `
+        // Stats
+        const counts = { baru: 0, dibaca: 0, selesai: 0 };
+        all.forEach((r) => {
+          counts[r.status] = (counts[r.status] || 0) + 1;
+        });
+        document.getElementById("reqStatsRow").innerHTML = `
         <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
           <div class="sc-num" style="color:#C44444;">${counts.baru}</div>
           <div class="sc-label">🔴 Baru</div>
@@ -788,34 +1172,48 @@ Gunakan format:
         </div>
       `;
 
-      // Filter
-      let filtered = all
-        .filter(r => !statusF  || r.status  === statusF)
-        .filter(r => !subjectF || r.subject === subjectF)
-        .filter(r => !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q) || (r.message || '').toLowerCase().includes(q));
+        // Filter
+        let filtered = all
+          .filter((r) => !statusF || r.status === statusF)
+          .filter((r) => !subjectF || r.subject === subjectF)
+          .filter(
+            (r) =>
+              !q ||
+              r.name.toLowerCase().includes(q) ||
+              r.email.toLowerCase().includes(q) ||
+              (r.message || "").toLowerCase().includes(q),
+          );
 
-      document.getElementById('requestsCount').textContent = filtered.length + ' permintaan ditampilkan';
+        document.getElementById("requestsCount").textContent =
+          filtered.length + " permintaan ditampilkan";
 
-      if (filtered.length === 0) {
-        tbody.innerHTML =
-          '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada permintaan ditemukan.</td></tr>';
-        return;
-      }
+        if (filtered.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada permintaan ditemukan.</td></tr>';
+          return;
+        }
 
-      tbody.innerHTML = filtered.map(r => {
-        const statusCls = {
-          baru:    'req-status-baru',
-          dibaca:  'req-status-dibaca',
-          selesai: 'req-status-selesai',
-        }[r.status] || 'req-status-baru';
-        const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
-        const msgPreview  = (r.message || '').slice(0, 60) + ((r.message || '').length > 60 ? '…' : '');
+        tbody.innerHTML = filtered
+          .map((r) => {
+            const statusCls =
+              {
+                baru: "req-status-baru",
+                dibaca: "req-status-dibaca",
+                selesai: "req-status-selesai",
+              }[r.status] || "req-status-baru";
+            const statusLabel =
+              { baru: "Baru", dibaca: "Dibaca", selesai: "Selesai" }[
+                r.status
+              ] || "Baru";
+            const msgPreview =
+              (r.message || "").slice(0, 60) +
+              ((r.message || "").length > 60 ? "…" : "");
 
-        return `
-          <tr style="${r.status === 'baru' ? 'background:rgba(196,68,68,.02);' : ''}">
+            return `
+          <tr style="${r.status === "baru" ? "background:rgba(196,68,68,.02);" : ""}">
             <td style="font-weight:600;">${r.name}</td>
             <td style="font-size:12px;color:var(--text-muted);">${r.email}</td>
-            <td><span class="req-subject">${r.subject || '—'}</span></td>
+            <td><span class="req-subject">${r.subject || "—"}</span></td>
             <td class="req-message-cell" onclick="openReqDetail('${r.id}')" title="Klik untuk lihat pesan lengkap">
               ${msgPreview || '<span style="color:var(--text-muted);font-style:italic;">Tidak ada pesan</span>'}
             </td>
@@ -823,330 +1221,398 @@ Gunakan format:
             <td><span class="${statusCls}">${statusLabel}</span></td>
             <td class="td-actions">
               <button class="btn-icon" onclick="openReqDetail('${r.id}')" title="Lihat detail">👁</button>
-              ${r.status === 'baru'    ? `<button class="btn-icon" onclick="markRequest('${r.id}','dibaca')">Baca</button>` : ''}
-              ${r.status !== 'selesai' ? `<button class="btn-icon" onclick="markRequest('${r.id}','selesai')">✓ Selesai</button>` : ''}
+              ${r.status === "baru" ? `<button class="btn-icon" onclick="markRequest('${r.id}','dibaca')">Baca</button>` : ""}
+              ${r.status !== "selesai" ? `<button class="btn-icon" onclick="markRequest('${r.id}','selesai')">✓ Selesai</button>` : ""}
               <button class="btn-icon danger" onclick="askDeleteRequest('${r.id}')">✕</button>
             </td>
           </tr>`;
-      }).join('');
+          })
+          .join("");
 
-      // Refresh sidebar badge
-      refreshPendingBadge();
-    }
-
-    async function markRequest(id, status) {
-      await dbUpdateContactRequest(id, { status });
-      showToast('✓ Status diperbarui: ' + { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[status]);
-      renderRequests();
-    }
-
-    async function markAllRead() {
-      const all     = await dbGetContactRequests();
-      const newOnes = all.filter(r => r.status === 'baru');
-      await Promise.all(newOnes.map(r => dbUpdateContactRequest(r.id, { status: 'dibaca' })));
-      showToast(`✓ ${newOnes.length} permintaan ditandai dibaca.`);
-      renderRequests();
-    }
-
-    // ── REQUEST DETAIL MODAL ──────────────────────────────────
-    let _allReqCache = [];
-
-    async function openReqDetail(id) {
-      _allReqCache = await dbGetContactRequests();
-      const r = _allReqCache.find(x => x.id === id);
-      if (!r) return;
-
-      document.getElementById('rdName').textContent    = r.name;
-      document.getElementById('rdEmail').textContent   = r.email;
-      document.getElementById('rdSubject').textContent = r.subject || '—';
-      document.getElementById('rdDate').textContent    = fmtReqDate(r.created_at);
-      document.getElementById('rdMessage').innerHTML = linkify(r.message || '(Tidak ada pesan)');
-
-      const statusLabel = { baru:'🔴 Baru', dibaca:'🟣 Dibaca', selesai:'🟢 Selesai' }[r.status] || '—';
-      document.getElementById('rdStatus').textContent = statusLabel;
-
-      const doneBtn = document.getElementById('rdMarkDone');
-      if (r.status !== 'selesai') {
-        doneBtn.style.display = 'inline-flex';
-        doneBtn.onclick = async () => {
-          await markRequest(r.id, 'selesai');
-          closeReqDetail();
-        };
-      } else {
-        doneBtn.style.display = 'none';
+        // Refresh sidebar badge
+        refreshPendingBadge();
       }
 
-      document.getElementById('rdDelete').onclick = async () => {
-        await askDeleteRequest(r.id);
-        closeReqDetail();
-      };
-
-      document.getElementById('reqDetailModal').style.display = 'flex';
-
-      // Auto-mark as read when opened
-      if (r.status === 'baru') {
-        await dbUpdateContactRequest(r.id, { status: 'dibaca' });
+      async function markRequest(id, status) {
+        await dbUpdateContactRequest(id, { status });
+        showToast(
+          "✓ Status diperbarui: " +
+            { baru: "Baru", dibaca: "Dibaca", selesai: "Selesai" }[status],
+        );
         renderRequests();
       }
-    }
 
-    function closeReqDetail() {
-      document.getElementById('reqDetailModal').style.display = 'none';
-    }
-
-    // ── DELETE REQUEST ────────────────────────────────────────
-    let pendingDeleteReqId = null;
-
-    function askDeleteRequest(id) {
-      pendingDeleteReqId = id;
-      // Re-use the same modal with different title
-      document.getElementById('modalArticleTitle').textContent = 'Permintaan ini akan dihapus permanen.';
-      document.getElementById('modalOverlay').style.display = 'flex';
-      // Override confirm button to delete request instead of article
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDeleteRequest;
-    }
-
-    async function confirmDeleteRequest() {
-      if (!pendingDeleteReqId) return;
-      await dbDeleteContactRequest(pendingDeleteReqId);
-      showToast('✓ Permintaan dihapus.');
-      pendingDeleteReqId = null;
-      document.getElementById('modalOverlay').style.display = 'none';
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete; // restore
-      renderRequests();
-    }
-
-    // ── WRITE / EDIT ──────────────────────────────────────────
-    function setTodayDate() {
-      document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
-    }
-
-    function clearForm() {
-      ['fTitle','fSubtitle','fAuthor','fAuthorRole','fBody'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
-      document.getElementById('fCategory').value   = '';
-      document.getElementById('fReadTime').value   = '5';
-      document.getElementById('fFeatured').checked = false;
-      document.getElementById('featuredLabel').textContent = 'Tidak';
-      document.getElementById('editingId').value   = '';
-      document.getElementById('writeTitle').textContent   = 'Tulis Artikel Baru';
-      document.getElementById('publishLabel').textContent = 'Terbitkan Artikel';
-      setTodayDate();
-      updateCounts();
-      document.getElementById('previewPanel').style.display = 'none';
-      document.getElementById('editorPanel').style.display  = 'block';
-    }
-
-    async function editArticle(id) {
-      const a = await dbGetById(id);
-      if (!a) return;
-      showView('write');
-      document.getElementById('fTitle').value      = a.title;
-      document.getElementById('fSubtitle').value   = a.subtitle || '';
-      document.getElementById('fCategory').value   = a.category;
-      document.getElementById('fReadTime').value   = a.read_time || 5;
-      document.getElementById('fAuthor').value     = a.author;
-      document.getElementById('fAuthorRole').value = a.author_role || '';
-      document.getElementById('fDate').value       = a.date || '';
-      document.getElementById('fFeatured').checked = !!a.featured;
-      document.getElementById('featuredLabel').textContent = a.featured ? 'Ya' : 'Tidak';
-      document.getElementById('fBody').value       = a.body || '';
-      document.getElementById('editingId').value   = a.id;
-      document.getElementById('writeTitle').textContent   = 'Edit Artikel';
-      document.getElementById('publishLabel').textContent = 'Simpan Perubahan';
-      updateCounts();
-      document.getElementById('previewPanel').style.display = 'none';
-      document.getElementById('editorPanel').style.display  = 'block';
-    }
-
-    function cancelEdit() {
-      clearForm();
-      showView('manage');
-    }
-
-    async function publishArticle() {
-      const title       = document.getElementById('fTitle').value.trim();
-      const subtitle    = document.getElementById('fSubtitle').value.trim();
-      const category    = document.getElementById('fCategory').value;
-      const author      = document.getElementById('fAuthor').value.trim();
-      const body        = document.getElementById('fBody').value.trim();
-      const read_time   = parseInt(document.getElementById('fReadTime').value) || 5;
-      const author_role = document.getElementById('fAuthorRole').value.trim();
-      const date        = document.getElementById('fDate').value;
-      const featured    = document.getElementById('fFeatured').checked;
-      const editingId   = document.getElementById('editingId').value;
-      const btn         = document.getElementById('publishBtn');
-
-      if (!title || !subtitle || !category || !author || !body) {
-        showToast('⚠ Lengkapi semua kolom wajib.', 'error');
-        return;
+      async function markAllRead() {
+        const all = await dbGetContactRequests();
+        const newOnes = all.filter((r) => r.status === "baru");
+        await Promise.all(
+          newOnes.map((r) =>
+            dbUpdateContactRequest(r.id, { status: "dibaca" }),
+          ),
+        );
+        showToast(`✓ ${newOnes.length} permintaan ditandai dibaca.`);
+        renderRequests();
       }
 
-      const date_label = date
-        ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
-        : formatDateLabel(new Date().toISOString());
+      // ── REQUEST DETAIL MODAL ──────────────────────────────────
+      let _allReqCache = [];
 
-      const payload = {
-        title, subtitle, category, author,
-        author_initials: toInitials(author),
-        author_role,
-        date: date || new Date().toISOString().split('T')[0],
-        date_label,
-        read_time,
-        featured,
-        body
-      };
+      async function openReqDetail(id) {
+        _allReqCache = await dbGetContactRequests();
+        const r = _allReqCache.find((x) => x.id === id);
+        if (!r) return;
 
-      btn.textContent = 'Menyimpan...';
-      btn.disabled = true;
+        document.getElementById("rdName").textContent = r.name;
+        document.getElementById("rdEmail").textContent = r.email;
+        document.getElementById("rdSubject").textContent = r.subject || "—";
+        document.getElementById("rdDate").textContent = fmtReqDate(
+          r.created_at,
+        );
+        document.getElementById("rdMessage").innerHTML = linkify(
+          r.message || "(Tidak ada pesan)",
+        );
 
-      if (editingId) {
-        await dbUpdate(editingId, payload);
-        showToast('✓ Artikel berhasil diperbarui!');
-      } else {
-        await dbAdd(payload);
-        showToast('✓ Artikel berhasil diterbitkan!');
+        const statusLabel =
+          { baru: "🔴 Baru", dibaca: "🟣 Dibaca", selesai: "🟢 Selesai" }[
+            r.status
+          ] || "—";
+        document.getElementById("rdStatus").textContent = statusLabel;
+
+        const doneBtn = document.getElementById("rdMarkDone");
+        if (r.status !== "selesai") {
+          doneBtn.style.display = "inline-flex";
+          doneBtn.onclick = async () => {
+            await markRequest(r.id, "selesai");
+            closeReqDetail();
+          };
+        } else {
+          doneBtn.style.display = "none";
+        }
+
+        document.getElementById("rdDelete").onclick = async () => {
+          await askDeleteRequest(r.id);
+          closeReqDetail();
+        };
+
+        document.getElementById("reqDetailModal").style.display = "flex";
+
+        // Auto-mark as read when opened
+        if (r.status === "baru") {
+          await dbUpdateContactRequest(r.id, { status: "dibaca" });
+          renderRequests();
+        }
       }
 
-      btn.textContent = 'Terbitkan';
-      btn.disabled = false;
-      clearForm();
-      showView('manage');
-    }
-
-    // ── PREVIEW ───────────────────────────────────────────────
-    function togglePreview() {
-      const ep = document.getElementById('editorPanel');
-      const pp = document.getElementById('previewPanel');
-      const showing = pp.style.display !== 'none';
-      if (showing) {
-        pp.style.display = 'none'; ep.style.display = 'block';
-        document.getElementById('previewBtn').textContent  = 'Pratinjau';
-        document.getElementById('previewBtn2').textContent = 'Pratinjau';
-      } else {
-        buildPreview();
-        ep.style.display = 'none'; pp.style.display = 'block';
-        document.getElementById('previewBtn').textContent  = '← Editor';
-        document.getElementById('previewBtn2').textContent = '← Editor';
+      function closeReqDetail() {
+        document.getElementById("reqDetailModal").style.display = "none";
       }
-    }
 
-    function buildPreview() {
-      const title    = document.getElementById('fTitle').value    || '(Judul kosong)';
-      const subtitle = document.getElementById('fSubtitle').value || '';
-      const category = document.getElementById('fCategory').value || '';
-      const author   = document.getElementById('fAuthor').value   || '';
-      const body     = document.getElementById('fBody').value     || '';
-      const date     = document.getElementById('fDate').value;
-      const date_label = date
-        ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
-        : 'Hari ini';
+      // ── DELETE REQUEST ────────────────────────────────────────
+      let pendingDeleteReqId = null;
 
-      document.getElementById('previewContent').innerHTML = `
-        <div class="${catClass(category)}" style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-bottom:1rem;">${category || 'Kategori'}</div>
+      function askDeleteRequest(id) {
+        pendingDeleteReqId = id;
+        // Re-use the same modal with different title
+        document.getElementById("modalArticleTitle").textContent =
+          "Permintaan ini akan dihapus permanen.";
+        document.getElementById("modalOverlay").style.display = "flex";
+        // Override confirm button to delete request instead of article
+        document.querySelector("#modalOverlay .btn-delete").onclick =
+          confirmDeleteRequest;
+      }
+
+      async function confirmDeleteRequest() {
+        if (!pendingDeleteReqId) return;
+        await dbDeleteContactRequest(pendingDeleteReqId);
+        showToast("✓ Permintaan dihapus.");
+        pendingDeleteReqId = null;
+        document.getElementById("modalOverlay").style.display = "none";
+        document.querySelector("#modalOverlay .btn-delete").onclick =
+          confirmDelete; // restore
+        renderRequests();
+      }
+
+      // ── WRITE / EDIT ──────────────────────────────────────────
+      function setTodayDate() {
+        document.getElementById("fDate").value = new Date()
+          .toISOString()
+          .split("T")[0];
+      }
+
+      function clearForm() {
+        ["fTitle", "fSubtitle", "fAuthor", "fAuthorRole", "fBody"].forEach(
+          (id) => {
+            document.getElementById(id).value = "";
+          },
+        );
+        document.getElementById("fCategory").value = "";
+        document.getElementById("fReadTime").value = "5";
+        document.getElementById("fFeatured").checked = false;
+        document.getElementById("featuredLabel").textContent = "Tidak";
+        document.getElementById("editingId").value = "";
+        document.getElementById("writeTitle").textContent =
+          "Tulis Artikel Baru";
+        document.getElementById("publishLabel").textContent =
+          "Terbitkan Artikel";
+        setTodayDate();
+        updateCounts();
+        document.getElementById("previewPanel").style.display = "none";
+        document.getElementById("editorPanel").style.display = "block";
+      }
+
+      async function editArticle(id) {
+        const a = await dbGetById(id);
+        if (!a) return;
+        showView("write");
+        document.getElementById("fTitle").value = a.title;
+        document.getElementById("fSubtitle").value = a.subtitle || "";
+        document.getElementById("fCategory").value = a.category;
+        document.getElementById("fReadTime").value = a.read_time || 5;
+        document.getElementById("fAuthor").value = a.author;
+        document.getElementById("fAuthorRole").value = a.author_role || "";
+        document.getElementById("fDate").value = a.date || "";
+        document.getElementById("fFeatured").checked = !!a.featured;
+        document.getElementById("featuredLabel").textContent = a.featured
+          ? "Ya"
+          : "Tidak";
+        document.getElementById("fBody").value = a.body || "";
+        document.getElementById("editingId").value = a.id;
+        document.getElementById("writeTitle").textContent = "Edit Artikel";
+        document.getElementById("publishLabel").textContent =
+          "Simpan Perubahan";
+        updateCounts();
+        document.getElementById("previewPanel").style.display = "none";
+        document.getElementById("editorPanel").style.display = "block";
+      }
+
+      function cancelEdit() {
+        clearForm();
+        showView("manage");
+      }
+
+      async function publishArticle() {
+        const title = document.getElementById("fTitle").value.trim();
+        const subtitle = document.getElementById("fSubtitle").value.trim();
+        const category = document.getElementById("fCategory").value;
+        const author = document.getElementById("fAuthor").value.trim();
+        const body = document.getElementById("fBody").value.trim();
+        const read_time =
+          parseInt(document.getElementById("fReadTime").value) || 5;
+        const author_role = document.getElementById("fAuthorRole").value.trim();
+        const date = document.getElementById("fDate").value;
+        const featured = document.getElementById("fFeatured").checked;
+        const editingId = document.getElementById("editingId").value;
+        const btn = document.getElementById("publishBtn");
+
+        if (!title || !subtitle || !category || !author || !body) {
+          showToast("⚠ Lengkapi semua kolom wajib.", "error");
+          return;
+        }
+
+        const date_label = date
+          ? new Date(date).toLocaleDateString("id-ID", {
+              month: "long",
+              year: "numeric",
+            })
+          : formatDateLabel(new Date().toISOString());
+
+        const payload = {
+          title,
+          subtitle,
+          category,
+          author,
+          author_initials: toInitials(author),
+          author_role,
+          date: date || new Date().toISOString().split("T")[0],
+          date_label,
+          read_time,
+          featured,
+          body,
+        };
+
+        btn.textContent = "Menyimpan...";
+        btn.disabled = true;
+
+        if (editingId) {
+          await dbUpdate(editingId, payload);
+          showToast("✓ Artikel berhasil diperbarui!");
+        } else {
+          await dbAdd(payload);
+          showToast("✓ Artikel berhasil diterbitkan!");
+        }
+
+        btn.textContent = "Terbitkan";
+        btn.disabled = false;
+        clearForm();
+        showView("manage");
+      }
+
+      // ── PREVIEW ───────────────────────────────────────────────
+      function togglePreview() {
+        const ep = document.getElementById("editorPanel");
+        const pp = document.getElementById("previewPanel");
+        const showing = pp.style.display !== "none";
+        if (showing) {
+          pp.style.display = "none";
+          ep.style.display = "block";
+          document.getElementById("previewBtn").textContent = "Pratinjau";
+          document.getElementById("previewBtn2").textContent = "Pratinjau";
+        } else {
+          buildPreview();
+          ep.style.display = "none";
+          pp.style.display = "block";
+          document.getElementById("previewBtn").textContent = "← Editor";
+          document.getElementById("previewBtn2").textContent = "← Editor";
+        }
+      }
+
+      function buildPreview() {
+        const title =
+          document.getElementById("fTitle").value || "(Judul kosong)";
+        const subtitle = document.getElementById("fSubtitle").value || "";
+        const category = document.getElementById("fCategory").value || "";
+        const author = document.getElementById("fAuthor").value || "";
+        const body = document.getElementById("fBody").value || "";
+        const date = document.getElementById("fDate").value;
+        const date_label = date
+          ? new Date(date).toLocaleDateString("id-ID", {
+              month: "long",
+              year: "numeric",
+            })
+          : "Hari ini";
+
+        document.getElementById("previewContent").innerHTML = `
+        <div class="${catClass(category)}" style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-bottom:1rem;">${category || "Kategori"}</div>
         <h1 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#1A1816;margin-bottom:.75rem;line-height:1.15;">${title}</h1>
         <p style="font-size:1.05rem;color:#6B6460;margin-bottom:1.25rem;">${subtitle}</p>
         <div style="display:flex;gap:.5rem;align-items:center;font-size:13px;color:#6B6460;padding:1rem 0;border-top:1px solid rgba(26,24,22,.1);border-bottom:1px solid rgba(26,24,22,.1);margin-bottom:2rem;">
-          <strong style="color:#1A1816;">${author || 'Penulis'}</strong> · <span>${date_label}</span>
+          <strong style="color:#1A1816;">${author || "Penulis"}</strong> · <span>${date_label}</span>
         </div>
         <div class="article-body">${bodyToHtml(body)}</div>
       `;
-    }
+      }
 
-    // ── DELETE ARTICLE ────────────────────────────────────────
-    let pendingDeleteId = null;
+      // ── DELETE ARTICLE ────────────────────────────────────────
+      let pendingDeleteId = null;
 
-    function askDelete(id, title) {
-      pendingDeleteId = id;
-      document.getElementById('modalArticleTitle').textContent = '"' + title + '"';
-      document.getElementById('modalOverlay').style.display = 'flex';
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
-    }
+      function askDelete(id, title) {
+        pendingDeleteId = id;
+        document.getElementById("modalArticleTitle").textContent =
+          '"' + title + '"';
+        document.getElementById("modalOverlay").style.display = "flex";
+        document.querySelector("#modalOverlay .btn-delete").onclick =
+          confirmDelete;
+      }
 
-    function closeModal() {
-      pendingDeleteId = null;
-      pendingDeleteReqId = null;
-      document.getElementById('modalOverlay').style.display = 'none';
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
-    }
+      function closeModal() {
+        pendingDeleteId = null;
+        pendingDeleteReqId = null;
+        document.getElementById("modalOverlay").style.display = "none";
+        document.querySelector("#modalOverlay .btn-delete").onclick =
+          confirmDelete;
+      }
 
-    async function confirmDelete() {
-      if (!pendingDeleteId) return;
-      await dbDelete(pendingDeleteId);
-      showToast('✓ Artikel dihapus.');
-      closeModal();
-      renderManage();
-    }
+      async function confirmDelete() {
+        if (!pendingDeleteId) return;
+        await dbDelete(pendingDeleteId);
+        showToast("✓ Artikel dihapus.");
+        closeModal();
+        renderManage();
+      }
 
-    // ── HELPERS ───────────────────────────────────────────────
-    function insertMd(before, after = '') {
-      const ta = document.getElementById('fBody');
-      const s = ta.selectionStart, e = ta.selectionEnd;
-      const selected = ta.value.slice(s, e);
-      const replacement = before + selected + after;
-      ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
-      ta.focus();
-      ta.selectionStart = ta.selectionEnd = s + replacement.length;
-    }
+      // ── HELPERS ───────────────────────────────────────────────
+      function insertMd(before, after = "") {
+        const ta = document.getElementById("fBody");
+        const s = ta.selectionStart,
+          e = ta.selectionEnd;
+        const selected = ta.value.slice(s, e);
+        const replacement = before + selected + after;
+        ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = s + replacement.length;
+      }
 
-    function updateCounts() {
-      document.getElementById('titleCount').textContent =
-        document.getElementById('fTitle').value.length + ' / 120';
-      document.getElementById('subtitleCount').textContent =
-        document.getElementById('fSubtitle').value.length + ' / 220';
-    }
+      function updateCounts() {
+        document.getElementById("titleCount").textContent =
+          document.getElementById("fTitle").value.length + " / 120";
+        document.getElementById("subtitleCount").textContent =
+          document.getElementById("fSubtitle").value.length + " / 220";
+      }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('fTitle').addEventListener('input', updateCounts);
-      document.getElementById('fSubtitle').addEventListener('input', updateCounts);
-      document.getElementById('fFeatured').addEventListener('change', function () {
-        document.getElementById('featuredLabel').textContent = this.checked ? 'Ya' : 'Tidak';
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("fTitle")
+          .addEventListener("input", updateCounts);
+        document
+          .getElementById("fSubtitle")
+          .addEventListener("input", updateCounts);
+        document
+          .getElementById("fFeatured")
+          .addEventListener("change", function () {
+            document.getElementById("featuredLabel").textContent = this.checked
+              ? "Ya"
+              : "Tidak";
+          });
       });
-    });
 
-    /**
-     * linkify — escapes HTML, then wraps URLs in clickable <a> tags.
-     * Handles https://, http://, and bare www. addresses.
-     */
-    function linkify(text) {
-      const escaped = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-      const urlPattern = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
-      return escaped.replace(urlPattern, url => {
-        const href = url.startsWith('http') ? url : 'https://' + url;
-        return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" '
-             + 'style="color:var(--accent);text-decoration:underline;word-break:break-all;">'
-             + url + '</a>';
-      });
-    }
+      /**
+       * linkify — escapes HTML, then wraps URLs in clickable <a> tags.
+       * Handles https://, http://, and bare www. addresses.
+       */
+      function linkify(text) {
+        const escaped = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+        const urlPattern = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+        return escaped.replace(urlPattern, (url) => {
+          const href = url.startsWith("http") ? url : "https://" + url;
+          return (
+            '<a href="' +
+            href +
+            '" target="_blank" rel="noopener noreferrer" ' +
+            'style="color:var(--accent);text-decoration:underline;word-break:break-all;">' +
+            url +
+            "</a>"
+          );
+        });
+      }
 
-        function fmtReqDate(iso) {
-      if (!iso) return '—';
-      return new Date(iso).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-    }
+      function fmtReqDate(iso) {
+        if (!iso) return "—";
+        return new Date(iso).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
 
-<<<<<<< HEAD
+      // ── KIRIMAN (Article Submissions) ─────────────────────────
+      let _pendingSubs = [];
+      let _diffCurrentId = null;
 
-    // ── KIRIMAN (Article Submissions) ─────────────────────────
-    let _pendingSubs = [];
-    let _diffCurrentId = null;
+      async function renderKiriman() {
+        const q = (
+          document.getElementById("kirimSearch").value || ""
+        ).toLowerCase();
+        const filter = document.getElementById("kirimFilter").value;
+        const tbody = document.getElementById("kirimBody");
+        tbody.innerHTML =
+          '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
 
-    async function renderKiriman() {
-      const q      = (document.getElementById('kirimSearch').value || '').toLowerCase();
-      const filter = document.getElementById('kirimFilter').value;
-      const tbody  = document.getElementById('kirimBody');
-      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+        _pendingSubs = await dbGetPendingSubmissions();
 
-      _pendingSubs = await dbGetPendingSubmissions();
-
-      // Stats
-      const newCount  = _pendingSubs.filter(s => s.status === 'pending').length;
-      const editCount = _pendingSubs.filter(s => s.status === 'pending_edit').length;
-      document.getElementById('kirimStats').innerHTML = `
+        // Stats
+        const newCount = _pendingSubs.filter(
+          (s) => s.status === "pending",
+        ).length;
+        const editCount = _pendingSubs.filter(
+          (s) => s.status === "pending_edit",
+        ).length;
+        document.getElementById("kirimStats").innerHTML = `
         <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
           <div class="sc-num" style="color:#0F6E56;">${newCount}</div>
           <div class="sc-label">✦ Artikel Baru</div>
@@ -1161,28 +1627,36 @@ Gunakan format:
         </div>
       `;
 
-      let list = _pendingSubs
-        .filter(s => !filter || s.status === filter)
-        .filter(s => !q || (s.title||'').toLowerCase().includes(q) || (s.author||'').toLowerCase().includes(q));
+        let list = _pendingSubs
+          .filter((s) => !filter || s.status === filter)
+          .filter(
+            (s) =>
+              !q ||
+              (s.title || "").toLowerCase().includes(q) ||
+              (s.author || "").toLowerCase().includes(q),
+          );
 
-      document.getElementById('kirimCount').textContent = list.length + ' kiriman';
+        document.getElementById("kirimCount").textContent =
+          list.length + " kiriman";
 
-      if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada kiriman pending.</td></tr>';
-        return;
-      }
+        if (list.length === 0) {
+          tbody.innerHTML =
+            '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada kiriman pending.</td></tr>';
+          return;
+        }
 
-      tbody.innerHTML = list.map(s => {
-        const isEdit = s.status === 'pending_edit';
-        const typeHtml = isEdit
-          ? '<span class="sub-type-edit">✎ Permintaan Edit</span>'
-          : '<span class="sub-type-new">✦ Artikel Baru</span>';
-        return `
+        tbody.innerHTML = list
+          .map((s) => {
+            const isEdit = s.status === "pending_edit";
+            const typeHtml = isEdit
+              ? '<span class="sub-type-edit">✎ Permintaan Edit</span>'
+              : '<span class="sub-type-new">✦ Artikel Baru</span>';
+            return `
           <tr>
-            <td class="td-title" title="${s.title||''}">${s.title || '(Tanpa judul)'}</td>
+            <td class="td-title" title="${s.title || ""}">${s.title || "(Tanpa judul)"}</td>
             <td>${typeHtml}</td>
-            <td>${s.author || '—'}</td>
-            <td><span class="article-tag-pill ${catClass(s.category)}">${s.category||'—'}</span></td>
+            <td>${s.author || "—"}</td>
+            <td><span class="article-tag-pill ${catClass(s.category)}">${s.category || "—"}</span></td>
             <td style="font-size:12px;color:var(--text-muted);">${fmtReqDate(s.created_at)}</td>
             <td class="td-actions">
               <button class="btn-icon" onclick="openDiffModal(${s.id})">👁 Review</button>
@@ -1190,139 +1664,154 @@ Gunakan format:
               <button class="btn-icon danger" onclick="quickReject(${s.id})">✕ Tolak</button>
             </td>
           </tr>`;
-      }).join('');
+          })
+          .join("");
 
-      refreshPendingBadge();
-    }
+        refreshPendingBadge();
+      }
 
-    async function openDiffModal(id) {
-      _diffCurrentId = id;
-      const sub = _pendingSubs.find(s => s.id === id);
-      if (!sub) return;
+      async function openDiffModal(id) {
+        _diffCurrentId = id;
+        const sub = _pendingSubs.find((s) => s.id === id);
+        if (!sub) return;
 
-      document.getElementById('diffTitle').textContent =
-        sub.status === 'pending_edit' ? 'Review Permintaan Edit' : 'Review Artikel Baru';
-      document.getElementById('diffMeta').textContent =
-        `${sub.author} · ${sub.category} · Dikirim ${fmtReqDate(sub.created_at)}`;
+        document.getElementById("diffTitle").textContent =
+          sub.status === "pending_edit"
+            ? "Review Permintaan Edit"
+            : "Review Artikel Baru";
+        document.getElementById("diffMeta").textContent =
+          `${sub.author} · ${sub.category} · Dikirim ${fmtReqDate(sub.created_at)}`;
 
-      let bodyHtml = '';
+        let bodyHtml = "";
 
-      if (sub.status === 'pending_edit' && sub.original_id) {
-        const orig = await dbGetById(sub.original_id);
-        bodyHtml = `
+        if (sub.status === "pending_edit" && sub.original_id) {
+          const orig = await dbGetById(sub.original_id);
+          bodyHtml = `
           <div class="diff-section">
             <h4>Judul</h4>
             <div class="diff-cols">
-              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.title||'—'}</div>
-              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.title||'—'}</div>
+              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.title || "—"}</div>
+              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.title || "—"}</div>
             </div>
           </div>
           <div class="diff-section">
             <h4>Ringkasan</h4>
             <div class="diff-cols">
-              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.subtitle||'—'}</div>
-              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.subtitle||'—'}</div>
+              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.subtitle || "—"}</div>
+              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.subtitle || "—"}</div>
             </div>
           </div>
           <div class="diff-section">
             <h4>Isi Artikel (100 karakter pertama)</h4>
             <div class="diff-cols">
-              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${(orig?.body||'—').slice(0,200)}…</div>
-              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${(sub.body||'—').slice(0,200)}…</div>
+              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${(orig?.body || "—").slice(0, 200)}…</div>
+              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${(sub.body || "—").slice(0, 200)}…</div>
             </div>
           </div>`;
-      } else {
-        // New article preview
-        bodyHtml = `
+        } else {
+          // New article preview
+          bodyHtml = `
           <div class="diff-section">
             <h4>Judul</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.title||'—'}</div>
+            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.title || "—"}</div>
           </div>
           <div class="diff-section">
             <h4>Ringkasan</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.subtitle||'—'}</div>
+            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.subtitle || "—"}</div>
           </div>
           <div class="diff-section">
             <h4>Kategori · Estimasi Baca</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Info</div>${sub.category||'—'} · ${sub.read_time||5} menit</div>
+            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Info</div>${sub.category || "—"} · ${sub.read_time || 5} menit</div>
           </div>
           <div class="diff-section">
             <h4>Isi Artikel</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;max-height:300px;overflow-y:auto;"><div class="diff-col-label">Konten</div><div style="white-space:pre-wrap;font-size:12px;">${(sub.body||'—')}</div></div>
+            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;max-height:300px;overflow-y:auto;"><div class="diff-col-label">Konten</div><div style="white-space:pre-wrap;font-size:12px;">${sub.body || "—"}</div></div>
           </div>`;
+        }
+
+        document.getElementById("diffBody").innerHTML = bodyHtml;
+        document.getElementById("rejectInputWrap").style.display = "none";
+        document.getElementById("diffConfirmReject").style.display = "none";
+        document.getElementById("diffRejectToggle").style.display =
+          "inline-flex";
+        document.getElementById("rejectReasonInput").value = "";
+        document.getElementById("diffModal").style.display = "flex";
       }
 
-      document.getElementById('diffBody').innerHTML = bodyHtml;
-      document.getElementById('rejectInputWrap').style.display   = 'none';
-      document.getElementById('diffConfirmReject').style.display = 'none';
-      document.getElementById('diffRejectToggle').style.display  = 'inline-flex';
-      document.getElementById('rejectReasonInput').value         = '';
-      document.getElementById('diffModal').style.display         = 'flex';
-    }
+      function closeDiff() {
+        document.getElementById("diffModal").style.display = "none";
+        _diffCurrentId = null;
+      }
 
-    function closeDiff() {
-      document.getElementById('diffModal').style.display = 'none';
-      _diffCurrentId = null;
-    }
+      function toggleRejectInput() {
+        const wrap = document.getElementById("rejectInputWrap");
+        const showing = wrap.style.display !== "none";
+        wrap.style.display = showing ? "none" : "flex";
+        document.getElementById("diffConfirmReject").style.display = showing
+          ? "none"
+          : "inline-flex";
+        document.getElementById("diffRejectToggle").style.display = showing
+          ? "inline-flex"
+          : "none";
+      }
 
-    function toggleRejectInput() {
-      const wrap = document.getElementById('rejectInputWrap');
-      const showing = wrap.style.display !== 'none';
-      wrap.style.display = showing ? 'none' : 'flex';
-      document.getElementById('diffConfirmReject').style.display = showing ? 'none' : 'inline-flex';
-      document.getElementById('diffRejectToggle').style.display  = showing ? 'inline-flex' : 'none';
-    }
+      async function approveFromDiff() {
+        if (!_diffCurrentId) return;
+        const btn = document.getElementById("diffApproveBtn");
+        btn.textContent = "Menerbitkan...";
+        btn.disabled = true;
+        const result = await dbApproveSubmission(_diffCurrentId);
+        btn.textContent = "✓ Terbitkan";
+        btn.disabled = false;
+        if (!result.ok) {
+          showToast("⚠ " + result.error, "error");
+          return;
+        }
+        showToast("✓ Artikel diterbitkan!");
+        closeDiff();
+        renderKiriman();
+      }
 
-    async function approveFromDiff() {
-      if (!_diffCurrentId) return;
-      const btn = document.getElementById('diffApproveBtn');
-      btn.textContent = 'Menerbitkan...'; btn.disabled = true;
-      const result = await dbApproveSubmission(_diffCurrentId);
-      btn.textContent = '✓ Terbitkan'; btn.disabled = false;
-      if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-      showToast('✓ Artikel diterbitkan!');
-      closeDiff();
-      renderKiriman();
-    }
+      async function confirmReject() {
+        if (!_diffCurrentId) return;
+        const reason = document
+          .getElementById("rejectReasonInput")
+          .value.trim();
+        await dbRejectSubmission(_diffCurrentId, reason);
+        showToast("✓ Artikel ditolak.");
+        closeDiff();
+        renderKiriman();
+      }
 
-    async function confirmReject() {
-      if (!_diffCurrentId) return;
-      const reason = document.getElementById('rejectReasonInput').value.trim();
-      await dbRejectSubmission(_diffCurrentId, reason);
-      showToast('✓ Artikel ditolak.');
-      closeDiff();
-      renderKiriman();
-    }
+      async function quickApprove(id) {
+        if (!confirm("Terbitkan artikel ini?")) return;
+        const result = await dbApproveSubmission(id);
+        if (!result.ok) {
+          showToast("⚠ " + result.error, "error");
+          return;
+        }
+        showToast("✓ Artikel diterbitkan!");
+        renderKiriman();
+      }
 
-    async function quickApprove(id) {
-      if (!confirm('Terbitkan artikel ini?')) return;
-      const result = await dbApproveSubmission(id);
-      if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-      showToast('✓ Artikel diterbitkan!');
-      renderKiriman();
-    }
+      async function quickReject(id) {
+        const reason = prompt("Alasan penolakan (opsional):") || "";
+        await dbRejectSubmission(id, reason);
+        showToast("✓ Artikel ditolak.");
+        renderKiriman();
+      }
 
-    async function quickReject(id) {
-      const reason = prompt('Alasan penolakan (opsional):') || '';
-      await dbRejectSubmission(id, reason);
-      showToast('✓ Artikel ditolak.');
-      renderKiriman();
-    }
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast show " + type;
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => (t.className = "toast"), 3000);
+      }
 
-        function showToast(msg, type = 'success') {
-=======
-    function showToast(msg, type = 'success') {
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast show ' + type;
-      clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.className = 'toast', 3000);
-    }
-
-    // Tag pill styles for preview
-    const style = document.createElement('style');
-    style.textContent = `
+      // Tag pill styles for preview
+      const style = document.createElement("style");
+      style.textContent = `
       .tag-sains     { color:#185FA5; background:rgba(55,138,221,.1) }
       .tag-sosial    { color:#3B6D11; background:rgba(99,153,34,.1) }
       .tag-ekonomi   { color:#854F0B; background:rgba(186,117,23,.1) }
@@ -1330,7 +1819,7 @@ Gunakan format:
       .tag-lingkungan{ color:#0F6E56; background:rgba(29,158,117,.1) }
       .tag-seni      { color:#993556; background:rgba(212,83,126,.1) }
     `;
-    document.head.appendChild(style);
-  </script>
-</body>
+      document.head.appendChild(style);
+    </script>
+  </body>
 </html>

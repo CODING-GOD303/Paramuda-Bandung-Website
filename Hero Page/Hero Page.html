@@ -28,13 +28,9 @@
           Paramuda.Id
         </a>
         <ul class="nav-menu" id="navMenu">
-<<<<<<< HEAD
           <li>
             <a href="/sign in regist/profile.html" class="nav-link">Profile</a>
           </li>
-=======
-          <li><a href="/sign in regist/profile.html" class="nav-link">Profile</a></li>
->>>>>>> 77dadae83f9977f5f0b51f393e16705d5106057b
           <li><a href="#articles" class="nav-link">Articles</a></li>
           <li><a href="#recruitment" class="nav-link">Join Us</a></li>
           <li>
@@ -235,7 +231,10 @@
                   class="btn-outline"
                   >👁 Lihat Dokumen</a
                 >
-                <a href="/Images/BOOKLET PARAMUDA.ID.pdf" download class="btn-outline"
+                <a
+                  href="/Images/BOOKLET PARAMUDA.ID.pdf"
+                  download
+                  class="btn-outline"
                   >⬇ Unduh PDF</a
                 >
               </div>
@@ -308,9 +307,6 @@
               <label for="subject">Keperluan</label>
               <select id="subject">
                 <option value="">Pilih keperluan...</option>
-                <option>Pengiriman Artikel</option>
-                <option>Edit Artikel</option>
-                <option>Hapus Artikel</option>
                 <option>Keanggotaan</option>
                 <option>Kolaborasi Riset</option>
                 <option>Perpanjangan</option>
@@ -388,47 +384,56 @@
         });
 
       //Formsubmit
-     document.getElementById("contactForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const btn = e.target.querySelector(".btn-submit");
- 
-  const name    = document.getElementById("name").value.trim();
-  const email   = document.getElementById("email").value.trim();
-  const subject = document.getElementById("subject").value;
-  const message = document.getElementById("message").value.trim();
- 
-  // Basic validation
-  if (!name || !email || !subject) {
-    btn.textContent = "Lengkapi semua kolom!";
-    setTimeout(() => { btn.textContent = "Kirim Pesan"; }, 2500);
-    return;
-  }
- 
-  btn.textContent = "Mengirim...";
-  btn.disabled = true;
- 
-  const result = await dbSubmitContact({ name, email, subject, message });
- 
-  btn.disabled = false;
- 
-  if (!result.ok) {
-    btn.textContent = "Gagal kirim ✕";
-    btn.style.background = "#C44444";
-    setTimeout(() => {
-      btn.textContent = "Kirim Pesan";
-      btn.style.background = "";
-    }, 3000);
-    return;
-  }
- 
-  btn.textContent = "Terkirim ✓";
-  btn.style.background = "#2D6B5A";
-  setTimeout(() => {
-    btn.textContent = "Kirim Pesan";
-    btn.style.background = "";
-    e.target.reset();
-  }, 3000);
-});
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = e.target.querySelector(".btn-submit");
+
+          const name = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const subject = document.getElementById("subject").value;
+          const message = document.getElementById("message").value.trim();
+
+          // Basic validation
+          if (!name || !email || !subject) {
+            btn.textContent = "Lengkapi semua kolom!";
+            setTimeout(() => {
+              btn.textContent = "Kirim Pesan";
+            }, 2500);
+            return;
+          }
+
+          btn.textContent = "Mengirim...";
+          btn.disabled = true;
+
+          const result = await dbSubmitContact({
+            name,
+            email,
+            subject,
+            message,
+          });
+
+          btn.disabled = false;
+
+          if (!result.ok) {
+            btn.textContent = "Gagal kirim ✕";
+            btn.style.background = "#C44444";
+            setTimeout(() => {
+              btn.textContent = "Kirim Pesan";
+              btn.style.background = "";
+            }, 3000);
+            return;
+          }
+
+          btn.textContent = "Terkirim ✓";
+          btn.style.background = "#2D6B5A";
+          setTimeout(() => {
+            btn.textContent = "Kirim Pesan";
+            btn.style.background = "";
+            e.target.reset();
+          }, 3000);
+        });
 
       // ── LOAD ARTICLES FROM SUPABASE ───────────────────────────
       (async () => {
