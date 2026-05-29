@@ -12,6 +12,54 @@
   <link rel="stylesheet" href="article-detail.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="/Database/db.js"></script>
+
+  <style>
+    /* ── COVER IMAGE ─────────────────────────────────────── */
+    .article-cover {
+      width: 100%;
+      max-height: 480px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      margin: 1.5rem 0 2rem;
+      position: relative;
+      background: rgba(26,24,22,.05);
+    }
+    .article-cover img {
+      width: 100%;
+      height: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      border-radius: var(--radius);
+      transition: opacity .3s;
+    }
+    .article-cover-caption {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: .5rem;
+      font-style: italic;
+    }
+    /* thumbnail on related + sidebar cards */
+    .acard-thumb {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      display: block;
+      margin: -1.5rem -1.5rem 1rem;
+      width: calc(100% + 3rem);
+    }
+    .sidebar-article-thumb {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+      margin-bottom: .6rem;
+    }
+  </style>
 </head>
 <body>
 
@@ -68,6 +116,7 @@
           </button>
         </div>
       </header>
+      <div id="articleCover"></div>
       <div class="article-body" id="articleBody"></div>
       <div class="article-tags" id="articleTags"></div>
       <div class="author-bio" id="authorBio"></div>
@@ -185,6 +234,16 @@
         document.getElementById('likeIcon').style.color = '#C4622D';
       }
 
+      // Cover image (between header and body)
+      const coverWrap = document.getElementById('articleCover');
+      if (article.cover_image) {
+        coverWrap.innerHTML = `
+          <div class="article-cover">
+            <img src="${article.cover_image}" alt="Foto artikel: ${article.title}"
+                 loading="lazy" onerror="this.parentElement.style.display='none'" />
+          </div>`;
+      }
+
       // Body
       document.getElementById('articleBody').innerHTML = bodyToHtml(article.body);
 
@@ -207,6 +266,7 @@
       const others = all.filter(a => a.id !== article.id).slice(0, 4);
       document.getElementById('sidebarArticles').innerHTML = others.map(a => `
         <a href="article-detail-new.html?id=${a.id}" class="sidebar-article">
+          ${a.cover_image ? `<img src="${a.cover_image}" alt="" class="sidebar-article-thumb" loading="lazy" onerror="this.style.display='none'" />` : ''}
           <div class="article-tag-pill ${catClass(a.category)}" style="font-size:10px;padding:.15rem .5rem;">${a.category}</div>
           <p>${a.title}</p>
           <span>${a.author} · ${a.date_label || formatDateLabel(a.date)}</span>

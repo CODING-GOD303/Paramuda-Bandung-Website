@@ -1,1099 +1,941 @@
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profil user Paramuda Bandung</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/Hero Page/Style.css" />
-    <link rel="stylesheet" href="/articles/articles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="Profil CSS.css" />
-    <script src="/Database/db.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil user Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/Hero Page/Style.css" />
+  <link rel="stylesheet" href="/articles/articles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <link rel="stylesheet" href="Profil CSS.css">
+  <script src="/Database/db.js"></script>
 
-    <style>
-      /* ── STATUS BADGES ─────────────────────── */
-      .sub-badge {
-        display: inline-block;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        padding: 0.2rem 0.6rem;
-        border-radius: 50px;
-        white-space: nowrap;
-      }
-      .sub-draft {
-        color: #533ab7;
-        background: rgba(127, 119, 221, 0.12);
-      }
-      .sub-pending {
-        color: #854f0b;
-        background: rgba(186, 117, 23, 0.12);
-      }
-      .sub-published {
-        color: #0f6e56;
-        background: rgba(29, 158, 117, 0.12);
-      }
-      .sub-rejected {
-        color: #c44444;
-        background: rgba(196, 68, 68, 0.12);
-      }
-      .sub-pending_edit {
-        color: #185fa5;
-        background: rgba(55, 138, 221, 0.12);
-      }
+  <style>
 
-      /* ── SLIDE-IN PANEL ─────────────────────── */
-      .submit-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9000;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s;
-      }
-      .submit-overlay.open {
-        opacity: 1;
-        pointer-events: all;
-      }
-      .submit-panel {
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        max-width: 640px;
-        background: #fff;
-        box-shadow: -8px 0 40px rgba(0, 0, 0, 0.12);
-        display: flex;
-        flex-direction: column;
-        z-index: 9001;
-        transform: translateX(100%);
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-      }
-      .submit-overlay.open .submit-panel {
-        transform: translateX(0);
-      }
-      .submit-panel-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1.25rem 1.75rem;
-        border-bottom: 1px solid var(--border);
-        flex-shrink: 0;
-      }
-      .submit-panel-header h2 {
-        font-family: var(--font-head);
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: var(--text);
-      }
-      .submit-panel-header p {
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-top: 0.15rem;
-      }
-      .panel-close {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        border: none;
-        background: rgba(26, 24, 22, 0.06);
-        font-size: 14px;
-        color: var(--text-muted);
-        cursor: pointer;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.2s;
-      }
-      .panel-close:hover {
-        background: rgba(26, 24, 22, 0.12);
-        color: var(--text);
-      }
-      .submit-panel-body {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1.5rem 1.75rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-      /* rejection banner */
-      .reject-banner {
-        display: flex;
-        gap: 0.75rem;
-        align-items: flex-start;
-        background: rgba(196, 68, 68, 0.07);
-        border: 1px solid rgba(196, 68, 68, 0.25);
-        border-radius: 8px;
-        padding: 0.9rem 1rem;
-        font-size: 13px;
-        color: #c44444;
-        line-height: 1.6;
-      }
-      .reject-banner strong {
-        display: block;
-        font-weight: 700;
-        margin-bottom: 0.2rem;
-      }
-      /* form fields (reuse profile styles) */
-      .sp-field {
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-      }
-      .sp-field label {
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-      }
-      .sp-field input,
-      .sp-field select,
-      .sp-field textarea {
-        background: var(--bg);
-        border: 1.5px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 0.65rem 1rem;
-        font-family: var(--font-body);
-        font-size: 14px;
-        color: var(--text);
-        outline: none;
-        transition: border-color 0.2s;
-        resize: vertical;
-      }
-      .sp-field input:focus,
-      .sp-field select:focus,
-      .sp-field textarea:focus {
-        border-color: var(--accent);
-      }
-      .sp-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
-      /* ── EDITOR WRAPPER ─────────────────────── */
-      .sp-editor-wrap {
-        border: 1.5px solid var(--border);
-        border-radius: var(--radius-sm);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: border-color 0.2s;
-      }
-      .sp-editor-wrap:focus-within {
-        border-color: var(--accent);
-      }
+    /* ══ CROP MODAL ═══════════════════════════════════════════ */
+    .crop-overlay {
+      position: fixed; inset: 0; z-index: 99999;
+      background: rgba(0,0,0,.85);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .crop-modal {
+      background: #1a1816; border-radius: 14px;
+      width: 100%; max-width: 720px;
+      display: flex; flex-direction: column; gap: 0;
+      overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,.6);
+    }
+    .crop-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .crop-header h3 {
+      font-family: var(--font-head, "Syne",sans-serif);
+      font-size: .95rem; font-weight: 700; color: #fff;
+    }
+    .crop-close {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,.1); border: none;
+      color: rgba(255,255,255,.7); font-size: 13px;
+      cursor: pointer; display:flex;align-items:center;justify-content:center;
+      transition: background .2s;
+    }
+    .crop-close:hover { background: rgba(255,255,255,.2); color:#fff; }
 
-      /* toolbar */
-      .sp-toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.3rem;
-        padding: 0.5rem 0.75rem;
-        background: rgba(26, 24, 22, 0.03);
-        border-bottom: 1px solid var(--border);
-        flex-shrink: 0;
-      }
-      .sp-toolbar button {
-        font-family: var(--font-body);
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--text-muted);
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        padding: 0.2rem 0.55rem;
-        cursor: pointer;
-        transition: all 0.15s;
-        line-height: 1.4;
-      }
-      .sp-toolbar button:hover {
-        color: var(--text);
-        border-color: var(--text);
-        background: #f5f5f3;
-      }
-      .sp-toolbar-sep {
-        width: 1px;
-        height: 16px;
-        background: var(--border);
-        margin: 0 0.15rem;
-        flex-shrink: 0;
-      }
-      .sp-preview-toggle {
-        margin-left: auto;
-        font-family: var(--font-body);
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--accent);
-        background: rgba(0, 128, 38, 0.07);
-        border: 1px solid rgba(0, 128, 38, 0.25);
-        border-radius: 4px;
-        padding: 0.2rem 0.65rem;
-        cursor: pointer;
-        transition: all 0.15s;
-        white-space: nowrap;
-      }
-      .sp-preview-toggle:hover {
-        background: rgba(0, 128, 38, 0.13);
-      }
-      .sp-preview-toggle.active {
-        background: var(--accent);
-        color: #fff;
-        border-color: var(--accent);
-      }
+    /* canvas area */
+    .crop-canvas-wrap {
+      background: #111; position: relative;
+      height: 380px; overflow: hidden;
+    }
+    .crop-canvas-wrap img { max-width: 100%; display: block; }
 
-      /* editor / preview panes */
-      .sp-editor-pane,
-      .sp-preview-pane {
-        width: 100%;
-        display: block;
-      }
-      .sp-body-textarea {
-        width: 100%;
-        min-height: 260px;
-        max-height: 420px;
-        padding: 0.9rem 1rem;
-        font-family: "Georgia", serif;
-        font-size: 14.5px;
-        line-height: 1.85;
-        color: var(--text);
-        background: #fdfcfa;
-        border: none;
-        outline: none;
-        resize: none;
-        overflow-y: auto;
-        /* KEY: proper wrapping — no horizontal overflow */
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        word-break: break-word;
-      }
-      .sp-body-textarea::placeholder {
-        color: rgba(26, 24, 22, 0.3);
-        font-style: italic;
-      }
+    /* ratio + controls bar */
+    .crop-controls {
+      padding: .75rem 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; flex-direction: column; gap: .65rem;
+    }
+    .crop-ratios {
+      display: flex; gap: .4rem; flex-wrap: wrap; align-items: center;
+    }
+    .crop-ratios span {
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,.4);
+      letter-spacing: .06em; text-transform: uppercase; margin-right: .2rem;
+    }
+    .ratio-btn {
+      font-family: var(--font-body,"Manrope",sans-serif);
+      font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,.55); background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12); border-radius: 50px;
+      padding: .25rem .75rem; cursor: pointer; transition: all .15s;
+      white-space: nowrap;
+    }
+    .ratio-btn:hover { color:#fff; border-color:rgba(255,255,255,.3); }
+    .ratio-btn.active {
+      color: #fff; background: var(--accent,#008026);
+      border-color: var(--accent,#008026);
+    }
+    .crop-tools {
+      display: flex; gap: .4rem; align-items: center; flex-wrap: wrap;
+    }
+    .crop-tool-btn {
+      font-size: 16px; width: 34px; height: 34px;
+      border-radius: 8px; background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      color: rgba(255,255,255,.7); cursor: pointer; transition: all .15s;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .crop-tool-btn:hover { background:rgba(255,255,255,.15); color:#fff; }
+    .crop-tool-sep { width:1px; height:22px; background:rgba(255,255,255,.12); margin:0 .15rem; }
+    .crop-zoom-wrap {
+      display: flex; align-items: center; gap: .5rem; margin-left: auto;
+    }
+    .crop-zoom-wrap label {
+      font-size: 11px; color: rgba(255,255,255,.4); white-space: nowrap;
+    }
+    .crop-zoom-wrap input[type=range] {
+      width: 90px; accent-color: var(--accent,#008026); cursor: pointer;
+    }
 
-      /* live preview pane */
-      .sp-preview-pane {
-        display: none;
-        min-height: 260px;
-        max-height: 420px;
-        overflow-y: auto;
-        padding: 1rem 1.25rem;
-        background: #fff;
-        font-family: "Georgia", serif;
-        font-size: 14.5px;
-        line-height: 1.85;
-        color: var(--text);
-      }
-      .sp-preview-pane.visible {
-        display: block;
-      }
-      .sp-preview-pane h2 {
-        font-family: var(--font-head);
-        font-size: 1.15rem;
-        font-weight: 800;
-        margin: 1.5rem 0 0.5rem;
-        color: var(--text);
-        line-height: 1.25;
-      }
-      .sp-preview-pane h3 {
-        font-family: var(--font-head);
-        font-size: 0.98rem;
-        font-weight: 700;
-        margin: 1.1rem 0 0.4rem;
-        color: var(--text);
-      }
-      .sp-preview-pane p {
-        margin-bottom: 1rem;
-      }
-      .sp-preview-pane blockquote {
-        border-left: 3px solid var(--accent);
-        background: rgba(0, 128, 38, 0.04);
-        padding: 0.65rem 1rem;
-        margin: 0.75rem 0;
-        border-radius: 0 4px 4px 0;
-        font-style: italic;
-        color: var(--text-muted);
-      }
-      .sp-preview-pane ul {
-        margin: 0.5rem 0 1rem 1.25rem;
-      }
-      .sp-preview-pane li {
-        margin-bottom: 0.3rem;
-      }
-      .sp-preview-pane strong {
-        font-weight: 700;
-      }
-      .sp-preview-empty {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 200px;
-        color: var(--text-muted);
-        font-size: 13px;
-        font-style: italic;
-      }
+    /* footer */
+    .crop-footer {
+      display: flex; gap: .6rem; justify-content: flex-end;
+      padding: .85rem 1.25rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .crop-btn-cancel {
+      font-family: var(--font-body,"Manrope",sans-serif);
+      font-size: 13px; font-weight: 500; color: rgba(255,255,255,.5);
+      background: transparent; border: 1px solid rgba(255,255,255,.15);
+      border-radius: 50px; padding: .5rem 1.25rem; cursor: pointer; transition: all .2s;
+    }
+    .crop-btn-cancel:hover { color:#fff; border-color:rgba(255,255,255,.35); }
+    .crop-btn-save {
+      font-family: var(--font-body,"Manrope",sans-serif);
+      font-size: 13px; font-weight: 600; color: #fff;
+      background: var(--accent,#008026); border: none;
+      border-radius: 50px; padding: .5rem 1.5rem;
+      cursor: pointer; transition: opacity .2s;
+    }
+    .crop-btn-save:hover { opacity: .85; }
+    .crop-btn-save:disabled { opacity: .5; cursor:not-allowed; }
+    .crop-saving-label { font-size:12px; color:rgba(255,255,255,.45); align-self:center; }
 
-      /* word / char counter */
-      .sp-editor-footer {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.35rem 0.75rem;
-        background: rgba(26, 24, 22, 0.02);
-        border-top: 1px solid var(--border);
-        flex-shrink: 0;
-      }
-      .sp-editor-footer span {
-        font-size: 11px;
-        color: var(--text-muted);
-      }
-      .sp-hint {
-        font-size: 11px;
-        color: var(--text-muted);
-        font-style: italic;
-      }
-      .submit-panel-footer {
-        display: flex;
-        gap: 0.75rem;
-        justify-content: flex-end;
-        align-items: center;
-        padding: 1rem 1.75rem;
-        border-top: 1px solid var(--border);
-        flex-shrink: 0;
-      }
-      .sp-alert {
-        font-size: 13px;
-        padding: 0.55rem 0.9rem;
-        border-radius: 6px;
-        display: none;
-      }
-      .sp-alert.error {
-        background: rgba(196, 68, 68, 0.1);
-        color: #c44444;
-        display: block;
-      }
-      .sp-alert.success {
-        background: rgba(0, 128, 38, 0.1);
-        color: #006020;
-        display: block;
-      }
-      /* submission card in "Artikel Saya" list */
-      .sub-card {
-        background: #fff;
-        border: 1px solid var(--border);
+    /* ── STATUS BADGES ─────────────────────── */
+    .sub-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.06em;
+      text-transform:uppercase; padding:.2rem .6rem; border-radius:50px; white-space:nowrap; }
+    .sub-draft    { color:#533AB7; background:rgba(127,119,221,.12); }
+    .sub-pending  { color:#854F0B; background:rgba(186,117,23,.12); }
+    .sub-published{ color:#0F6E56; background:rgba(29,158,117,.12); }
+    .sub-rejected { color:#C44444; background:rgba(196,68,68,.12); }
+    .sub-pending_edit { color:#185FA5; background:rgba(55,138,221,.12); }
+
+    /* ── SLIDE-IN PANEL ─────────────────────── */
+    .submit-overlay {
+      position:fixed; inset:0; background:rgba(0,0,0,.5);
+      z-index:9000; opacity:0; pointer-events:none; transition:opacity .3s;
+    }
+    .submit-overlay.open { opacity:1; pointer-events:all; }
+    .submit-panel {
+      position:fixed; top:0; right:0; bottom:0; width:100%; max-width:640px;
+      background:#fff; box-shadow:-8px 0 40px rgba(0,0,0,.12);
+      display:flex; flex-direction:column; z-index:9001;
+      transform:translateX(100%); transition:transform .35s cubic-bezier(.4,0,.2,1);
+      overflow:hidden;
+    }
+    .submit-overlay.open .submit-panel { transform:translateX(0); }
+    .submit-panel-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:1.25rem 1.75rem; border-bottom:1px solid var(--border);
+      flex-shrink:0;
+    }
+    .submit-panel-header h2 {
+      font-family:var(--font-head); font-size:1.1rem; font-weight:800; color:var(--text);
+    }
+    .submit-panel-header p { font-size:12px; color:var(--text-muted); margin-top:.15rem; }
+    .panel-close {
+      width:32px; height:32px; border-radius:50%; border:none; background:rgba(26,24,22,.06);
+      font-size:14px; color:var(--text-muted); cursor:pointer; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; transition:background .2s;
+    }
+    .panel-close:hover { background:rgba(26,24,22,.12); color:var(--text); }
+    .submit-panel-body {
+      flex:1; overflow-y:auto; padding:1.5rem 1.75rem;
+      display:flex; flex-direction:column; gap:1rem;
+    }
+    /* rejection banner */
+    .reject-banner {
+      display:flex; gap:.75rem; align-items:flex-start;
+      background:rgba(196,68,68,.07); border:1px solid rgba(196,68,68,.25);
+      border-radius:8px; padding:.9rem 1rem; font-size:13px; color:#C44444;
+      line-height:1.6;
+    }
+    .reject-banner strong { display:block; font-weight:700; margin-bottom:.2rem; }
+    /* form fields (reuse profile styles) */
+    .sp-field { display:flex; flex-direction:column; gap:.35rem; }
+    .sp-field label {
+      font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+      color:var(--text-muted);
+    }
+    .sp-field input, .sp-field select, .sp-field textarea {
+      background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius-sm);
+      padding:.65rem 1rem; font-family:var(--font-body); font-size:14px; color:var(--text);
+      outline:none; transition:border-color .2s; resize:vertical;
+    }
+    .sp-field input:focus,.sp-field select:focus,.sp-field textarea:focus { border-color:var(--accent); }
+    .sp-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+
+    /* ── COVER IMAGE FIELD (submission panel) ─────────────── */
+    .sp-cover-wrap {
+      border: 1.5px dashed var(--border); border-radius: var(--radius);
+      overflow: hidden; cursor: pointer; transition: border-color .2s; position: relative;
+    }
+    .sp-cover-wrap:hover { border-color: var(--accent); }
+    .sp-cover-wrap.has-image { border-style: solid; }
+    .sp-cover-preview { width:100%; max-height:200px; object-fit:cover; display:none; border-radius:calc(var(--radius) - 2px); }
+    .sp-cover-placeholder {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:.4rem; height:100px; color:var(--text-muted); font-size:12px;
+    }
+    .sp-cover-placeholder span { font-size:1.4rem; }
+    .sp-cover-row { display:flex; gap:.5rem; margin-top:.5rem; align-items:center; }
+    .sp-cover-status { font-size:11px; color:var(--text-muted); min-height:14px; }
+    /* ── EDITOR WRAPPER ─────────────────────── */
+    .sp-editor-wrap {
+      border:1.5px solid var(--border); border-radius:var(--radius-sm);
+      overflow:hidden; display:flex; flex-direction:column;
+      transition:border-color .2s;
+    }
+    .sp-editor-wrap:focus-within { border-color:var(--accent); }
+
+    /* toolbar */
+    .sp-toolbar {
+      display:flex; flex-wrap:wrap; align-items:center; gap:.3rem;
+      padding:.5rem .75rem; background:rgba(26,24,22,.03);
+      border-bottom:1px solid var(--border); flex-shrink:0;
+    }
+    .sp-toolbar button {
+      font-family:var(--font-body); font-size:11px; font-weight:600;
+      color:var(--text-muted); background:#fff; border:1px solid var(--border);
+      border-radius:4px; padding:.2rem .55rem; cursor:pointer; transition:all .15s;
+      line-height:1.4;
+    }
+    .sp-toolbar button:hover { color:var(--text); border-color:var(--text); background:#f5f5f3; }
+    .sp-toolbar-sep { width:1px; height:16px; background:var(--border); margin:0 .15rem; flex-shrink:0; }
+    .sp-preview-toggle {
+      margin-left:auto; font-family:var(--font-body); font-size:11px; font-weight:600;
+      color:var(--accent); background:rgba(0,128,38,.07); border:1px solid rgba(0,128,38,.25);
+      border-radius:4px; padding:.2rem .65rem; cursor:pointer; transition:all .15s; white-space:nowrap;
+    }
+    .sp-preview-toggle:hover { background:rgba(0,128,38,.13); }
+    .sp-preview-toggle.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+    /* editor / preview panes */
+    .sp-editor-pane, .sp-preview-pane {
+      width:100%; display:block;
+    }
+    .sp-body-textarea {
+      width:100%; min-height:260px; max-height:420px;
+      padding:.9rem 1rem; font-family:'Georgia',serif; font-size:14.5px;
+      line-height:1.85; color:var(--text);
+      background:#fdfcfa; border:none; outline:none;
+      resize:none; overflow-y:auto;
+      /* KEY: proper wrapping — no horizontal overflow */
+      white-space:pre-wrap;
+      word-wrap:break-word;
+      overflow-wrap:break-word;
+      word-break:break-word;
+    }
+    .sp-body-textarea::placeholder { color:rgba(26,24,22,.3); font-style:italic; }
+
+    /* live preview pane */
+    .sp-preview-pane {
+      display:none;
+      min-height:260px; max-height:420px; overflow-y:auto;
+      padding:1rem 1.25rem;
+      background:#fff; font-family:'Georgia',serif; font-size:14.5px;
+      line-height:1.85; color:var(--text);
+    }
+    .sp-preview-pane.visible { display:block; }
+    .sp-preview-pane h2 {
+      font-family:var(--font-head); font-size:1.15rem; font-weight:800;
+      margin:1.5rem 0 .5rem; color:var(--text); line-height:1.25;
+    }
+    .sp-preview-pane h3 {
+      font-family:var(--font-head); font-size:.98rem; font-weight:700;
+      margin:1.1rem 0 .4rem; color:var(--text);
+    }
+    .sp-preview-pane p { margin-bottom:1rem; }
+    .sp-preview-pane blockquote {
+      border-left:3px solid var(--accent); background:rgba(0,128,38,.04);
+      padding:.65rem 1rem; margin:.75rem 0; border-radius:0 4px 4px 0;
+      font-style:italic; color:var(--text-muted);
+    }
+    .sp-preview-pane ul { margin:.5rem 0 1rem 1.25rem; }
+    .sp-preview-pane li { margin-bottom:.3rem; }
+    .sp-preview-pane strong { font-weight:700; }
+    .sp-preview-empty {
+      display:flex; align-items:center; justify-content:center;
+      min-height:200px; color:var(--text-muted); font-size:13px; font-style:italic;
+    }
+
+    /* word / char counter */
+    .sp-editor-footer {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:.35rem .75rem; background:rgba(26,24,22,.02);
+      border-top:1px solid var(--border); flex-shrink:0;
+    }
+    .sp-editor-footer span { font-size:11px; color:var(--text-muted); }
+    .sp-hint { font-size:11px; color:var(--text-muted); font-style:italic; }
+    .submit-panel-footer {
+      display:flex; gap:.75rem; justify-content:flex-end; align-items:center;
+      padding:1rem 1.75rem; border-top:1px solid var(--border); flex-shrink:0;
+    }
+    .sp-alert { font-size:13px; padding:.55rem .9rem; border-radius:6px; display:none; }
+    .sp-alert.error   { background:rgba(196,68,68,.1); color:#C44444; display:block; }
+    .sp-alert.success { background:rgba(0,128,38,.1); color:#006020; display:block; }
+    /* submission card in "Artikel Saya" list */
+    .sub-card {
+      background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+      padding:1.25rem 1.5rem; display:flex; flex-direction:column; gap:.65rem;
+      transition:border-color .2s;
+    }
+    .sub-card:hover { border-color:rgba(0,128,38,.3); }
+    .sub-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+    .sub-card-title { font-family:var(--font-head); font-size:.95rem; font-weight:700; color:var(--text); }
+    .sub-card-subtitle { font-size:12px; color:var(--text-muted); line-height:1.5; }
+    .sub-card-meta { display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; }
+    .sub-card-actions { display:flex; gap:.5rem; flex-wrap:wrap; }
+    .btn-sub-action {
+      font-family:var(--font-body); font-size:12px; font-weight:600;
+      padding:.35rem .9rem; border-radius:50px; border:1.5px solid var(--border);
+      background:transparent; cursor:pointer; color:var(--text-muted);
+      transition:all .2s; white-space:nowrap;
+    }
+    .btn-sub-action:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-sub-action.danger { color:#C44444; border-color:rgba(196,68,68,.3); }
+    .btn-sub-action.danger:hover { background:rgba(196,68,68,.07); border-color:#C44444; }
+    .reject-reason-box {
+      font-size:12px; color:#C44444; background:rgba(196,68,68,.06);
+      border:1px solid rgba(196,68,68,.2); border-radius:6px; padding:.6rem .9rem;
+      line-height:1.6;
+    }
+    @media(max-width:640px) {
+      .submit-panel { max-width:100%; }
+      .sp-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
+      <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/Hero Page/Hero Page.html#profile" class="nav-link">Home</a></li>
+        <li><a href="/articles/articles-new.html" class="nav-link">Articles</a></li>
+        <li><a href="/Hero Page/Hero Page.html#location" class="nav-link">About Us</a></li>
+        <li><a onclick="doLogout()" class="nav-link btn-nav">Log out</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+ 
+  <!-- NOT LOGGED IN -->
+  <div class="not-logged-in" id="notLoggedIn" style="display:none;">
+    <div class="icon">◎</div>
+    <h2>Kamu belum masuk</h2>
+    <p>Silakan masuk atau daftar untuk melihat profil kamu.</p>
+    <div class="btn-row">
+      <a href="sign in.html" class="btn-solid">Masuk</a>
+      <a href="regist.html" class="btn-ghost">Daftar</a>
+    </div>
+  </div>
+ 
+  <!-- PROFILE PAGE -->
+  <div class="profile-page" id="profilePage" style="display:none;">
+ 
+    <!-- SIDEBAR -->
+    <aside class="profile-sidebar">
+      <div class="profile-card">
+        <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="Klik untuk ganti foto">
+          <div class="profile-avatar-lg" id="sidebarAvatar">??</div>
+          <div class="avatar-overlay">📷</div>
+        </div>
+        <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatarUpload(event)" />
+        <div class="avatar-uploading" id="avatarStatus"></div>
+        <div class="profile-name" id="sidebarName">—</div>
+        <div class="profile-email" id="sidebarEmail">—</div>
+        <span class="role-badge" id="sidebarRole">member</span>
+        <div class="profile-stats-mini">
+          <div class="psm-item">
+            <div class="psm-num" id="statArticles">0</div>
+            <div class="psm-label">Artikel</div>
+          </div>
+          <div class="psm-item">
+            <div class="psm-num" id="statLiked">0</div>
+            <div class="psm-label">Disukai</div>
+          </div>
+        </div>
+      </div>
+ 
+      <nav class="sidebar-nav">
+        <button class="active" id="btn-info"     onclick="switchTab('info')">
+          <span class="nav-icon">◈</span> Informasi Akun
+        </button>
+        <button id="btn-written"  onclick="switchTab('written')">
+          <span class="nav-icon">✎</span> Artikel Saya
+        </button>
+        <button id="btn-liked"    onclick="switchTab('liked')">
+          <span class="nav-icon">♡</span> Artikel Disukai
+        </button>
+        <button id="btn-edit"     onclick="switchTab('edit')">
+          <span class="nav-icon">⚙</span> Edit Profil
+        </button>
+      </nav>
+
+      <!-- Submit Article Button (members only) -->
+      <button class="btn-solid" id="btnOpenSubmit" style="display:none;width:100%;margin-top:0;"
+        onclick="openSubmitPanel()">✦ Kirim Artikel Baru</button>
+ 
+      <button class="btn-logout" onclick="doLogout()">Keluar dari Akun</button>
+ 
+      <!-- Only visible for admins -->
+      <a href="admin.html" id="adminPanelBtn" style="display:none;
+        width:100%; box-sizing:border-box;
+        background: rgba(45, 196, 83, 0.08);
+        border: 1.5px solid rgba(38, 163, 38, 0.3);
         border-radius: var(--radius);
-        padding: 1.25rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.65rem;
-        transition: border-color 0.2s;
-      }
-      .sub-card:hover {
-        border-color: rgba(0, 128, 38, 0.3);
-      }
-      .sub-card-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-      }
-      .sub-card-title {
-        font-family: var(--font-head);
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: var(--text);
-      }
-      .sub-card-subtitle {
-        font-size: 12px;
-        color: var(--text-muted);
-        line-height: 1.5;
-      }
-      .sub-card-meta {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        flex-wrap: wrap;
-      }
-      .sub-card-actions {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-      }
-      .btn-sub-action {
+        padding: 0.7rem;
         font-family: var(--font-body);
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 600;
-        padding: 0.35rem 0.9rem;
-        border-radius: 50px;
-        border: 1.5px solid var(--border);
-        background: transparent;
-        cursor: pointer;
-        color: var(--text-muted);
-        transition: all 0.2s;
-        white-space: nowrap;
-      }
-      .btn-sub-action:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-      .btn-sub-action.danger {
-        color: #c44444;
-        border-color: rgba(196, 68, 68, 0.3);
-      }
-      .btn-sub-action.danger:hover {
-        background: rgba(196, 68, 68, 0.07);
-        border-color: #c44444;
-      }
-      .reject-reason-box {
-        font-size: 12px;
-        color: #c44444;
-        background: rgba(196, 68, 68, 0.06);
-        border: 1px solid rgba(196, 68, 68, 0.2);
-        border-radius: 6px;
-        padding: 0.6rem 0.9rem;
-        line-height: 1.6;
-      }
-      @media (max-width: 640px) {
-        .submit-panel {
-          max-width: 100%;
-        }
-        .sp-row {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="navbar scrolled" id="navbar">
-      <div class="nav-container">
-        <img
-          class="Logo-navbar"
-          src="/Images/Logo Paramuda Indonesia.png"
-          alt=""
-        />
-        <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
-        <ul class="nav-menu" id="navMenu">
-          <li>
-            <a href="/Hero Page/Hero Page.html#profile" class="nav-link"
-              >Home</a
-            >
-          </li>
-          <li>
-            <a href="/articles/articles-new.html" class="nav-link">Articles</a>
-          </li>
-          <li>
-            <a href="/Hero Page/Hero Page.html#location" class="nav-link"
-              >About Us</a
-            >
-          </li>
-          <li><a onclick="doLogout()" class="nav-link btn-nav">Log out</a></li>
-        </ul>
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-          <span class="bar"></span><span class="bar"></span
-          ><span class="bar"></span>
-        </button>
-      </div>
-    </nav>
-
-    <!-- NOT LOGGED IN -->
-    <div class="not-logged-in" id="notLoggedIn" style="display: none">
-      <div class="icon">◎</div>
-      <h2>Kamu belum masuk</h2>
-      <p>Silakan masuk atau daftar untuk melihat profil kamu.</p>
-      <div class="btn-row">
-        <a href="sign in.html" class="btn-solid">Masuk</a>
-        <a href="regist.html" class="btn-ghost">Daftar</a>
-      </div>
-    </div>
-
-    <!-- PROFILE PAGE -->
-    <div class="profile-page" id="profilePage" style="display: none">
-      <!-- SIDEBAR -->
-      <aside class="profile-sidebar">
-        <div class="profile-card">
-          <div
-            class="avatar-wrap"
-            onclick="document.getElementById('avatarInput').click()"
-            title="Klik untuk ganti foto"
-          >
-            <div class="profile-avatar-lg" id="sidebarAvatar">??</div>
-            <div class="avatar-overlay">📷</div>
+        color: #2da6c4;
+        text-align: center;
+        text-decoration: none;
+        transition: background 0.2s, border-color 0.2s;">
+        ⚙ Panel Admin
+      </a>
+    </aside>
+ 
+    <!-- MAIN CONTENT -->
+    <main class="profile-main">
+ 
+      <!-- TAB: INFO -->
+      <div class="profile-section active" id="tab-info">
+        <div class="section-head">
+          <h2>Informasi Akun</h2>
+          <p>Detail akun Paramuda kamu saat ini.</p>
+        </div>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Nama Lengkap</label>
+            <span id="infoName">—</span>
           </div>
-          <input
-            type="file"
-            id="avatarInput"
-            accept="image/*"
-            onchange="handleAvatarUpload(event)"
-          />
-          <div class="avatar-uploading" id="avatarStatus"></div>
-          <div class="profile-name" id="sidebarName">—</div>
-          <div class="profile-email" id="sidebarEmail">—</div>
-          <span class="role-badge" id="sidebarRole">member</span>
-          <div class="profile-stats-mini">
-            <div class="psm-item">
-              <div class="psm-num" id="statArticles">0</div>
-              <div class="psm-label">Artikel</div>
-            </div>
-            <div class="psm-item">
-              <div class="psm-num" id="statLiked">0</div>
-              <div class="psm-label">Disukai</div>
-            </div>
+          <div class="info-item">
+            <label>Role</label>
+            <span id="infoRole">—</span>
+          </div>
+          <div class="info-item full">
+            <label>Email</label>
+            <span id="infoEmail">—</span>
+          </div>
+          <div class="info-item">
+            <label>Bergabung Sejak</label>
+            <span id="infoJoined">—</span>
+          </div>
+          <div class="info-item">
+            <label>ID Akun</label>
+            <span id="infoId" style="font-size:11px;word-break:break-all;">—</span>
           </div>
         </div>
-
-        <nav class="sidebar-nav">
-          <button class="active" id="btn-info" onclick="switchTab('info')">
-            <span class="nav-icon">◈</span> Informasi Akun
-          </button>
-          <button id="btn-written" onclick="switchTab('written')">
-            <span class="nav-icon">✎</span> Artikel Saya
-          </button>
-          <button id="btn-liked" onclick="switchTab('liked')">
-            <span class="nav-icon">♡</span> Artikel Disukai
-          </button>
-          <button id="btn-edit" onclick="switchTab('edit')">
-            <span class="nav-icon">⚙</span> Edit Profil
-          </button>
-        </nav>
-
-        <!-- Submit Article Button (members only) -->
-        <button
-          class="btn-solid"
-          id="btnOpenSubmit"
-          style="display: none; width: 100%; margin-top: 0"
-          onclick="openSubmitPanel()"
-        >
-          ✦ Kirim Artikel Baru
-        </button>
-
-        <button class="btn-logout" onclick="doLogout()">
-          Keluar dari Akun
-        </button>
-
-        <!-- Only visible for admins -->
-        <a
-          href="admin.html"
-          id="adminPanelBtn"
-          style="
-            display: none;
-            width: 100%;
-            box-sizing: border-box;
-            background: rgba(45, 196, 83, 0.08);
-            border: 1.5px solid rgba(38, 163, 38, 0.3);
-            border-radius: var(--radius);
-            padding: 0.7rem;
-            font-family: var(--font-body);
-            font-size: 13px;
-            font-weight: 600;
-            color: #2da6c4;
-            text-align: center;
-            text-decoration: none;
-            transition:
-              background 0.2s,
-              border-color 0.2s;
-          "
-        >
-          ⚙ Panel Admin
-        </a>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="profile-main">
-        <!-- TAB: INFO -->
-        <div class="profile-section active" id="tab-info">
-          <div class="section-head">
-            <h2>Informasi Akun</h2>
-            <p>Detail akun Paramuda kamu saat ini.</p>
+      </div>
+ 
+      <!-- TAB: WRITTEN ARTICLES -->
+      <div class="profile-section" id="tab-written">
+        <div class="section-head" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+          <div>
+            <h2>Artikel Saya</h2>
+            <p>Artikel yang kamu tulis &amp; kirimkan ke Paramuda.</p>
           </div>
-          <div class="info-grid">
-            <div class="info-item">
+          <button class="btn-solid" style="white-space:nowrap;font-size:13px;padding:.6rem 1.25rem;"
+            onclick="openSubmitPanel()">✦ Kirim Artikel Baru</button>
+        </div>
+        <!-- Filter pills -->
+        <div class="tab-row" id="subFilterRow">
+          <button class="tab-pill active" data-filter="all"          onclick="filterSubs(this)">Semua</button>
+          <button class="tab-pill"        data-filter="pending"      onclick="filterSubs(this)">Menunggu</button>
+          <button class="tab-pill"        data-filter="pending_edit" onclick="filterSubs(this)">Edit Diajukan</button>
+          <button class="tab-pill"        data-filter="published"    onclick="filterSubs(this)">Diterbitkan</button>
+          <button class="tab-pill"        data-filter="rejected"     onclick="filterSubs(this)">Ditolak</button>
+          <button class="tab-pill"        data-filter="draft"        onclick="filterSubs(this)">Draft</button>
+        </div>
+        <div id="writtenList"></div>
+      </div>
+ 
+      <!-- TAB: LIKED ARTICLES -->
+      <div class="profile-section" id="tab-liked">
+        <div class="section-head">
+          <h2>Artikel Disukai</h2>
+          <p>Artikel yang kamu tandai suka di sesi ini.</p>
+        </div>
+        <div id="likedList"></div>
+      </div>
+ 
+      <!-- TAB: EDIT PROFILE -->
+      <div class="profile-section" id="tab-edit">
+        <div class="section-head">
+          <h2>Edit Profil</h2>
+          <p>Perbarui nama atau password akun kamu.</p>
+        </div>
+ 
+        <!-- Edit Name -->
+        <div class="edit-form">
+          <h3>Ubah Nama</h3>
+          <div class="form-row single">
+            <div class="field">
               <label>Nama Lengkap</label>
-              <span id="infoName">—</span>
+              <input type="text" id="editName" placeholder="Nama lengkap kamu..." />
             </div>
-            <div class="info-item">
-              <label>Role</label>
-              <span id="infoRole">—</span>
-            </div>
-            <div class="info-item full">
-              <label>Email</label>
-              <span id="infoEmail">—</span>
-            </div>
-            <div class="info-item">
-              <label>Bergabung Sejak</label>
-              <span id="infoJoined">—</span>
-            </div>
-            <div class="info-item">
-              <label>ID Akun</label>
-              <span id="infoId" style="font-size: 11px; word-break: break-all"
-                >—</span
-              >
-            </div>
+          </div>
+          <div class="alert" id="nameAlert"></div>
+          <div class="form-actions">
+            <button class="btn-save" id="saveNameBtn" onclick="saveName()">Simpan Nama</button>
           </div>
         </div>
-
-        <!-- TAB: WRITTEN ARTICLES -->
-        <div class="profile-section" id="tab-written">
-          <div
-            class="section-head"
-            style="
-              display: flex;
-              align-items: flex-start;
-              justify-content: space-between;
-              gap: 1rem;
-              flex-wrap: wrap;
-            "
-          >
-            <div>
-              <h2>Artikel Saya</h2>
-              <p>Artikel yang kamu tulis &amp; kirimkan ke Paramuda.</p>
+ 
+        <!-- Change Password -->
+        <div class="edit-form">
+          <h3>Ubah Password</h3>
+          <div class="form-row">
+            <div class="field">
+              <label>Password Baru</label>
+              <input type="password" id="newPassword" placeholder="Min. 8 karakter..." />
             </div>
-            <button
-              class="btn-solid"
-              style="
-                white-space: nowrap;
-                font-size: 13px;
-                padding: 0.6rem 1.25rem;
-              "
-              onclick="openSubmitPanel()"
-            >
-              ✦ Kirim Artikel Baru
-            </button>
-          </div>
-          <!-- Filter pills -->
-          <div class="tab-row" id="subFilterRow">
-            <button
-              class="tab-pill active"
-              data-filter="all"
-              onclick="filterSubs(this)"
-            >
-              Semua
-            </button>
-            <button
-              class="tab-pill"
-              data-filter="pending"
-              onclick="filterSubs(this)"
-            >
-              Menunggu
-            </button>
-            <button
-              class="tab-pill"
-              data-filter="pending_edit"
-              onclick="filterSubs(this)"
-            >
-              Edit Diajukan
-            </button>
-            <button
-              class="tab-pill"
-              data-filter="published"
-              onclick="filterSubs(this)"
-            >
-              Diterbitkan
-            </button>
-            <button
-              class="tab-pill"
-              data-filter="rejected"
-              onclick="filterSubs(this)"
-            >
-              Ditolak
-            </button>
-            <button
-              class="tab-pill"
-              data-filter="draft"
-              onclick="filterSubs(this)"
-            >
-              Draft
-            </button>
-          </div>
-          <div id="writtenList"></div>
-        </div>
-
-        <!-- TAB: LIKED ARTICLES -->
-        <div class="profile-section" id="tab-liked">
-          <div class="section-head">
-            <h2>Artikel Disukai</h2>
-            <p>Artikel yang kamu tandai suka di sesi ini.</p>
-          </div>
-          <div id="likedList"></div>
-        </div>
-
-        <!-- TAB: EDIT PROFILE -->
-        <div class="profile-section" id="tab-edit">
-          <div class="section-head">
-            <h2>Edit Profil</h2>
-            <p>Perbarui nama atau password akun kamu.</p>
-          </div>
-
-          <!-- Edit Name -->
-          <div class="edit-form">
-            <h3>Ubah Nama</h3>
-            <div class="form-row single">
-              <div class="field">
-                <label>Nama Lengkap</label>
-                <input
-                  type="text"
-                  id="editName"
-                  placeholder="Nama lengkap kamu..."
-                />
-              </div>
-            </div>
-            <div class="alert" id="nameAlert"></div>
-            <div class="form-actions">
-              <button class="btn-save" id="saveNameBtn" onclick="saveName()">
-                Simpan Nama
-              </button>
+            <div class="field">
+              <label>Konfirmasi Password</label>
+              <input type="password" id="confirmPassword" placeholder="Ulangi password baru..." />
             </div>
           </div>
-
-          <!-- Change Password -->
-          <div class="edit-form">
-            <h3>Ubah Password</h3>
-            <div class="form-row">
-              <div class="field">
-                <label>Password Baru</label>
-                <input
-                  type="password"
-                  id="newPassword"
-                  placeholder="Min. 8 karakter..."
-                />
-              </div>
-              <div class="field">
-                <label>Konfirmasi Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  placeholder="Ulangi password baru..."
-                />
-              </div>
-            </div>
-            <div class="alert" id="passwordAlert"></div>
-            <div class="form-actions">
-              <button
-                class="btn-save"
-                id="savePasswordBtn"
-                onclick="savePassword()"
-              >
-                Ubah Password
-              </button>
-            </div>
+          <div class="alert" id="passwordAlert"></div>
+          <div class="form-actions">
+            <button class="btn-save" id="savePasswordBtn" onclick="savePassword()">Ubah Password</button>
           </div>
         </div>
-      </main>
-    </div>
-
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-brand">
-          <span class="logo">Paramuda</span>
-          <p>Organisasi Kemahasiswaan · Bandung</p>
-        </div>
-        <div class="footer-links">
-          <a href="/Hero Page/Hero Page.html#profile">Profile</a>
-          <a href="/articles/articles-new.html">Artikel</a>
-          <a href="/Hero Page/Hero Page.html#location">Lokasi</a>
-          <a href="/Hero Page/Hero Page.html#contact">Kontak</a>
-        </div>
-        <p class="footer-copy">
-          © 2025 Paramuda Bandung. Semua hak dilindungi.
-        </p>
       </div>
-    </footer>
+ 
+    </main>
+  </div>
+ 
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="logo">Paramuda</span>
+        <p>Organisasi Kemahasiswaan · Bandung</p>
+      </div>
+      <div class="footer-links">
+        <a href="/Hero Page/Hero Page.html#profile">Profile</a>
+        <a href="/articles/articles-new.html">Artikel</a>
+        <a href="/Hero Page/Hero Page.html#location">Lokasi</a>
+        <a href="/Hero Page/Hero Page.html#contact">Kontak</a>
+      </div>
+      <p class="footer-copy">© 2025 Paramuda Bandung. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+ 
+  <script>
 
-    <script>
-      // ── HAMBURGER ─────────────────────────────────────────────
-      document
-        .getElementById("hamburger")
-        .addEventListener("click", function () {
-          this.classList.toggle("active");
-          document.getElementById("navMenu").classList.toggle("active");
+    // ══ CROP MODAL ENGINE ════════════════════════════════════
+    let _cropper      = null;
+    let _cropCallback = null;
+    let _cropFlipX    = 1;
+    let _cropFlipY    = 1;
+    let _cropRatio    = 4/3;
+
+    function openCropModal(file, onSave) {
+      _cropCallback = onSave;
+      _cropFlipX = 1; _cropFlipY = 1; _cropRatio = 4/3;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.getElementById('cropImg');
+        img.src = e.target.result;
+        document.getElementById('cropOverlay').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        document.querySelectorAll('.ratio-btn').forEach((b,i) => b.classList.toggle('active', i===2));
+        if (_cropper) { _cropper.destroy(); _cropper = null; }
+        _cropper = new Cropper(img, {
+          aspectRatio: _cropRatio, viewMode: 1, autoCropArea: 0.85,
+          movable: true, zoomable: true, rotatable: true, scalable: true,
+          checkOrientation: true, responsive: true, restore: false,
+          guides: true, center: true, highlight: false,
+          cropBoxMovable: true, cropBoxResizable: true,
+          toggleDragModeOnDblclick: false,
+          zoom(e) { document.getElementById('cropZoomSlider').value = e.detail.ratio; },
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function cropCancel() {
+      if (_cropper) { _cropper.destroy(); _cropper = null; }
+      document.getElementById('cropOverlay').style.display = 'none';
+      document.body.style.overflow = '';
+      _cropCallback = null;
+    }
+
+    async function cropSave() {
+      const saveBtn   = document.getElementById('cropSaveBtn');
+      const saveLabel = document.getElementById('cropSavingLabel');
+
+      // Guard: cropper and callback must exist
+      if (!_cropper) {
+        alert('Crop belum siap. Coba pilih gambar lagi.');
+        return;
+      }
+      if (!_cropCallback) {
+        console.error('cropSave: _cropCallback is null');
+        return;
+      }
+
+      saveBtn.disabled = true;
+      saveLabel.style.display = 'inline';
+
+      try {
+        // 1. Get the cropped canvas
+        const canvas = _cropper.getCroppedCanvas({
+          maxWidth:  1600,
+          maxHeight: 1200,
+          imageSmoothingEnabled: true,
+          imageSmoothingQuality: 'high',
         });
 
-      let currentUser = null;
-      let _allSubs = []; // cached submissions for filter
-      let _activeSubFilter = "all";
-
-      // ── INIT ──────────────────────────────────────────────────
-      window.addEventListener("DOMContentLoaded", async () => {
-        currentUser = await authGetCurrentUser();
-
-        if (!currentUser) {
-          document.getElementById("notLoggedIn").style.display = "flex";
-          return;
+        if (!canvas) {
+          throw new Error('getCroppedCanvas() returned null — crop box may be outside image.');
         }
 
-        document.getElementById("profilePage").style.display = "grid";
-        populateProfile(currentUser);
-        switchTab("info");
-      });
+        // 2. Convert to blob (wrapped in a Promise so we can await it)
+        const blob = await new Promise((resolve, reject) => {
+          // Try JPEG first; fall back to PNG if toBlob returns null blob
+          canvas.toBlob((b) => {
+            if (b && b.size > 0) { resolve(b); }
+            else {
+              // Some browsers/environments return null for JPEG — fall back to PNG
+              canvas.toBlob((b2) => {
+                if (b2 && b2.size > 0) resolve(b2);
+                else reject(new Error('toBlob() returned empty blob on both JPEG and PNG.'));
+              }, 'image/png');
+            }
+          }, 'image/jpeg', 0.88);
+        });
 
-      // ── POPULATE ──────────────────────────────────────────────
-      function populateProfile(user) {
-        const initials = toInitials(user.name || user.email);
-        const roleCls = user.role === "admin" ? "role-admin" : "role-member";
-
-        // Sidebar avatar — show photo if exists, else initials
-        const avatarEl = document.getElementById("sidebarAvatar");
-        if (user.avatar_url) {
-          avatarEl.innerHTML = `<img src="${user.avatar_url}" alt="Foto profil" />`;
-        } else {
-          avatarEl.textContent = initials;
-        }
-
-        document.getElementById("sidebarName").textContent = user.name || "—";
-        document.getElementById("sidebarEmail").textContent = user.email || "—";
-        const roleBadge = document.getElementById("sidebarRole");
-        roleBadge.textContent = user.role || "member";
-        roleBadge.className = "role-badge " + roleCls;
-
-        // Info tab
-        document.getElementById("infoName").textContent = user.name || "—";
-        document.getElementById("infoEmail").textContent = user.email || "—";
-        document.getElementById("infoRole").textContent = user.role || "member";
-        document.getElementById("infoId").textContent = user.id || "—";
-        document.getElementById("infoJoined").textContent = user.created_at
-          ? new Date(user.created_at).toLocaleDateString("id-ID", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })
-          : "—";
-
-        // Show admin panel button only for admins
-        const adminBtn = document.getElementById("adminPanelBtn");
-        if (adminBtn)
-          adminBtn.style.display = user.role === "admin" ? "block" : "none";
-
-        // Show "Kirim Artikel" button for all logged-in users (member or admin)
-        const submitBtn = document.getElementById("btnOpenSubmit");
-        if (submitBtn) submitBtn.style.display = "block";
-
-        // Pre-fill edit name field
-        document.getElementById("editName").value = user.name || "";
-
-        // Liked count from sessionStorage
-        document.getElementById("statLiked").textContent = getLikedIds().length;
-      }
-
-      // ── AVATAR UPLOAD ─────────────────────────────────────────
-      async function handleAvatarUpload(e) {
-        const file = e.target.files[0];
-        const status = document.getElementById("avatarStatus");
-        if (!file) return;
-
-        // Validate: image only, max 2 MB
-        if (!file.type.startsWith("image/")) {
-          status.textContent = "⚠ File harus berupa gambar.";
-          status.style.color = "#C4622D";
-          return;
-        }
-        if (file.size > 2 * 1024 * 1024) {
-          status.textContent = "⚠ Ukuran maksimal 2 MB.";
-          status.style.color = "#C4622D";
-          return;
-        }
-
-        status.textContent = "Mengunggah...";
-        status.style.color = "var(--text-muted)";
-
-        const result = await uploadAvatar(currentUser.id, file);
+        // 3. Upload to Supabase Storage
+        const ext      = blob.type === 'image/png' ? 'png' : 'jpg';
+        const file     = new File([blob], `cover.${ext}`, { type: blob.type });
+        const result   = await uploadArticleImage(file);
 
         if (!result.ok) {
-          status.textContent = "⚠ Gagal: " + result.error;
-          status.style.color = "#C4622D";
-          return;
+          throw new Error(result.error || 'Upload gagal tanpa pesan error.');
         }
 
-        // Update UI immediately
-        currentUser.avatar_url = result.url;
-        populateProfile(currentUser);
-        status.textContent = "✓ Foto berhasil diperbarui!";
-        status.style.color = "var(--accent)";
-        setTimeout(() => (status.textContent = ""), 3000);
+        // 4. Success — close modal and pass URL to caller
+        cropCancel();
+        _cropCallback(result.url);
 
-        // Reset input so the same file can be re-selected
-        e.target.value = "";
+      } catch (err) {
+        console.error('cropSave error:', err);
+        alert('Gagal memproses gambar: ' + err.message);
+      } finally {
+        saveBtn.disabled = false;
+        saveLabel.style.display = 'none';
       }
+    }
 
-      // ── TAB SWITCHER ──────────────────────────────────────────
-      function switchTab(name) {
-        ["info", "written", "liked", "edit"].forEach((t) => {
-          document
-            .getElementById("tab-" + t)
-            .classList.toggle("active", t === name);
-          document
-            .getElementById("btn-" + t)
-            .classList.toggle("active", t === name);
-        });
-        if (name === "written") loadWritten();
-        if (name === "liked") loadLiked();
+    function setRatio(ratio, btn) {
+      _cropRatio = ratio;
+      document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (_cropper) _cropper.setAspectRatio(isNaN(ratio) ? NaN : ratio);
+    }
+    function cropRotate(deg)  { if (_cropper) _cropper.rotate(deg); }
+    function cropFlip(axis)   {
+      if (!_cropper) return;
+      if (axis==='x') { _cropFlipX*=-1; _cropper.scaleX(_cropFlipX); }
+      else            { _cropFlipY*=-1; _cropper.scaleY(_cropFlipY); }
+    }
+    function cropZoom(delta)  { if (_cropper) _cropper.zoom(delta); }
+    function cropZoomTo(val)  { if (_cropper) _cropper.zoomTo(val); }
+    function cropReset()      {
+      if (_cropper) {
+        _cropper.reset(); _cropFlipX=1; _cropFlipY=1;
+        document.getElementById('cropZoomSlider').value = 1;
       }
+    }
+    // ══ END CROP MODAL ENGINE ════════════════════════════════
 
-      // ── WRITTEN ARTICLES ─────────────────────────────────────
-      async function loadWritten() {
-        const wrap = document.getElementById("writtenList");
-        wrap.innerHTML =
-          '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+    // ── HAMBURGER ─────────────────────────────────────────────
+    document.getElementById('hamburger').addEventListener('click', function () {
+      this.classList.toggle('active');
+      document.getElementById('navMenu').classList.toggle('active');
+    });
 
-        _allSubs = await dbGetMySubmissions();
-
-        // Stat: only count published + submitted articles (not edit requests)
-        const publishedCount = _allSubs.filter(
-          (a) => a.status === "published" && !a.original_id,
-        ).length;
-        document.getElementById("statArticles").textContent = publishedCount;
-
-        _renderSubList();
+    let currentUser = null;
+    let _allSubs = [];          // cached submissions for filter
+    let _activeSubFilter = 'all';
+ 
+    // ── INIT ──────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+      currentUser = await authGetCurrentUser();
+ 
+      if (!currentUser) {
+        document.getElementById('notLoggedIn').style.display = 'flex';
+        return;
       }
-
-      function filterSubs(btn) {
-        document
-          .querySelectorAll("#subFilterRow .tab-pill")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        _activeSubFilter = btn.dataset.filter;
-        _renderSubList();
+ 
+      document.getElementById('profilePage').style.display = 'grid';
+      populateProfile(currentUser);
+      switchTab('info');
+    });
+ 
+    // ── POPULATE ──────────────────────────────────────────────
+    function populateProfile(user) {
+      const initials = toInitials(user.name || user.email);
+      const roleCls  = user.role === 'admin' ? 'role-admin' : 'role-member';
+ 
+      // Sidebar avatar — show photo if exists, else initials
+      const avatarEl = document.getElementById('sidebarAvatar');
+      if (user.avatar_url) {
+        avatarEl.innerHTML = `<img src="${user.avatar_url}" alt="Foto profil" />`;
+      } else {
+        avatarEl.textContent = initials;
       }
+ 
+      document.getElementById('sidebarName').textContent  = user.name  || '—';
+      document.getElementById('sidebarEmail').textContent = user.email || '—';
+      const roleBadge = document.getElementById('sidebarRole');
+      roleBadge.textContent = user.role || 'member';
+      roleBadge.className   = 'role-badge ' + roleCls;
+ 
+      // Info tab
+      document.getElementById('infoName').textContent   = user.name   || '—';
+      document.getElementById('infoEmail').textContent  = user.email  || '—';
+      document.getElementById('infoRole').textContent   = user.role   || 'member';
+      document.getElementById('infoId').textContent     = user.id     || '—';
+      document.getElementById('infoJoined').textContent = user.created_at
+        ? new Date(user.created_at).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })
+        : '—';
+ 
+      // Show admin panel button only for admins
+      const adminBtn = document.getElementById('adminPanelBtn');
+      if (adminBtn) adminBtn.style.display = user.role === 'admin' ? 'block' : 'none';
 
-      function _renderSubList() {
-        const wrap = document.getElementById("writtenList");
-        let items = _allSubs;
-        if (_activeSubFilter !== "all")
-          items = items.filter((a) => a.status === _activeSubFilter);
+      // Show "Kirim Artikel" button for all logged-in users (member or admin)
+      const submitBtn = document.getElementById('btnOpenSubmit');
+      if (submitBtn) submitBtn.style.display = 'block';
+ 
+      // Pre-fill edit name field
+      document.getElementById('editName').value = user.name || '';
+ 
+      // Liked count from sessionStorage
+      document.getElementById('statLiked').textContent = getLikedIds().length;
+    }
+ 
+    // ── AVATAR UPLOAD ─────────────────────────────────────────
+    async function handleAvatarUpload(e) {
+      const file   = e.target.files[0];
+      const status = document.getElementById('avatarStatus');
+      if (!file) return;
+ 
+      // Validate: image only, max 2 MB
+      if (!file.type.startsWith('image/')) {
+        status.textContent = '⚠ File harus berupa gambar.';
+        status.style.color = '#C4622D';
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        status.textContent = '⚠ Ukuran maksimal 2 MB.';
+        status.style.color = '#C4622D';
+        return;
+      }
+ 
+      status.textContent = 'Mengunggah...';
+      status.style.color = 'var(--text-muted)';
+ 
+      const result = await uploadAvatar(currentUser.id, file);
+ 
+      if (!result.ok) {
+        status.textContent = '⚠ Gagal: ' + result.error;
+        status.style.color = '#C4622D';
+        return;
+      }
+ 
+      // Update UI immediately
+      currentUser.avatar_url = result.url;
+      populateProfile(currentUser);
+      status.textContent = '✓ Foto berhasil diperbarui!';
+      status.style.color = 'var(--accent)';
+      setTimeout(() => status.textContent = '', 3000);
+ 
+      // Reset input so the same file can be re-selected
+      e.target.value = '';
+    }
+ 
+    // ── TAB SWITCHER ──────────────────────────────────────────
+    function switchTab(name) {
+      ['info','written','liked','edit'].forEach(t => {
+        document.getElementById('tab-'  + t).classList.toggle('active', t === name);
+        document.getElementById('btn-'  + t).classList.toggle('active', t === name);
+      });
+      if (name === 'written') loadWritten();
+      if (name === 'liked')   loadLiked();
+    }
+ 
+    // ── WRITTEN ARTICLES ─────────────────────────────────────
+    async function loadWritten() {
+      const wrap = document.getElementById('writtenList');
+      wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
 
-        if (items.length === 0) {
-          const labels = {
-            pending: "menunggu review",
-            pending_edit: "edit diajukan",
-            published: "diterbitkan",
-            rejected: "ditolak",
-            draft: "draft",
-            all: "ada",
-          };
-          wrap.innerHTML = `
+      _allSubs = await dbGetMySubmissions();
+
+      // Stat: only count published + submitted articles (not edit requests)
+      const publishedCount = _allSubs.filter(a => a.status === 'published' && !a.original_id).length;
+      document.getElementById('statArticles').textContent = publishedCount;
+
+      _renderSubList();
+    }
+
+    function filterSubs(btn) {
+      document.querySelectorAll('#subFilterRow .tab-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      _activeSubFilter = btn.dataset.filter;
+      _renderSubList();
+    }
+
+    function _renderSubList() {
+      const wrap = document.getElementById('writtenList');
+      let items = _allSubs;
+      if (_activeSubFilter !== 'all') items = items.filter(a => a.status === _activeSubFilter);
+
+      if (items.length === 0) {
+        const labels = { pending:'menunggu review', pending_edit:'edit diajukan',
+          published:'diterbitkan', rejected:'ditolak', draft:'draft', all:'ada' };
+        wrap.innerHTML = `
           <div class="articles-empty">
             <div class="empty-icon">✎</div>
-            <h3>Belum ada artikel ${labels[_activeSubFilter] || ""}</h3>
+            <h3>Belum ada artikel ${labels[_activeSubFilter] || ''}</h3>
             <p>Tekan "Kirim Artikel Baru" untuk mulai menulis.</p>
           </div>`;
-          return;
-        }
-
-        wrap.innerHTML = items.map((a) => submissionCard(a)).join("");
+        return;
       }
 
-      function submissionCard(a) {
-        const statusMap = {
-          draft: ["sub-draft", "Draft"],
-          pending: ["sub-pending", "Menunggu Review"],
-          pending_edit: ["sub-pending_edit", "Edit Diajukan"],
-          published: ["sub-published", "Diterbitkan ✓"],
-          rejected: ["sub-rejected", "Ditolak"],
-        };
-        const [cls, label] = statusMap[a.status] || ["sub-draft", "Draft"];
+      wrap.innerHTML = items.map(a => submissionCard(a)).join('');
+    }
 
-        const isEditReq = !!a.original_id;
-        const typeLabel = isEditReq ? "✎ Permintaan Edit" : "✦ Artikel Baru";
+    function submissionCard(a) {
+      const statusMap = {
+        draft:        ['sub-draft',        'Draft'],
+        pending:      ['sub-pending',      'Menunggu Review'],
+        pending_edit: ['sub-pending_edit', 'Edit Diajukan'],
+        published:    ['sub-published',    'Diterbitkan ✓'],
+        rejected:     ['sub-rejected',     'Ditolak'],
+      };
+      const [cls, label] = statusMap[a.status] || ['sub-draft','Draft'];
 
-        let actionsHtml = "";
-        if (a.status === "published" && !isEditReq) {
-          actionsHtml = `
+      const isEditReq = !!a.original_id;
+      const typeLabel = isEditReq ? '✎ Permintaan Edit' : '✦ Artikel Baru';
+
+      let actionsHtml = '';
+      if (a.status === 'published' && !isEditReq) {
+        actionsHtml = `
           <button class="btn-sub-action" onclick="openEditRequestPanel(${a.id})">✎ Ajukan Edit</button>
           <a href="/articles/article-detail-new.html?id=${a.id}" class="btn-sub-action" target="_blank">Lihat →</a>`;
-        } else if (a.status === "draft" || a.status === "rejected") {
-          actionsHtml = `
+      } else if (a.status === 'draft' || a.status === 'rejected') {
+        actionsHtml = `
           <button class="btn-sub-action" onclick="openEditPanel(${a.id})">✎ Edit</button>
           <button class="btn-sub-action" onclick="spResubmit(${a.id})">Kirim Ulang →</button>
           <button class="btn-sub-action danger" onclick="withdrawSub(${a.id})">✕ Hapus</button>`;
-        } else if (a.status === "pending" || a.status === "pending_edit") {
-          actionsHtml = `
+      } else if (a.status === 'pending' || a.status === 'pending_edit') {
+        actionsHtml = `
           <button class="btn-sub-action danger" onclick="withdrawSub(${a.id})">✕ Tarik Kembali</button>`;
-        }
+      }
 
-        const rejectBlock =
-          a.status === "rejected" && a.rejection_reason
-            ? `<div class="reject-reason-box"><strong>Alasan penolakan:</strong> ${a.rejection_reason}</div>`
-            : "";
+      const rejectBlock = a.status === 'rejected' && a.rejection_reason
+        ? `<div class="reject-reason-box"><strong>Alasan penolakan:</strong> ${a.rejection_reason}</div>`
+        : '';
 
-        return `
+      return `
         <div class="sub-card" id="subcard-${a.id}">
           <div class="sub-card-top">
             <div style="flex:1;min-width:0;">
-              <div class="sub-card-title">${a.title || "(Tanpa judul)"}</div>
-              <div class="sub-card-subtitle">${a.subtitle || ""}</div>
+              <div class="sub-card-title">${a.title || '(Tanpa judul)'}</div>
+              <div class="sub-card-subtitle">${a.subtitle || ''}</div>
             </div>
             <span class="sub-badge ${cls}">${label}</span>
           </div>
           <div class="sub-card-meta">
             <span style="font-size:11px;color:var(--text-muted);">${typeLabel}</span>
             <span style="font-size:11px;color:var(--border);">·</span>
-            <span class="article-tag-pill ${catClass(a.category)}">${a.category || "—"}</span>
+            <span class="article-tag-pill ${catClass(a.category)}">${a.category || '—'}</span>
             <span style="font-size:11px;color:var(--text-muted);">${formatDateLabel(a.created_at)}</span>
           </div>
           ${rejectBlock}
           <div class="sub-card-actions">${actionsHtml}</div>
         </div>`;
-      }
-
-      // ── LIKED ARTICLES ────────────────────────────────────────
-      async function loadLiked() {
-        const wrap = document.getElementById("likedList");
-        wrap.innerHTML =
-          '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
-
-        const liked = getLikedIds();
-        if (liked.length === 0) {
-          wrap.innerHTML = `
+    }
+ 
+    // ── LIKED ARTICLES ────────────────────────────────────────
+    async function loadLiked() {
+      const wrap = document.getElementById('likedList');
+      wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+ 
+      const liked = getLikedIds();
+      if (liked.length === 0) {
+        wrap.innerHTML = `
           <div class="articles-empty">
             <div class="empty-icon">♡</div>
             <h3>Belum ada artikel disukai</h3>
             <p>Tekan tombol suka saat membaca artikel untuk menyimpannya di sini.</p>
           </div>`;
-          return;
-        }
-
-        const all = await dbGetAll();
-        const likedArticles = all.filter((a) => liked.includes(String(a.id)));
-
-        if (likedArticles.length === 0) {
-          wrap.innerHTML = `
+        return;
+      }
+ 
+      const all = await dbGetAll();
+      const likedArticles = all.filter(a => liked.includes(String(a.id)));
+ 
+      if (likedArticles.length === 0) {
+        wrap.innerHTML = `
           <div class="articles-empty">
             <div class="empty-icon">♡</div>
             <h3>Artikel tidak ditemukan</h3>
             <p>Artikel yang kamu sukai mungkin sudah dihapus.</p>
           </div>`;
-          return;
-        }
-
-        wrap.innerHTML = `
-        <div class="articles-list" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));">
-          ${likedArticles.map((a) => articleCard(a)).join("")}
-        </div>`;
+        return;
       }
-
-      // ── ARTICLE CARD TEMPLATE (liked tab) ────────────────────
-      function articleCard(a) {
-        return `
+ 
+      wrap.innerHTML = `
+        <div class="articles-list" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));">
+          ${likedArticles.map(a => articleCard(a)).join('')}
+        </div>`;
+    }
+ 
+    // ── ARTICLE CARD TEMPLATE (liked tab) ────────────────────
+    function articleCard(a) {
+      return `
         <a href="/articles/article-detail-new.html?id=${a.id}" class="acard">
           <div class="acard-top">
             <div class="article-tag-pill ${catClass(a.category)}">${a.category}</div>
             <span class="acard-date">${a.date_label || formatDateLabel(a.date)}</span>
           </div>
           <h3>${a.title}</h3>
-          <p>${a.subtitle || ""}</p>
+          <p>${a.subtitle || ''}</p>
           <div class="acard-footer">
             <div class="author-chip sm">
               <div class="author-avatar sm">${a.author_initials || toInitials(a.author)}</div>
@@ -1102,569 +944,470 @@
             <span class="read-time">${a.read_time || 5} mnt</span>
           </div>
         </a>`;
+    }
+
+    // ── SUBMISSION PANEL LOGIC ────────────────────────────────
+    function openSubmitPanel(prefill = null, editingId = null, originalId = null, rejectionReason = null) {
+      const overlay = document.getElementById('submitOverlay');
+      const isEdit  = !!editingId;
+      const isEditReq = !!originalId;
+
+      document.getElementById('panelTitle').textContent =
+        isEditReq ? 'Ajukan Perubahan Artikel' :
+        isEdit    ? 'Edit Artikel' : 'Kirim Artikel Baru';
+      document.getElementById('panelSubtitle').textContent =
+        isEditReq ? 'Perubahan akan direview admin sebelum diterapkan.' :
+        isEdit    ? 'Perbarui dan kirim ulang untuk review.' :
+        'Artikel akan direview oleh admin sebelum diterbitkan.';
+
+      // Reset form
+      ['spTitle','spSubtitle','spAuthorRole','spBody'].forEach(id =>
+        document.getElementById(id).value = prefill?.[id.replace('sp','').toLowerCase().replace('authorRole','author_role').replace('body','body')] || '');
+
+      document.getElementById('spTitle').value      = prefill?.title || '';
+      document.getElementById('spSubtitle').value   = prefill?.subtitle || '';
+      document.getElementById('spCategory').value   = prefill?.category || '';
+      document.getElementById('spReadTime').value   = prefill?.read_time || 5;
+      document.getElementById('spAuthorRole').value = prefill?.author_role || '';
+      document.getElementById('spDate').value       = prefill?.date || new Date().toISOString().split('T')[0];
+      // Cover image
+      if (prefill?.cover_image) {
+        document.getElementById('spCoverUrl').value = prefill.cover_image;
+        spPreviewCover(prefill.cover_image);
+      } else {
+        spClearCover();
+      }
+      document.getElementById('spBody').value       = prefill?.body || '';
+      document.getElementById('spEditingId').value  = editingId || '';
+      document.getElementById('spOriginalId').value = originalId || '';
+      document.getElementById('spAlert').className  = 'sp-alert';
+
+      // Show/hide draft button (not applicable for edit requests)
+      document.getElementById('spDraftBtn').style.display = isEditReq ? 'none' : 'inline-block';
+
+      // Show rejection reason if re-editing a rejected article
+      const banner = document.getElementById('rejectBanner');
+      if (rejectionReason) {
+        banner.style.display = 'flex';
+        document.getElementById('rejectReasonText').textContent = rejectionReason;
+      } else {
+        banner.style.display = 'none';
       }
 
-      // ── SUBMISSION PANEL LOGIC ────────────────────────────────
-      function openSubmitPanel(
-        prefill = null,
-        editingId = null,
-        originalId = null,
-        rejectionReason = null,
-      ) {
-        const overlay = document.getElementById("submitOverlay");
-        const isEdit = !!editingId;
-        const isEditReq = !!originalId;
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-        document.getElementById("panelTitle").textContent = isEditReq
-          ? "Ajukan Perubahan Artikel"
-          : isEdit
-            ? "Edit Artikel"
-            : "Kirim Artikel Baru";
-        document.getElementById("panelSubtitle").textContent = isEditReq
-          ? "Perubahan akan direview admin sebelum diterapkan."
-          : isEdit
-            ? "Perbarui dan kirim ulang untuk review."
-            : "Artikel akan direview oleh admin sebelum diterbitkan.";
+    function closeSubmitPanel() {
+      document.getElementById('submitOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
-        // Reset form
-        ["spTitle", "spSubtitle", "spAuthorRole", "spBody"].forEach(
-          (id) =>
-            (document.getElementById(id).value =
-              prefill?.[
-                id
-                  .replace("sp", "")
-                  .toLowerCase()
-                  .replace("authorRole", "author_role")
-                  .replace("body", "body")
-              ] || ""),
-        );
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('submitOverlay')) closeSubmitPanel();
+    }
 
-        document.getElementById("spTitle").value = prefill?.title || "";
-        document.getElementById("spSubtitle").value = prefill?.subtitle || "";
-        document.getElementById("spCategory").value = prefill?.category || "";
-        document.getElementById("spReadTime").value = prefill?.read_time || 5;
-        document.getElementById("spAuthorRole").value =
-          prefill?.author_role || "";
-        document.getElementById("spDate").value =
-          prefill?.date || new Date().toISOString().split("T")[0];
-        document.getElementById("spBody").value = prefill?.body || "";
-        document.getElementById("spEditingId").value = editingId || "";
-        document.getElementById("spOriginalId").value = originalId || "";
-        document.getElementById("spAlert").className = "sp-alert";
+    async function openEditPanel(id) {
+      const a = _allSubs.find(x => x.id === id) || await dbGetById(id);
+      if (!a) return;
+      openSubmitPanel(a, a.id, null, a.rejection_reason);
+    }
 
-        // Show/hide draft button (not applicable for edit requests)
-        document.getElementById("spDraftBtn").style.display = isEditReq
-          ? "none"
-          : "inline-block";
+    async function openEditRequestPanel(originalId) {
+      const a = _allSubs.find(x => x.id === originalId) || await dbGetById(originalId);
+      if (!a) return;
+      openSubmitPanel(a, null, originalId);
+    }
 
-        // Show rejection reason if re-editing a rejected article
-        const banner = document.getElementById("rejectBanner");
-        if (rejectionReason) {
-          banner.style.display = "flex";
-          document.getElementById("rejectReasonText").textContent =
-            rejectionReason;
-        } else {
-          banner.style.display = "none";
-        }
-
-        overlay.classList.add("open");
-        document.body.style.overflow = "hidden";
+    // ── EDITOR HELPERS ───────────────────────────────────────
+    function spInsert(before, after = '') {
+      const ta = document.getElementById('spBody');
+      const s = ta.selectionStart, e = ta.selectionEnd;
+      const sel = ta.value.slice(s, e);
+      // For block-level prefixes (H2, H3, list, quote), insert on new line
+      const needsNewline = ['## ','### ','- ','> '].includes(before);
+      let prefix = '';
+      if (needsNewline && s > 0) {
+        // Check if we're already at the start of a line
+        const charBefore = ta.value[s - 1];
+        if (charBefore !== '\n') prefix = '\n';
       }
+      const rep = prefix + before + sel + after;
+      ta.value = ta.value.slice(0, s) + rep + ta.value.slice(e);
+      ta.focus();
+      const cursor = s + rep.length - after.length;
+      ta.selectionStart = ta.selectionEnd = cursor;
+      spUpdateCounts();
+    }
 
-      function closeSubmitPanel() {
-        document.getElementById("submitOverlay").classList.remove("open");
-        document.body.style.overflow = "";
+    function spInsertDivider() {
+      const ta = document.getElementById('spBody');
+      const s = ta.selectionStart;
+      const ins = '\n---\n\n';
+      ta.value = ta.value.slice(0, s) + ins + ta.value.slice(s);
+      ta.focus();
+      ta.selectionStart = ta.selectionEnd = s + ins.length;
+      spUpdateCounts();
+    }
+
+    function spUpdateCounts() {
+      const val = document.getElementById('spBody').value;
+      const words = val.trim() ? val.trim().split(/\s+/).length : 0;
+      document.getElementById('spWordCount').textContent = words + ' kata';
+      document.getElementById('spCharCount').textContent = val.length + ' karakter';
+      // Update preview if open
+      if (document.getElementById('spPreviewPane').classList.contains('visible')) {
+        _renderPreview();
       }
+    }
 
-      function handleOverlayClick(e) {
-        if (e.target === document.getElementById("submitOverlay"))
-          closeSubmitPanel();
+    function toggleEditorPreview() {
+      const btn   = document.getElementById('spPreviewToggle');
+      const editor = document.getElementById('spEditorPane');
+      const preview = document.getElementById('spPreviewPane');
+      const isOpen = preview.classList.contains('visible');
+      if (isOpen) {
+        preview.classList.remove('visible');
+        editor.style.display = 'block';
+        btn.classList.remove('active');
+        btn.textContent = '👁 Pratinjau';
+      } else {
+        _renderPreview();
+        editor.style.display = 'none';
+        preview.classList.add('visible');
+        btn.classList.add('active');
+        btn.textContent = '✎ Editor';
       }
+    }
 
-      async function openEditPanel(id) {
-        const a = _allSubs.find((x) => x.id === id) || (await dbGetById(id));
-        if (!a) return;
-        openSubmitPanel(a, a.id, null, a.rejection_reason);
+    function _renderPreview() {
+      const val = document.getElementById('spBody').value.trim();
+      const pane = document.getElementById('spPreviewPane');
+      if (!val) {
+        pane.innerHTML = '<div class="sp-preview-empty">Belum ada konten untuk ditampilkan.</div>';
+        return;
       }
+      pane.innerHTML = bodyToHtml(val);
+    }
 
-      async function openEditRequestPanel(originalId) {
-        const a =
-          _allSubs.find((x) => x.id === originalId) ||
-          (await dbGetById(originalId));
-        if (!a) return;
-        openSubmitPanel(a, null, originalId);
-      }
+    // ── ENTER KEY = paragraph, Shift+Enter = line break ──────
+    document.addEventListener('DOMContentLoaded', () => {
+      const ta = document.getElementById('spBody');
+      if (!ta) return;
 
-      // ── EDITOR HELPERS ───────────────────────────────────────
-      function spInsert(before, after = "") {
-        const ta = document.getElementById("spBody");
-        const s = ta.selectionStart,
-          e = ta.selectionEnd;
-        const sel = ta.value.slice(s, e);
-        // For block-level prefixes (H2, H3, list, quote), insert on new line
-        const needsNewline = ["## ", "### ", "- ", "> "].includes(before);
-        let prefix = "";
-        if (needsNewline && s > 0) {
-          // Check if we're already at the start of a line
-          const charBefore = ta.value[s - 1];
-          if (charBefore !== "\n") prefix = "\n";
-        }
-        const rep = prefix + before + sel + after;
-        ta.value = ta.value.slice(0, s) + rep + ta.value.slice(e);
-        ta.focus();
-        const cursor = s + rep.length - after.length;
-        ta.selectionStart = ta.selectionEnd = cursor;
-        spUpdateCounts();
-      }
-
-      function spInsertDivider() {
-        const ta = document.getElementById("spBody");
-        const s = ta.selectionStart;
-        const ins = "\n---\n\n";
-        ta.value = ta.value.slice(0, s) + ins + ta.value.slice(s);
-        ta.focus();
-        ta.selectionStart = ta.selectionEnd = s + ins.length;
-        spUpdateCounts();
-      }
-
-      function spUpdateCounts() {
-        const val = document.getElementById("spBody").value;
-        const words = val.trim() ? val.trim().split(/\s+/).length : 0;
-        document.getElementById("spWordCount").textContent = words + " kata";
-        document.getElementById("spCharCount").textContent =
-          val.length + " karakter";
-        // Update preview if open
-        if (
-          document.getElementById("spPreviewPane").classList.contains("visible")
-        ) {
-          _renderPreview();
-        }
-      }
-
-      function toggleEditorPreview() {
-        const btn = document.getElementById("spPreviewToggle");
-        const editor = document.getElementById("spEditorPane");
-        const preview = document.getElementById("spPreviewPane");
-        const isOpen = preview.classList.contains("visible");
-        if (isOpen) {
-          preview.classList.remove("visible");
-          editor.style.display = "block";
-          btn.classList.remove("active");
-          btn.textContent = "👁 Pratinjau";
-        } else {
-          _renderPreview();
-          editor.style.display = "none";
-          preview.classList.add("visible");
-          btn.classList.add("active");
-          btn.textContent = "✎ Editor";
-        }
-      }
-
-      function _renderPreview() {
-        const val = document.getElementById("spBody").value.trim();
-        const pane = document.getElementById("spPreviewPane");
-        if (!val) {
-          pane.innerHTML =
-            '<div class="sp-preview-empty">Belum ada konten untuk ditampilkan.</div>';
-          return;
-        }
-        pane.innerHTML = bodyToHtml(val);
-      }
-
-      // ── ENTER KEY = paragraph, Shift+Enter = line break ──────
-      document.addEventListener("DOMContentLoaded", () => {
-        const ta = document.getElementById("spBody");
-        if (!ta) return;
-
-        ta.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            const s = ta.selectionStart,
-              end = ta.selectionEnd;
-            if (e.shiftKey) {
-              // Shift+Enter → single line break
-              const ins = "\n";
-              ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
-              ta.selectionStart = ta.selectionEnd = s + ins.length;
-            } else {
-              // Enter → paragraph break (blank line)
-              const ins = "\n\n";
-              ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
-              ta.selectionStart = ta.selectionEnd = s + ins.length;
-            }
-            spUpdateCounts();
-            autoGrow(ta);
+      ta.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const s = ta.selectionStart, end = ta.selectionEnd;
+          if (e.shiftKey) {
+            // Shift+Enter → single line break
+            const ins = '\n';
+            ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
+            ta.selectionStart = ta.selectionEnd = s + ins.length;
+          } else {
+            // Enter → paragraph break (blank line)
+            const ins = '\n\n';
+            ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
+            ta.selectionStart = ta.selectionEnd = s + ins.length;
           }
-        });
-
-        ta.addEventListener("input", () => {
           spUpdateCounts();
           autoGrow(ta);
-        });
+        }
       });
 
-      function autoGrow(ta) {
-        ta.style.height = "auto";
-        const max = 420;
-        ta.style.height = Math.min(ta.scrollHeight, max) + "px";
+      ta.addEventListener('input', () => {
+        spUpdateCounts();
+        autoGrow(ta);
+      });
+    });
+
+    function autoGrow(ta) {
+      ta.style.height = 'auto';
+      const max = 420;
+      ta.style.height = Math.min(ta.scrollHeight, max) + 'px';
+    }
+
+    function _spPayload() {
+      return {
+        title:       document.getElementById('spTitle').value.trim(),
+        subtitle:    document.getElementById('spSubtitle').value.trim(),
+        category:    document.getElementById('spCategory').value,
+        read_time:   parseInt(document.getElementById('spReadTime').value) || 5,
+        author:      currentUser.name || currentUser.email,
+        author_role: document.getElementById('spAuthorRole').value.trim(),
+        date:        document.getElementById('spDate').value,
+        body:        document.getElementById('spBody').value.trim(),
+        cover_image: document.getElementById('spCoverUrl').value.trim() || null,
+      };
+    }
+
+    function _spShowAlert(msg, type='error') {
+      const el = document.getElementById('spAlert');
+      el.textContent = msg;
+      el.className = 'sp-alert ' + type;
+    }
+
+    async function spSaveDraft() {
+      const payload = _spPayload();
+      if (!payload.title) { _spShowAlert('Judul tidak boleh kosong.'); return; }
+      const btn = document.getElementById('spDraftBtn');
+      btn.textContent = 'Menyimpan...'; btn.disabled = true;
+
+      const editingId  = document.getElementById('spEditingId').value;
+      if (editingId) {
+        await dbUpdate(editingId, { ...payload, status:'draft' });
+      } else {
+        await dbSubmitArticle(payload, 'draft');
       }
 
-      function _spPayload() {
-        return {
-          title: document.getElementById("spTitle").value.trim(),
-          subtitle: document.getElementById("spSubtitle").value.trim(),
-          category: document.getElementById("spCategory").value,
-          read_time: parseInt(document.getElementById("spReadTime").value) || 5,
-          author: currentUser.name || currentUser.email,
-          author_role: document.getElementById("spAuthorRole").value.trim(),
-          date: document.getElementById("spDate").value,
-          body: document.getElementById("spBody").value.trim(),
-        };
+      btn.textContent = 'Simpan Draft'; btn.disabled = false;
+      _spShowAlert('✓ Draft tersimpan!', 'success');
+      setTimeout(() => { closeSubmitPanel(); loadWritten(); }, 1200);
+    }
+
+    async function spSubmit() {
+      const payload  = _spPayload();
+      const editingId  = document.getElementById('spEditingId').value;
+      const originalId = document.getElementById('spOriginalId').value;
+
+      if (!payload.title || !payload.subtitle || !payload.category || !payload.body) {
+        _spShowAlert('Lengkapi semua kolom wajib (judul, ringkasan, kategori, isi).');
+        return;
       }
 
-      function _spShowAlert(msg, type = "error") {
-        const el = document.getElementById("spAlert");
-        el.textContent = msg;
-        el.className = "sp-alert " + type;
+      const btn = document.getElementById('spSubmitBtn');
+      btn.textContent = 'Mengirim...'; btn.disabled = true;
+
+      let result;
+      if (originalId) {
+        result = await dbSubmitEditRequest(parseInt(originalId), payload);
+      } else if (editingId) {
+        await dbUpdate(editingId, { ...payload, status:'pending' });
+        result = { ok: true };
+      } else {
+        result = await dbSubmitArticle(payload, 'pending');
       }
 
-      async function spSaveDraft() {
-        const payload = _spPayload();
-        if (!payload.title) {
-          _spShowAlert("Judul tidak boleh kosong.");
-          return;
-        }
-        const btn = document.getElementById("spDraftBtn");
-        btn.textContent = "Menyimpan...";
-        btn.disabled = true;
+      btn.textContent = 'Kirim untuk Review →'; btn.disabled = false;
 
-        const editingId = document.getElementById("spEditingId").value;
-        if (editingId) {
-          await dbUpdate(editingId, { ...payload, status: "draft" });
-        } else {
-          await dbSubmitArticle(payload, "draft");
-        }
+      if (!result.ok) { _spShowAlert('Gagal: ' + result.error); return; }
+      _spShowAlert('✓ Artikel berhasil dikirim! Admin akan mereview segera.', 'success');
+      setTimeout(() => { closeSubmitPanel(); loadWritten(); }, 1500);
+    }
 
-        btn.textContent = "Simpan Draft";
-        btn.disabled = false;
-        _spShowAlert("✓ Draft tersimpan!", "success");
-        setTimeout(() => {
-          closeSubmitPanel();
-          loadWritten();
-        }, 1200);
+    async function spResubmit(id) {
+      await dbUpdate(id, { status:'pending', rejection_reason:null });
+      loadWritten();
+    }
+
+    async function withdrawSub(id) {
+      if (!confirm('Hapus artikel ini?')) return;
+      await dbWithdrawSubmission(id);
+      _allSubs = _allSubs.filter(a => a.id !== id);
+      _renderSubList();
+    }
+ 
+    // ── EDIT: SAVE NAME ───────────────────────────────────────
+    async function saveName() {
+      const name  = document.getElementById('editName').value.trim();
+      const alert = document.getElementById('nameAlert');
+      const btn   = document.getElementById('saveNameBtn');
+ 
+      alert.className = 'alert';
+      if (!name) {
+        alert.textContent = 'Nama tidak boleh kosong.';
+        alert.className   = 'alert error';
+        return;
       }
-
-      async function spSubmit() {
-        const payload = _spPayload();
-        const editingId = document.getElementById("spEditingId").value;
-        const originalId = document.getElementById("spOriginalId").value;
-
-        if (
-          !payload.title ||
-          !payload.subtitle ||
-          !payload.category ||
-          !payload.body
-        ) {
-          _spShowAlert(
-            "Lengkapi semua kolom wajib (judul, ringkasan, kategori, isi).",
-          );
-          return;
-        }
-
-        const btn = document.getElementById("spSubmitBtn");
-        btn.textContent = "Mengirim...";
-        btn.disabled = true;
-
-        let result;
-        if (originalId) {
-          result = await dbSubmitEditRequest(parseInt(originalId), payload);
-        } else if (editingId) {
-          await dbUpdate(editingId, { ...payload, status: "pending" });
-          result = { ok: true };
-        } else {
-          result = await dbSubmitArticle(payload, "pending");
-        }
-
-        btn.textContent = "Kirim untuk Review →";
-        btn.disabled = false;
-
-        if (!result.ok) {
-          _spShowAlert("Gagal: " + result.error);
-          return;
-        }
-        _spShowAlert(
-          "✓ Artikel berhasil dikirim! Admin akan mereview segera.",
-          "success",
-        );
-        setTimeout(() => {
-          closeSubmitPanel();
-          loadWritten();
-        }, 1500);
+ 
+      btn.textContent = 'Menyimpan...';
+      btn.disabled    = true;
+ 
+      const { error } = await db
+        .from('profiles')
+        .update({ name })
+        .eq('id', currentUser.id);
+ 
+      btn.textContent = 'Simpan Nama';
+      btn.disabled    = false;
+ 
+      if (error) {
+        alert.textContent = 'Gagal menyimpan: ' + error.message;
+        alert.className   = 'alert error';
+        return;
       }
-
-      async function spResubmit(id) {
-        await dbUpdate(id, { status: "pending", rejection_reason: null });
-        loadWritten();
+ 
+      // Refresh local user data
+      currentUser.name = name;
+      populateProfile(currentUser);
+      alert.textContent = '✓ Nama berhasil diperbarui!';
+      alert.className   = 'alert success';
+      setTimeout(() => alert.className = 'alert', 3000);
+    }
+ 
+    // ── EDIT: CHANGE PASSWORD ─────────────────────────────────
+    async function savePassword() {
+      const newPw  = document.getElementById('newPassword').value;
+      const confPw = document.getElementById('confirmPassword').value;
+      const alert  = document.getElementById('passwordAlert');
+      const btn    = document.getElementById('savePasswordBtn');
+ 
+      alert.className = 'alert';
+ 
+      if (!newPw || newPw.length < 8) {
+        alert.textContent = 'Password minimal 8 karakter.';
+        alert.className   = 'alert error';
+        return;
       }
-
-      async function withdrawSub(id) {
-        if (!confirm("Hapus artikel ini?")) return;
-        await dbWithdrawSubmission(id);
-        _allSubs = _allSubs.filter((a) => a.id !== id);
-        _renderSubList();
+      if (newPw !== confPw) {
+        alert.textContent = 'Konfirmasi password tidak cocok.';
+        alert.className   = 'alert error';
+        return;
       }
-
-      // ── EDIT: SAVE NAME ───────────────────────────────────────
-      async function saveName() {
-        const name = document.getElementById("editName").value.trim();
-        const alert = document.getElementById("nameAlert");
-        const btn = document.getElementById("saveNameBtn");
-
-        alert.className = "alert";
-        if (!name) {
-          alert.textContent = "Nama tidak boleh kosong.";
-          alert.className = "alert error";
-          return;
-        }
-
-        btn.textContent = "Menyimpan...";
-        btn.disabled = true;
-
-        const { error } = await db
-          .from("profiles")
-          .update({ name })
-          .eq("id", currentUser.id);
-
-        btn.textContent = "Simpan Nama";
-        btn.disabled = false;
-
-        if (error) {
-          alert.textContent = "Gagal menyimpan: " + error.message;
-          alert.className = "alert error";
-          return;
-        }
-
-        // Refresh local user data
-        currentUser.name = name;
-        populateProfile(currentUser);
-        alert.textContent = "✓ Nama berhasil diperbarui!";
-        alert.className = "alert success";
-        setTimeout(() => (alert.className = "alert"), 3000);
+ 
+      btn.textContent = 'Mengubah...';
+      btn.disabled    = true;
+ 
+      const { error } = await db.auth.updateUser({ password: newPw });
+ 
+      btn.textContent = 'Ubah Password';
+      btn.disabled    = false;
+ 
+      if (error) {
+        alert.textContent = 'Gagal mengubah password: ' + error.message;
+        alert.className   = 'alert error';
+        return;
       }
+ 
+      document.getElementById('newPassword').value    = '';
+      document.getElementById('confirmPassword').value = '';
+      alert.textContent = '✓ Password berhasil diubah!';
+      alert.className   = 'alert success';
+      setTimeout(() => alert.className = 'alert', 4000);
+    }
+ 
+    // ── LOGOUT ────────────────────────────────────────────────
+    async function doLogout() {
+      await authLogout();
+      window.location.href = '/Hero Page/Hero Page.html';
+    }
+ 
+    // ── LIKED IDS (stored in sessionStorage by article-detail) ─
+    function getLikedIds() {
+      return JSON.parse(sessionStorage.getItem('paramuda_liked') || '[]');
+    }
+  </script>
 
-      // ── EDIT: CHANGE PASSWORD ─────────────────────────────────
-      async function savePassword() {
-        const newPw = document.getElementById("newPassword").value;
-        const confPw = document.getElementById("confirmPassword").value;
-        const alert = document.getElementById("passwordAlert");
-        const btn = document.getElementById("savePasswordBtn");
+  <!-- ══ SUBMISSION SLIDE-IN PANEL ══════════════════════════ -->
+  <div class="submit-overlay" id="submitOverlay" onclick="handleOverlayClick(event)">
+    <div class="submit-panel" id="submitPanel">
 
-        alert.className = "alert";
+      <div class="submit-panel-header">
+        <div>
+          <h2 id="panelTitle">Kirim Artikel Baru</h2>
+          <p id="panelSubtitle">Artikel akan direview oleh admin sebelum diterbitkan.</p>
+        </div>
+        <button class="panel-close" onclick="closeSubmitPanel()">✕</button>
+      </div>
 
-        if (!newPw || newPw.length < 8) {
-          alert.textContent = "Password minimal 8 karakter.";
-          alert.className = "alert error";
-          return;
-        }
-        if (newPw !== confPw) {
-          alert.textContent = "Konfirmasi password tidak cocok.";
-          alert.className = "alert error";
-          return;
-        }
+      <div class="submit-panel-body">
 
-        btn.textContent = "Mengubah...";
-        btn.disabled = true;
-
-        const { error } = await db.auth.updateUser({ password: newPw });
-
-        btn.textContent = "Ubah Password";
-        btn.disabled = false;
-
-        if (error) {
-          alert.textContent = "Gagal mengubah password: " + error.message;
-          alert.className = "alert error";
-          return;
-        }
-
-        document.getElementById("newPassword").value = "";
-        document.getElementById("confirmPassword").value = "";
-        alert.textContent = "✓ Password berhasil diubah!";
-        alert.className = "alert success";
-        setTimeout(() => (alert.className = "alert"), 4000);
-      }
-
-      // ── LOGOUT ────────────────────────────────────────────────
-      async function doLogout() {
-        await authLogout();
-        window.location.href = "/Hero Page/Hero Page.html";
-      }
-
-      // ── LIKED IDS (stored in sessionStorage by article-detail) ─
-      function getLikedIds() {
-        return JSON.parse(sessionStorage.getItem("paramuda_liked") || "[]");
-      }
-    </script>
-
-    <!-- ══ SUBMISSION SLIDE-IN PANEL ══════════════════════════ -->
-    <div
-      class="submit-overlay"
-      id="submitOverlay"
-      onclick="handleOverlayClick(event)"
-    >
-      <div class="submit-panel" id="submitPanel">
-        <div class="submit-panel-header">
+        <!-- Rejection reason banner (shown when editing a rejected article) -->
+        <div class="reject-banner" id="rejectBanner" style="display:none;">
           <div>
-            <h2 id="panelTitle">Kirim Artikel Baru</h2>
-            <p id="panelSubtitle">
-              Artikel akan direview oleh admin sebelum diterbitkan.
-            </p>
+            <strong>Artikel Ditolak</strong>
+            <span id="rejectReasonText"></span>
           </div>
-          <button class="panel-close" onclick="closeSubmitPanel()">✕</button>
         </div>
 
-        <div class="submit-panel-body">
-          <!-- Rejection reason banner (shown when editing a rejected article) -->
-          <div class="reject-banner" id="rejectBanner" style="display: none">
-            <div>
-              <strong>Artikel Ditolak</strong>
-              <span id="rejectReasonText"></span>
-            </div>
-          </div>
+        <div class="sp-field">
+          <label>Judul <span style="color:var(--accent)">*</span></label>
+          <input type="text" id="spTitle" placeholder="Judul artikel yang menarik..." maxlength="120" />
+        </div>
 
+        <div class="sp-field">
+          <label>Ringkasan <span style="color:var(--accent)">*</span></label>
+          <textarea id="spSubtitle" rows="2" placeholder="Satu–dua kalimat deskripsi artikel..." maxlength="220"></textarea>
+        </div>
+
+        <div class="sp-row">
           <div class="sp-field">
-            <label>Judul <span style="color: var(--accent)">*</span></label>
-            <input
-              type="text"
-              id="spTitle"
-              placeholder="Judul artikel yang menarik..."
-              maxlength="120"
-            />
+            <label>Kategori <span style="color:var(--accent)">*</span></label>
+            <select id="spCategory">
+              <option value="">Pilih kategori...</option>
+              <option>Sains &amp; Teknologi</option>
+              <option>Sosial &amp; Humaniora</option>
+              <option>Ekonomi &amp; Bisnis</option>
+              <option>Hukum &amp; Kebijakan</option>
+              <option>Kesehatan &amp; Lingkungan</option>
+              <option>Seni &amp; Kreativitas</option>
+            </select>
           </div>
-
           <div class="sp-field">
-            <label>Ringkasan <span style="color: var(--accent)">*</span></label>
-            <textarea
-              id="spSubtitle"
-              rows="2"
-              placeholder="Satu–dua kalimat deskripsi artikel..."
-              maxlength="220"
-            ></textarea>
+            <label>Estimasi Baca (menit)</label>
+            <input type="number" id="spReadTime" value="5" min="1" max="60" />
           </div>
+        </div>
 
-          <div class="sp-row">
-            <div class="sp-field">
-              <label
-                >Kategori <span style="color: var(--accent)">*</span></label
-              >
-              <select id="spCategory">
-                <option value="">Pilih kategori...</option>
-                <option>Sains &amp; Teknologi</option>
-                <option>Sosial &amp; Humaniora</option>
-                <option>Ekonomi &amp; Bisnis</option>
-                <option>Hukum &amp; Kebijakan</option>
-                <option>Kesehatan &amp; Lingkungan</option>
-                <option>Seni &amp; Kreativitas</option>
-              </select>
-            </div>
-            <div class="sp-field">
-              <label>Estimasi Baca (menit)</label>
-              <input type="number" id="spReadTime" value="5" min="1" max="60" />
-            </div>
-          </div>
-
-          <div class="sp-row">
-            <div class="sp-field">
-              <label>Jabatan / Prodi</label>
-              <input
-                type="text"
-                id="spAuthorRole"
-                placeholder="Mahasiswa Teknik Informatika..."
-              />
-            </div>
-            <div class="sp-field">
-              <label>Tanggal</label>
-              <input type="date" id="spDate" />
-            </div>
-          </div>
-
+        <div class="sp-row">
           <div class="sp-field">
-            <label>
-              Isi Artikel <span style="color: var(--accent)">*</span>
-              <span
-                class="sp-hint"
-                style="margin-left: 0.5rem; font-weight: 400"
-              >
-                Enter = paragraf baru &nbsp;·&nbsp; Shift+Enter = baris baru
-              </span>
-            </label>
+            <label>Jabatan / Prodi</label>
+            <input type="text" id="spAuthorRole" placeholder="Mahasiswa Teknik Informatika..." />
+          </div>
+          <div class="sp-field">
+            <label>Tanggal</label>
+            <input type="date" id="spDate" />
+          </div>
+        </div>
 
-            <div class="sp-editor-wrap">
-              <!-- Toolbar -->
-              <div class="sp-toolbar">
-                <button
-                  type="button"
-                  onclick="spInsert('## ', '')"
-                  title="Heading besar"
-                >
-                  H2
-                </button>
-                <button
-                  type="button"
-                  onclick="spInsert('### ', '')"
-                  title="Heading kecil"
-                >
-                  H3
-                </button>
-                <div class="sp-toolbar-sep"></div>
-                <button
-                  type="button"
-                  onclick="spInsert('**', '**')"
-                  title="Tebal"
-                >
-                  <b>B</b>
-                </button>
-                <button
-                  type="button"
-                  onclick="spInsert('_', '_')"
-                  title="Miring"
-                >
-                  <i>I</i>
-                </button>
-                <div class="sp-toolbar-sep"></div>
-                <button
-                  type="button"
-                  onclick="spInsert('> ', '')"
-                  title="Kutipan"
-                >
-                  ❝
-                </button>
-                <button type="button" onclick="spInsert('- ', '')" title="List">
-                  • List
-                </button>
-                <button
-                  type="button"
-                  onclick="spInsertDivider()"
-                  title="Garis pemisah"
-                >
-                  —
-                </button>
-                <div class="sp-toolbar-sep"></div>
-                <button
-                  type="button"
-                  class="sp-preview-toggle"
-                  id="spPreviewToggle"
-                  onclick="toggleEditorPreview()"
-                >
-                  👁 Pratinjau
-                </button>
-              </div>
+        <div class="sp-field">
+          <label>Gambar Cover</label>
+          <div class="sp-cover-wrap" id="spCoverWrap" onclick="document.getElementById('spCoverFile').click()">
+            <img id="spCoverPreview" class="sp-cover-preview" alt="Cover preview" />
+            <div class="sp-cover-placeholder" id="spCoverPlaceholder">
+              <span>🖼</span>
+              <p>Klik untuk upload, atau tempel URL di bawah</p>
+            </div>
+          </div>
+          <input type="file" id="spCoverFile" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="spHandleCoverUpload(event)" />
+          <div class="sp-cover-row">
+            <input type="text" id="spCoverUrl" class="sp-field input" style="flex:1;min-width:0;"
+              placeholder="Atau tempel URL gambar..." oninput="spPreviewCover(this.value)" />
+            <button type="button" class="btn-sub-action danger" onclick="spClearCover()" style="white-space:nowrap;">✕ Hapus</button>
+          </div>
+          <div class="sp-cover-status" id="spCoverStatus"></div>
+        </div>
 
-              <!-- Editor pane -->
-              <div class="sp-editor-pane" id="spEditorPane">
-                <textarea
-                  id="spBody"
-                  class="sp-body-textarea"
-                  placeholder="Mulai menulis artikel kamu di sini...
+        <div class="sp-field">
+          <label>
+            Isi Artikel <span style="color:var(--accent)">*</span>
+            <span class="sp-hint" style="margin-left:.5rem;font-weight:400;">
+              Enter = paragraf baru &nbsp;·&nbsp; Shift+Enter = baris baru
+            </span>
+          </label>
+
+          <div class="sp-editor-wrap">
+
+            <!-- Toolbar -->
+            <div class="sp-toolbar">
+              <button type="button" onclick="spInsert('## ', '')"     title="Heading besar">H2</button>
+              <button type="button" onclick="spInsert('### ', '')"    title="Heading kecil">H3</button>
+              <div class="sp-toolbar-sep"></div>
+              <button type="button" onclick="spInsert('**','**')"     title="Tebal"><b>B</b></button>
+              <button type="button" onclick="spInsert('_','_')"       title="Miring"><i>I</i></button>
+              <div class="sp-toolbar-sep"></div>
+              <button type="button" onclick="spInsert('> ', '')"      title="Kutipan">❝</button>
+              <button type="button" onclick="spInsert('- ', '')"      title="List">• List</button>
+              <button type="button" onclick="spInsertDivider()"       title="Garis pemisah">—</button>
+              <div class="sp-toolbar-sep"></div>
+              <button type="button" class="sp-preview-toggle" id="spPreviewToggle"
+                onclick="toggleEditorPreview()">👁 Pratinjau</button>
+            </div>
+
+            <!-- Editor pane -->
+            <div class="sp-editor-pane" id="spEditorPane">
+              <textarea id="spBody" class="sp-body-textarea"
+                placeholder="Mulai menulis artikel kamu di sini...
 
 Tekan Enter untuk paragraf baru.
 
@@ -1673,49 +1416,84 @@ Gunakan toolbar di atas untuk format:
   B → **teks tebal**
   I → _teks miring_
   ❝ → > kutipan
-  • → - item list"
-                ></textarea>
-              </div>
-
-              <!-- Preview pane -->
-              <div class="sp-preview-pane" id="spPreviewPane"></div>
-
-              <!-- Footer: word count + hint -->
-              <div class="sp-editor-footer">
-                <span id="spWordCount">0 kata</span>
-                <span id="spCharCount">0 karakter</span>
-              </div>
+  • → - item list"></textarea>
             </div>
-            <!-- /.sp-editor-wrap -->
-          </div>
 
-          <div class="sp-alert" id="spAlert"></div>
+            <!-- Preview pane -->
+            <div class="sp-preview-pane" id="spPreviewPane"></div>
+
+            <!-- Footer: word count + hint -->
+            <div class="sp-editor-footer">
+              <span id="spWordCount">0 kata</span>
+              <span id="spCharCount">0 karakter</span>
+            </div>
+
+          </div><!-- /.sp-editor-wrap -->
         </div>
-        <!-- /body -->
 
-        <div class="submit-panel-footer">
-          <input type="hidden" id="spEditingId" value="" />
-          <input type="hidden" id="spOriginalId" value="" />
-          <button
-            class="btn-ghost"
-            style="font-size: 13px"
-            onclick="spSaveDraft()"
-            id="spDraftBtn"
-          >
-            Simpan Draft
-          </button>
-          <button
-            class="btn-solid"
-            style="font-size: 13px"
-            onclick="spSubmit()"
-            id="spSubmitBtn"
-          >
-            Kirim untuk Review →
-          </button>
+        <div class="sp-alert" id="spAlert"></div>
+
+      </div><!-- /body -->
+
+      <div class="submit-panel-footer">
+        <input type="hidden" id="spEditingId" value="" />
+        <input type="hidden" id="spOriginalId" value="" />
+        <button class="btn-ghost" style="font-size:13px;" onclick="spSaveDraft()" id="spDraftBtn">Simpan Draft</button>
+        <button class="btn-solid" style="font-size:13px;" onclick="spSubmit()" id="spSubmitBtn">Kirim untuk Review →</button>
+      </div>
+
+    </div><!-- /panel -->
+  </div><!-- /overlay -->
+
+
+  <!-- ══ SHARED CROP MODAL ════════════════════════════════════ -->
+  <div class="crop-overlay" id="cropOverlay" style="display:none;">
+    <div class="crop-modal">
+      <div class="crop-header">
+        <h3>Sesuaikan Gambar</h3>
+        <button class="crop-close" onclick="cropCancel()">✕</button>
+      </div>
+
+      <div class="crop-canvas-wrap" id="cropCanvasWrap">
+        <img id="cropImg" src="" alt="" />
+      </div>
+
+      <div class="crop-controls">
+        <!-- Aspect ratios -->
+        <div class="crop-ratios">
+          <span>Rasio</span>
+          <button class="ratio-btn"        onclick="setRatio(16/9,  this)" title="Landscape">16:9</button>
+          <button class="ratio-btn"        onclick="setRatio(3/2,   this)" title="Foto">3:2</button>
+          <button class="ratio-btn active" onclick="setRatio(4/3,   this)" title="Standar">4:3</button>
+          <button class="ratio-btn"        onclick="setRatio(1/1,   this)" title="Kotak">1:1</button>
+          <button class="ratio-btn"        onclick="setRatio(2/3,   this)" title="Portrait">2:3</button>
+          <button class="ratio-btn"        onclick="setRatio(NaN,   this)" title="Bebas">Bebas</button>
+        </div>
+        <!-- Transform tools -->
+        <div class="crop-tools">
+          <button class="crop-tool-btn" onclick="cropRotate(-90)"  title="Putar kiri">↺</button>
+          <button class="crop-tool-btn" onclick="cropRotate(90)"   title="Putar kanan">↻</button>
+          <button class="crop-tool-btn" onclick="cropFlip('x')"    title="Balik horizontal">↔</button>
+          <button class="crop-tool-btn" onclick="cropFlip('y')"    title="Balik vertikal">↕</button>
+          <div class="crop-tool-sep"></div>
+          <button class="crop-tool-btn" onclick="cropZoom(.1)"     title="Zoom in">+</button>
+          <button class="crop-tool-btn" onclick="cropZoom(-.1)"    title="Zoom out">−</button>
+          <button class="crop-tool-btn" onclick="cropReset()"      title="Reset">⟳</button>
+          <div class="crop-zoom-wrap">
+            <label>Zoom</label>
+            <input type="range" id="cropZoomSlider" min="0.1" max="3" step="0.05" value="1"
+              oninput="cropZoomTo(parseFloat(this.value))" />
+          </div>
         </div>
       </div>
-      <!-- /panel -->
+
+      <div class="crop-footer">
+        <span class="crop-saving-label" id="cropSavingLabel" style="display:none;">Mengunggah…</span>
+        <button class="crop-btn-cancel" onclick="cropCancel()">Batal</button>
+        <button class="crop-btn-save"   id="cropSaveBtn" onclick="cropSave()">✓ Simpan & Unggah</button>
+      </div>
     </div>
-    <!-- /overlay -->
-  </body>
+  </div>
+
+</body>
 </html>

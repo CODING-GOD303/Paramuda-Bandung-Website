@@ -1,204 +1,164 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Artikel & Jurnal — Paramuda Bandung</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/Hero Page/Style.css" />
-    <link rel="stylesheet" href="articles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="/Database/db.js"></script>
-  </head>
-  <body>
-    <nav class="navbar scrolled" id="navbar">
-      <div class="nav-container">
-        <img
-          class="Logo-navbar"
-          src="/Images/Logo Paramuda Indonesia.png"
-          alt=""
-        />
-        <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
-        <ul class="nav-menu" id="navMenu">
-          <li>
-            <a href="/sign in regist/profile.html" class="nav-link">Profile</a>
-          </li>
-          <li>
-            <a href="/articles/articles-new.html" class="nav-link active"
-              >Articles</a
-            >
-          </li>
-          <li>
-            <a href="/Hero Page/Hero Page.html" class="nav-link">About Us</a>
-          </li>
-          <li>
-            <a href="/Hero Page/Hero Page.html#contact" class="nav-link btn-nav"
-              >Contact Us</a
-            >
-          </li>
-        </ul>
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-          <span class="bar"></span><span class="bar"></span
-          ><span class="bar"></span>
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artikel & Jurnal — Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/Hero Page/Style.css" />
+  <link rel="stylesheet" href="articles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/Database/db.js"></script>
+  <style>
+    .acard-thumb {
+      width: calc(100% + 3rem);
+      margin: -1.5rem -1.5rem 1rem;
+      height: 160px;
+      object-fit: cover;
+      border-radius: var(--radius) var(--radius) 0 0;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
+      <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/sign in regist/profile.html" class="nav-link">Profile</a></li>
+        <li><a href="/articles/articles-new.html" class="nav-link active">Articles</a></li>
+        <li><a href="/Hero Page/Hero Page.html" class="nav-link">About Us</a></li>
+        <li><a href="/Hero Page/Hero Page.html#contact" class="nav-link btn-nav">Contact Us</a></li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="section-container">
+      <div class="section-label">Publikasi Paramuda</div>
+      <h1 class="page-title">Artikel & Jurnal</h1>
+      <p class="page-desc">Kumpulan tulisan ilmiah, opini, dan kajian dari anggota Paramuda Bandung.</p>
+      <div class="search-bar">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="searchInput" placeholder="Cari artikel, topik, atau penulis..." />
+        <span class="search-clear" id="searchClear">✕</span>
       </div>
-    </nav>
+    </div>
+  </header>
 
-    <header class="page-header">
-      <div class="section-container">
-        <div class="section-label">Publikasi Paramuda</div>
-        <h1 class="page-title">Artikel & Jurnal</h1>
-        <p class="page-desc">
-          Kumpulan tulisan ilmiah, opini, dan kajian dari anggota Paramuda
-          Bandung.
-        </p>
-        <div class="search-bar">
-          <span class="search-icon">⌕</span>
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="Cari artikel, topik, atau penulis..."
-          />
-          <span class="search-clear" id="searchClear">✕</span>
-        </div>
+  <main class="articles-page">
+    <div class="section-container">
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-cat="all">Semua</button>
+        <button class="filter-btn" data-cat="Sains & Teknologi">Sains & Teknologi</button>
+        <button class="filter-btn" data-cat="Sosial & Humaniora">Sosial & Humaniora</button>
+        <button class="filter-btn" data-cat="Ekonomi & Bisnis">Ekonomi & Bisnis</button>
+        <button class="filter-btn" data-cat="Kesehatan & Lingkungan">Kesehatan & Lingkungan</button>
+        <button class="filter-btn" data-cat="Hukum & Kebijakan">Hukum & Kebijakan</button>
+        <button class="filter-btn" data-cat="Seni & Kreativitas">Seni & Kreativitas</button>
       </div>
-    </header>
 
-    <main class="articles-page">
-      <div class="section-container">
-        <div class="filter-bar" id="filterBar">
-          <button class="filter-btn active" data-cat="all">Semua</button>
-          <button class="filter-btn" data-cat="Sains & Teknologi">
-            Sains & Teknologi
-          </button>
-          <button class="filter-btn" data-cat="Sosial & Humaniora">
-            Sosial & Humaniora
-          </button>
-          <button class="filter-btn" data-cat="Ekonomi & Bisnis">
-            Ekonomi & Bisnis
-          </button>
-          <button class="filter-btn" data-cat="Kesehatan & Lingkungan">
-            Kesehatan & Lingkungan
-          </button>
-          <button class="filter-btn" data-cat="Hukum & Kebijakan">
-            Hukum & Kebijakan
-          </button>
-          <button class="filter-btn" data-cat="Seni & Kreativitas">
-            Seni & Kreativitas
-          </button>
-        </div>
-
-        <div class="result-info">
-          <span id="resultCount"></span>
-          <div class="sort-wrap">
-            <label for="sortSelect">Urutkan:</label>
-            <select id="sortSelect">
-              <option value="newest">Terbaru</option>
-              <option value="oldest">Terlama</option>
-              <option value="alpha">A–Z</option>
-            </select>
-          </div>
-        </div>
-
-        <div id="featuredWrap"></div>
-        <div class="articles-list" id="articleGrid"></div>
-
-        <div class="empty-state" id="emptyState" style="display: none">
-          <div class="empty-icon">◎</div>
-          <h3>Artikel tidak ditemukan</h3>
-          <p>Coba kata kunci lain atau pilih kategori yang berbeda.</p>
-          <button class="btn-secondary" onclick="resetFilters()">
-            Reset Filter
-          </button>
-        </div>
-
-        <div class="load-more" id="loadMore" style="display: none">
-          <button class="btn-load" id="loadMoreBtn">Muat Lebih Banyak</button>
+      <div class="result-info">
+        <span id="resultCount"></span>
+        <div class="sort-wrap">
+          <label for="sortSelect">Urutkan:</label>
+          <select id="sortSelect">
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="alpha">A–Z</option>
+          </select>
         </div>
       </div>
-    </main>
 
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-brand">
-          <span class="logo">Paramuda</span>
-          <p>Organisasi Kemahasiswaan · Bandung</p>
-        </div>
-        <div class="footer-links">
-          <a href="index.html#profile">Profile</a>
-          <a href="articles.html">Artikel</a>
-          <a href="index.html#location">Lokasi</a>
-          <a href="index.html#contact">Kontak</a>
-        </div>
-        <p class="footer-copy">
-          © 2025 Paramuda Bandung. Semua hak dilindungi.
-        </p>
+      <div id="featuredWrap"></div>
+      <div class="articles-list" id="articleGrid"></div>
+
+      <div class="empty-state" id="emptyState" style="display:none;">
+        <div class="empty-icon">◎</div>
+        <h3>Artikel tidak ditemukan</h3>
+        <p>Coba kata kunci lain atau pilih kategori yang berbeda.</p>
+        <button class="btn-secondary" onclick="resetFilters()">Reset Filter</button>
       </div>
-    </footer>
 
-    <script>
-      // Hamburger
-      document
-        .getElementById("hamburger")
-        .addEventListener("click", function () {
-          this.classList.toggle("active");
-          document.getElementById("navMenu").classList.toggle("active");
-        });
+      <div class="load-more" id="loadMore" style="display:none;">
+        <button class="btn-load" id="loadMoreBtn">Muat Lebih Banyak</button>
+      </div>
+    </div>
+  </main>
 
-      let activeCategory = "all";
-      let searchQuery = "";
-      let sortOrder = "newest";
-      let showCount = 6;
-      const STEP = 6;
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <span class="logo">Paramuda</span>
+        <p>Organisasi Kemahasiswaan · Bandung</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html#profile">Profile</a>
+        <a href="articles.html">Artikel</a>
+        <a href="index.html#location">Lokasi</a>
+        <a href="index.html#contact">Kontak</a>
+      </div>
+      <p class="footer-copy">© 2025 Paramuda Bandung. Semua hak dilindungi.</p>
+    </div>
+  </footer>
 
-      // ── RENDER ────────────────────────────────────────────────
-      async function render() {
-        // Show loading state
-        document.getElementById("articleGrid").innerHTML =
-          '<p style="color:var(--text-muted);font-size:14px;">Memuat artikel...</p>';
+  <script>
+    // Hamburger
+    document.getElementById('hamburger').addEventListener('click', function () {
+      this.classList.toggle('active');
+      document.getElementById('navMenu').classList.toggle('active');
+    });
 
-        const all = await dbGetPublished();
+    let activeCategory = 'all';
+    let searchQuery    = '';
+    let sortOrder      = 'newest';
+    let showCount      = 6;
+    const STEP         = 6;
 
-        let filtered = all.filter((a) => {
-          const catOk =
-            activeCategory === "all" || a.category === activeCategory;
-          const searchOk =
-            !searchQuery ||
-            (a.title + " " + a.author + " " + (a.subtitle || ""))
-              .toLowerCase()
-              .includes(searchQuery);
-          return catOk && searchOk;
-        });
+    // ── RENDER ────────────────────────────────────────────────
+    async function render() {
+      // Show loading state
+      document.getElementById('articleGrid').innerHTML =
+        '<p style="color:var(--text-muted);font-size:14px;">Memuat artikel...</p>';
 
-        // Sort
-        filtered.sort((a, b) => {
-          if (sortOrder === "newest")
-            return (b.date || "").localeCompare(a.date || "");
-          if (sortOrder === "oldest")
-            return (a.date || "").localeCompare(b.date || "");
-          if (sortOrder === "alpha") return a.title.localeCompare(b.title);
-          return 0;
-        });
+      const all = await dbGetPublished();
 
-        document.getElementById("resultCount").textContent =
-          filtered.length + " artikel ditemukan";
+      let filtered = all.filter(a => {
+        const catOk    = activeCategory === 'all' || a.category === activeCategory;
+        const searchOk = !searchQuery ||
+          (a.title + ' ' + a.author + ' ' + (a.subtitle || '')).toLowerCase().includes(searchQuery);
+        return catOk && searchOk;
+      });
 
-        // Featured card (only on unfiltered view)
-        const featuredWrap = document.getElementById("featuredWrap");
-        const featured = all.find((a) => a.featured) || all[0];
-        if (featured && activeCategory === "all" && !searchQuery) {
-          featuredWrap.innerHTML = `
+      // Sort
+      filtered.sort((a, b) => {
+        if (sortOrder === 'newest') return (b.date || '').localeCompare(a.date || '');
+        if (sortOrder === 'oldest') return (a.date || '').localeCompare(b.date || '');
+        if (sortOrder === 'alpha')  return a.title.localeCompare(b.title);
+        return 0;
+      });
+
+      document.getElementById('resultCount').textContent =
+        filtered.length + ' artikel ditemukan';
+
+      // Featured card (only on unfiltered view)
+      const featuredWrap = document.getElementById('featuredWrap');
+      const featured = all.find(a => a.featured) || all[0];
+      if (featured && activeCategory === 'all' && !searchQuery) {
+        featuredWrap.innerHTML = `
           <a href="article-detail-new.html?id=${featured.id}" class="article-featured">
             <div class="featured-body">
               <div class="featured-left">
                 <div class="article-tag-pill ${catClass(featured.category)}">${featured.category}</div>
                 <h2>${featured.title}</h2>
-                <p>${featured.subtitle || ""}</p>
+                <p>${featured.subtitle || ''}</p>
                 <div class="featured-meta">
                   <div class="author-chip">
                     <div class="author-avatar">${featured.author_initials || toInitials(featured.author)}</div>
@@ -213,27 +173,25 @@
               <div class="featured-badge"><span>Pilihan Editor</span></div>
             </div>
           </a>`;
-        } else {
-          featuredWrap.innerHTML = "";
-        }
+      } else {
+        featuredWrap.innerHTML = '';
+      }
 
-        // Regular grid (exclude featured from list)
-        const listArticles =
-          activeCategory === "all" && !searchQuery && featured
-            ? filtered.filter((a) => a.id !== featured.id)
-            : filtered;
+      // Regular grid (exclude featured from list)
+      const listArticles = (activeCategory === 'all' && !searchQuery && featured)
+        ? filtered.filter(a => a.id !== featured.id)
+        : filtered;
 
-        const visible = listArticles.slice(0, showCount);
-        document.getElementById("articleGrid").innerHTML = visible
-          .map(
-            (a) => `
+      const visible = listArticles.slice(0, showCount);
+      document.getElementById('articleGrid').innerHTML = visible.map(a => `
         <a href="article-detail-new.html?id=${a.id}" class="acard">
+          ${a.cover_image ? `<img src="${a.cover_image}" class="acard-thumb" alt="" loading="lazy" onerror="this.style.display='none'" />` : ''}
           <div class="acard-top">
             <div class="article-tag-pill ${catClass(a.category)}">${a.category}</div>
             <span class="acard-date">${a.date_label || formatDateLabel(a.date)}</span>
           </div>
           <h3>${a.title}</h3>
-          <p>${a.subtitle || ""}</p>
+          <p>${a.subtitle || ''}</p>
           <div class="acard-footer">
             <div class="author-chip sm">
               <div class="author-avatar sm">${a.author_initials || toInitials(a.author)}</div>
@@ -242,71 +200,63 @@
             <span class="read-time">${a.read_time || 5} mnt</span>
           </div>
         </a>
-      `,
-          )
-          .join("");
+      `).join('');
 
-        const empty = filtered.length === 0;
-        document.getElementById("emptyState").style.display = empty
-          ? "flex"
-          : "none";
-        document.getElementById("loadMore").style.display =
-          listArticles.length > showCount ? "flex" : "none";
-      }
+      const empty = filtered.length === 0;
+      document.getElementById('emptyState').style.display = empty ? 'flex' : 'none';
+      document.getElementById('loadMore').style.display =
+        listArticles.length > showCount ? 'flex' : 'none';
+    }
 
-      // ── EVENTS ────────────────────────────────────────────────
-      document.querySelectorAll(".filter-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          document
-            .querySelectorAll(".filter-btn")
-            .forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          activeCategory = btn.dataset.cat;
-          showCount = 6;
-          render();
-        });
-      });
-
-      const searchInput = document.getElementById("searchInput");
-      const searchClear = document.getElementById("searchClear");
-      searchInput.addEventListener("input", () => {
-        searchQuery = searchInput.value.toLowerCase().trim();
-        searchClear.style.opacity = searchQuery ? "1" : "0";
+    // ── EVENTS ────────────────────────────────────────────────
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCategory = btn.dataset.cat;
         showCount = 6;
         render();
       });
-      searchClear.addEventListener("click", () => {
-        searchInput.value = "";
-        searchQuery = "";
-        searchClear.style.opacity = "0";
-        render();
-      });
-      document.getElementById("sortSelect").addEventListener("change", (e) => {
-        sortOrder = e.target.value;
-        render();
-      });
-      document.getElementById("loadMoreBtn").addEventListener("click", () => {
-        showCount += STEP;
-        render();
-      });
+    });
 
-      function resetFilters() {
-        activeCategory = "all";
-        searchQuery = "";
-        sortOrder = "newest";
-        showCount = 6;
-        searchInput.value = "";
-        searchClear.style.opacity = "0";
-        document.getElementById("sortSelect").value = "newest";
-        document
-          .querySelectorAll(".filter-btn")
-          .forEach((b) => b.classList.remove("active"));
-        document.querySelector('[data-cat="all"]').classList.add("active");
-        render();
-      }
-
-      // Init
+    const searchInput = document.getElementById('searchInput');
+    const searchClear = document.getElementById('searchClear');
+    searchInput.addEventListener('input', () => {
+      searchQuery = searchInput.value.toLowerCase().trim();
+      searchClear.style.opacity = searchQuery ? '1' : '0';
+      showCount = 6;
       render();
-    </script>
-  </body>
+    });
+    searchClear.addEventListener('click', () => {
+      searchInput.value = '';
+      searchQuery = '';
+      searchClear.style.opacity = '0';
+      render();
+    });
+    document.getElementById('sortSelect').addEventListener('change', e => {
+      sortOrder = e.target.value;
+      render();
+    });
+    document.getElementById('loadMoreBtn').addEventListener('click', () => {
+      showCount += STEP;
+      render();
+    });
+
+    function resetFilters() {
+      activeCategory = 'all';
+      searchQuery    = '';
+      sortOrder      = 'newest';
+      showCount      = 6;
+      searchInput.value = '';
+      searchClear.style.opacity = '0';
+      document.getElementById('sortSelect').value = 'newest';
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-cat="all"]').classList.add('active');
+      render();
+    }
+
+    // Init
+    render();
+  </script>
+</body>
 </html>
