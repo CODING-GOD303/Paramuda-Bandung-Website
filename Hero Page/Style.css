@@ -325,6 +325,7 @@ body {
 .hero-visual {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 1rem;
   position: relative;
 }
@@ -773,7 +774,7 @@ body {
   margin-top: 0.25rem;
 }
 .btn-submit:hover {
-  background: #a84e22;
+  background: #09928b;
   transform: translateY(-1px);
 }
 

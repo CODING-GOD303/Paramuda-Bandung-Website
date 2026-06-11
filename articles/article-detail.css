@@ -393,10 +393,10 @@
 
 .sidebar-cta {
   background: rgba(196, 98, 45, 0.05);
-  border-color: rgba(196, 98, 45, 0.2);
+  border-color: rgba(58, 196, 45, 0.2);
 }
 .sidebar-cta h4 {
-  border-color: rgba(196, 98, 45, 0.15);
+  border-color: rgba(45, 196, 196, 0.15);
 }
 .sidebar-cta p {
   font-size: 13px;
