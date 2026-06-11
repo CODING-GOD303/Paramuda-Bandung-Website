@@ -1,16 +1,21 @@
 :root {
-  --bg:        #F8F6F2;
-  --bg-dark:   #141210;
-  --text:      #1A1816;
-  --text-muted:#6B6460;
-  --accent:    #005a1b;
-  --border:    rgba(26,24,22,0.1);
-  --white:     #FFFFFF;
-  --font-head: 'Syne', sans-serif;
-  --font-body: 'Manrope', sans-serif;
-  --radius:    10px;
+  --bg: #f8f6f2;
+  --bg-dark: #023d07;
+  --text: #1a1816;
+  --text-muted: #6b6460;
+  --accent: #005a1b;
+  --border: rgba(26, 24, 22, 0.1);
+  --white: #ffffff;
+  --font-head: "Syne", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --radius: 10px;
   --radius-sm: 6px;
   --sidebar-w: 220px;
+  --gradient-bg:
+    radial-gradient(ellipse 60% 50% at 20% 15%, #1f5233 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 10%, #024666 0%, transparent 55%),
+    radial-gradient(ellipse 45% 55% at 70% 90%, #015252 0%, transparent 55%),
+    linear-gradient(145deg, #0a4e50 0%, #066813 45%, #06495a 100%);
 }
 
 body {
@@ -24,7 +29,7 @@ body {
 
 .signin-container {
   background: #1e1c1a;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 2.5rem;
   width: 100%;
@@ -48,10 +53,12 @@ input {
   outline: none;
 }
 
-input:focus { border-color: #028da5; }
+input:focus {
+  border-color: #028da5;
+}
 
 button {
- width: 100%;
+  width: 100%;
   background: var(--accent);
   color: #fff;
   font-family: var(--font-body);
@@ -62,10 +69,10 @@ button {
   border-radius: 50px;
   cursor: pointer;
   margin-top: 0.25rem;
-  transition: background 0.25s; 
+  transition: background 0.25s;
 }
 
-button:hover { 
- background: var(--white);
- color: #141210;
+button:hover {
+  background: var(--white);
+  color: #141210;
 }

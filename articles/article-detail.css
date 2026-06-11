@@ -58,7 +58,7 @@
   margin-bottom: 1.25rem;
 }
 .article-title {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif  ;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 800;
   color: var(--text);
@@ -431,7 +431,7 @@
     align-items: flex-start;
   }
   .detail-layout {
-    padding: 50rem 1rem 3rem;
+    padding: 5rem 1rem 3rem;
   }
   .article-body {
     font-size: 1rem;
