@@ -13,20 +13,17 @@
 
 :root {
   --bg: #f8f6f2;
-  --bg-dark: #127a17bb;
+  --bg-dark: #141210;
   --text: #1a1816;
-  --text-muted: #015c63;
-  --accent: #164610;
-  --accent-2: #048600;
-  --border: rgba(0, 0, 0, 0.74);
+  --text-muted: #6b6460;
+  --accent: #00b609;
+  --accent-2: #04747c;
+  --border: rgba(26, 24, 22, 0.1);
   --white: #ffffff;
   --font-head: "Syne", sans-serif;
   --font-body: "Manrope", sans-serif;
   --radius: 12px;
   --radius-sm: 6px;
-  --max-w: 1160px;
-  --transition: 0.3s ease;
-  --button-color: var(--white);
 }
 
 html,
@@ -360,7 +357,7 @@ body {
 .field-error {
   display: none;
   font-size: 12px;
-  color: #c44444;
+  color: #cf0202;
   font-weight: 500;
 }
 .strength-bar {
@@ -475,7 +472,7 @@ body {
   margin-top: 0.25rem;
 }
 .btn-auth:hover:not(:disabled) {
-  background: #a84e22;
+  background: #22a8a1;
   transform: translateY(-1px);
 }
 .btn-auth:disabled {
@@ -993,4 +990,168 @@ body {
     font-size: 10px;
     max-width: 70px;
   }
+}
+
+/* ── EXTRA BANNER TYPES ──────────────────────────────────── */
+.auth-banner.warning {
+  background: rgba(186, 117, 23, 0.1);
+  color: #854f0b;
+  border: 1px solid rgba(186, 117, 23, 0.25);
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.auth-banner.warning strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.auth-banner.warning span:last-child {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.auth-banner.danger {
+  background: rgba(196, 68, 68, 0.08);
+  color: #c44444;
+  border: 1px solid rgba(196, 68, 68, 0.2);
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+.auth-banner.danger strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.auth-banner.danger span:last-child {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ── PENDING APPROVAL POPUP ──────────────────────────────── */
+.pending-icon-circle {
+  width: 52px;
+  height: 52px;
+  background: rgba(196, 98, 45, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  z-index: 1;
+  animation: iconBounce 0.6s ease 0.2s both;
+}
+@keyframes iconBounce {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.pending-icon-inner {
+  animation: spin 3s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pending progress steps */
+.pending-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 1.75rem;
+  text-align: left;
+}
+.pstep {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+}
+.pstep.active {
+  background: rgba(196, 98, 45, 0.05);
+}
+.pstep-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  background: rgba(26, 24, 22, 0.06);
+  color: var(--text-muted);
+}
+.pstep.approved .pstep-icon {
+  background: rgba(45, 107, 90, 0.15);
+  color: #2d6b5a;
+}
+.pstep.active .pstep-icon {
+  background: rgba(196, 98, 45, 0.15);
+  color: var(--accent);
+}
+.pstep-icon.pulse {
+  animation: pulseFade 1.4s ease-in-out infinite;
+}
+@keyframes pulseFade {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.pstep-icon.dim {
+  opacity: 0.35;
+}
+.pstep-body strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.15rem;
+}
+.pstep-body span {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.pstep-line {
+  width: 1px;
+  height: 12px;
+  background: var(--border);
+  margin-left: calc(1rem + 14px);
+}
+
+.btn-verify-resend {
+  display: block;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 0.65rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+.btn-verify-resend:hover {
+  border-color: var(--text);
+  color: var(--text);
 }
