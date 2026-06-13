@@ -286,3 +286,38 @@ function bodyToHtml(text) {
   if (inList) html += '</ul>';
   return html;
 }
+// ── RECRUITMENT SETTINGS ─────────────────────────────────────
+// Returns the most recent recruitment_settings row, or null if
+// the table doesn't exist yet. Safe to call before the table is created.
+async function dbGetRecruitment() {
+  const { data, error } = await db
+    .from('recruitment_settings')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+  if (error) { console.warn('dbGetRecruitment:', error.message); return null; }
+  return data;
+}
+
+async function dbUpdateRecruitment(id, updates) {
+  const { error } = await db
+    .from('recruitment_settings')
+    .update(updates)
+    .eq('id', id);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
+async function dbUpsertRecruitment(payload) {
+  // Inserts a new row if none exists, otherwise updates the latest one.
+  const existing = await dbGetRecruitment();
+  if (existing) return dbUpdateRecruitment(existing.id, payload);
+  const { data, error } = await db
+    .from('recruitment_settings')
+    .insert([payload])
+    .select()
+    .single();
+  if (error) return { ok: false, error: error.message };
+  return { ok: true, data };
+}
