@@ -1,4 +1,5 @@
 <!doctype html>
+<<<<<<< HEAD
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -303,6 +304,46 @@
         <div class="pw-wrap">
           <input type="password" id="pwInput" placeholder="Password..." />
           <button class="pw-toggle" id="pwToggle" onclick="togglePw()">👁</button>
+=======
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Paramuda Bandung</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="db.js"></script>
+    <script src="members.js"></script>
+  </head>
+  <body>
+    <!-- ── LOGIN SCREEN ─────────────────────────────────────── -->
+    <div class="login-screen" id="loginScreen">
+      <div class="login-card">
+        <div class="login-logo">Paramuda</div>
+        <div class="login-sub">Panel Admin</div>
+        <div class="login-form">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input
+              type="password"
+              id="pwInput"
+              placeholder="Masukkan password admin..."
+            />
+            <button class="pw-toggle" id="pwToggle" onclick="togglePw()">
+              👁
+            </button>
+          </div>
+          <div class="login-error" id="loginError">
+            Password salah. Coba lagi.
+          </div>
+          <button class="btn-login" onclick="doLogin()">Masuk →</button>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
         <div class="login-error" id="loginError">Email atau password salah.</div>
         <button class="btn-login" id="loginBtn" onclick="doLogin()">Masuk →</button>
@@ -311,6 +352,7 @@
     </div>
   </div>
 
+<<<<<<< HEAD
   <!--ADMIN PANEL-->
   <div class="admin-panel" id="adminPanel" style="display:none;">
 
@@ -352,14 +394,64 @@
         <div class="view-header">
           <h1>Dashboard</h1>
           <span class="view-date" id="todayDate"></span>
+=======
+    <!-- ── ADMIN PANEL ───────────────────────────────────────── -->
+    <div class="admin-panel" id="adminPanel" style="display: none">
+      <!-- SIDEBAR -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-logo">Paramuda</div>
+        <div class="sidebar-label">Menu</div>
+        <nav class="sidebar-nav">
+          <button
+            class="snav-btn active"
+            onclick="showView('dashboard')"
+            id="btn-dashboard"
+          >
+            <span>◈</span> Dashboard
+          </button>
+          <button class="snav-btn" onclick="showView('write')" id="btn-write">
+            <span>✦</span> Tulis Artikel
+          </button>
+          <button class="snav-btn" onclick="showView('manage')" id="btn-manage">
+            <span>☰</span> Kelola Artikel
+          </button>
+          <button
+            class="snav-btn"
+            onclick="showView('members')"
+            id="btn-members"
+          >
+            <span>◎</span> Anggota
+            <span
+              class="snav-badge"
+              id="pendingBadge"
+              style="display: none"
+            ></span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="articles.html" target="_blank" class="sidebar-link"
+            >Lihat Website →</a
+          >
+          <button class="btn-logout" onclick="doLogout()">Keluar</button>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
 
+<<<<<<< HEAD
         <div class="stats-row" id="statsRow"></div>
 
         <div class="dash-section">
           <div class="dash-section-header">
             <h3>Artikel Terbaru</h3>
             <button class="btn-sm" onclick="showView('write')">+ Tulis Baru</button>
+=======
+      <!-- MAIN CONTENT -->
+      <main class="admin-main">
+        <!-- DASHBOARD -->
+        <div class="view" id="view-dashboard">
+          <div class="view-header">
+            <h1>Dashboard</h1>
+            <span class="view-date" id="todayDate"></span>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
           </div>
           <div class="recent-list" id="recentList"></div>
         </div>
@@ -370,6 +462,7 @@
             <h3>Permintaan Terbaru</h3>
             <button class="btn-sm" onclick="showView('requests')">Lihat Semua →</button>
           </div>
+<<<<<<< HEAD
           <div id="dashReqList"></div>
         </div>
       </div>
@@ -398,6 +491,35 @@
               <span class="char-count" id="subtitleCount">0 / 220</span>
             </div>
             <div class="field-row">
+=======
+        </div>
+
+        <!-- WRITE / EDIT -->
+        <div class="view" id="view-write" style="display: none">
+          <div class="view-header">
+            <h1 id="writeTitle">Tulis Artikel Baru</h1>
+            <div class="header-actions">
+              <button
+                class="btn-preview"
+                onclick="togglePreview()"
+                id="previewBtn"
+              >
+                Pratinjau
+              </button>
+              <button
+                class="btn-publish"
+                onclick="publishArticle()"
+                id="publishBtn"
+              >
+                Terbitkan
+              </button>
+            </div>
+          </div>
+
+          <div class="write-layout">
+            <!-- EDITOR -->
+            <div class="editor-panel" id="editorPanel">
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
               <div class="field-group">
                 <label>Kategori <span class="req">*</span></label>
                 <select id="fCategory">
@@ -414,6 +536,7 @@
                 <label>Perkiraan Waktu Baca (menit)</label>
                 <input type="number" id="fReadTime" placeholder="5" min="1" max="60" value="5" />
               </div>
+<<<<<<< HEAD
             </div>
             <div class="field-row">
               <div class="field-group">
@@ -499,6 +622,117 @@ Gunakan toolbar di atas:
   •        → - item list
   —        → garis pemisah"></textarea>
                 </div>
+=======
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Kategori <span class="req">*</span></label>
+                  <select id="fCategory">
+                    <option value="">Pilih kategori...</option>
+                    <option>Sains & Teknologi</option>
+                    <option>Sosial & Humaniora</option>
+                    <option>Ekonomi & Bisnis</option>
+                    <option>Hukum & Kebijakan</option>
+                    <option>Kesehatan & Lingkungan</option>
+                    <option>Seni & Kreativitas</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label>Perkiraan Waktu Baca (menit)</label>
+                  <input
+                    type="number"
+                    id="fReadTime"
+                    placeholder="5"
+                    min="1"
+                    max="60"
+                    value="5"
+                  />
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Nama Penulis <span class="req">*</span></label>
+                  <input
+                    type="text"
+                    id="fAuthor"
+                    placeholder="Nama lengkap..."
+                  />
+                </div>
+                <div class="field-group">
+                  <label>Jabatan / Prodi</label>
+                  <input
+                    type="text"
+                    id="fAuthorRole"
+                    placeholder="Mahasiswa Teknik Informatika..."
+                  />
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field-group">
+                  <label>Tanggal Terbit</label>
+                  <input type="date" id="fDate" />
+                </div>
+                <div class="field-group">
+                  <label>Tandai sebagai Unggulan?</label>
+                  <div class="toggle-wrap">
+                    <label class="toggle">
+                      <input type="checkbox" id="fFeatured" />
+                      <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label" id="featuredLabel">Tidak</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- BODY EDITOR -->
+              <div class="field-group body-field">
+                <label>Isi Artikel <span class="req">*</span></label>
+                <div class="toolbar">
+                  <button
+                    type="button"
+                    onclick="insertMd('## ')"
+                    title="Heading 2"
+                  >
+                    H2
+                  </button>
+                  <button
+                    type="button"
+                    onclick="insertMd('### ')"
+                    title="Heading 3"
+                  >
+                    H3
+                  </button>
+                  <button
+                    type="button"
+                    onclick="insertMd('**', '**')"
+                    title="Bold"
+                  >
+                    <b>B</b>
+                  </button>
+                  <button type="button" onclick="insertMd('> ')" title="Quote">
+                    ❝
+                  </button>
+                  <button type="button" onclick="insertMd('- ')" title="List">
+                    • List
+                  </button>
+                  <span class="toolbar-hint"
+                    >Gunakan ## untuk judul seksi, ### untuk sub-judul, **teks**
+                    untuk tebal, > untuk kutipan</span
+                  >
+                </div>
+                <textarea
+                  id="fBody"
+                  rows="20"
+                  placeholder="Tulis isi artikel di sini...
+
+Gunakan format:
+## Judul Seksi
+### Sub Judul
+**teks tebal**
+> kutipan
+- item list"
+                ></textarea>
+              </div>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
                 <div class="editor-preview-pane" id="adminPreviewPane"></div>
 
@@ -510,24 +744,42 @@ Gunakan toolbar di atas:
               </div><!-- /.editor-wrap -->
             </div>
 
+<<<<<<< HEAD
             <input type="hidden" id="editingId" value="" />
+=======
+            <!-- PREVIEW -->
+            <div class="preview-panel" id="previewPanel" style="display: none">
+              <div class="preview-badge">Pratinjau</div>
+              <div id="previewContent"></div>
+            </div>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
           </div>
 
           <!-- legacy previewPanel kept as hidden stub so old JS refs don't crash -->
           <div id="previewPanel" style="display:none;"></div>
         </div>
 
+<<<<<<< HEAD
         <div class="write-footer">
           <button class="btn-cancel" onclick="cancelEdit()">Batal</button>
           <div class="footer-right">
             <button class="btn-preview" onclick="togglePreview()" id="previewBtn2">Pratinjau</button>
             <button class="btn-publish" onclick="publishArticle()">
               <span id="publishLabel">Terbitkan Artikel</span>
+=======
+        <!-- MANAGE -->
+        <div class="view" id="view-manage" style="display: none">
+          <div class="view-header">
+            <h1>Kelola Artikel</h1>
+            <button class="btn-publish" onclick="showView('write')">
+              + Tulis Baru
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
             </button>
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
       <!--MANAGE-->
       <div class="view" id="view-manage" style="display:none;">
         <div class="view-header">
@@ -629,8 +881,48 @@ Gunakan toolbar di atas:
           <div class="header-actions">
             <span style="font-size:13px;color:var(--text-muted);" id="kirimCount"></span>
           </div>
+=======
+        <!-- MEMBERS -->
+        <div class="view" id="view-members" style="display: none">
+          <div class="view-header">
+            <h1>Kelola Anggota</h1>
+            <div class="members-filter-wrap">
+              <button
+                class="mf-btn active"
+                data-status="pending"
+                onclick="setMemberFilter('pending')"
+              >
+                Menunggu <span id="countPending" class="mf-count"></span>
+              </button>
+              <button
+                class="mf-btn"
+                data-status="approved"
+                onclick="setMemberFilter('approved')"
+              >
+                Disetujui <span id="countApproved" class="mf-count"></span>
+              </button>
+              <button
+                class="mf-btn"
+                data-status="rejected"
+                onclick="setMemberFilter('rejected')"
+              >
+                Ditolak <span id="countRejected" class="mf-count"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- EMPTY STATE -->
+          <div class="members-empty" id="membersEmpty" style="display: none">
+            <div class="empty-icon-wrap">◎</div>
+            <p id="membersEmptyText"></p>
+          </div>
+
+          <!-- PENDING CARDS -->
+          <div class="members-grid" id="membersGrid"></div>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
 
+<<<<<<< HEAD
         <div class="stats-row" id="kirimStats" style="margin-bottom:1.5rem;"></div>
 
         <div class="manage-controls">
@@ -656,9 +948,23 @@ Gunakan toolbar di atas:
             </thead>
             <tbody id="kirimBody"></tbody>
           </table>
+=======
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal-overlay" id="modalOverlay" style="display: none">
+      <div class="modal">
+        <div class="modal-icon">⚠</div>
+        <h3>Hapus Artikel?</h3>
+        <p id="modalArticleTitle"></p>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal()">Batal</button>
+          <button class="btn-delete" onclick="confirmDelete()">
+            Ya, Hapus
+          </button>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
       </div>
 
+<<<<<<< HEAD
     </main>
   </div>
 
@@ -770,6 +1076,53 @@ Gunakan toolbar di atas:
 
       showPanel();
     }
+=======
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // ── AUTH ──────────────────────────────────────────────────
+      window.addEventListener("DOMContentLoaded", () => {
+        if (authCheck()) showPanel();
+        document.getElementById("pwInput").addEventListener("keydown", (e) => {
+          if (e.key === "Enter") doLogin();
+        });
+        document.getElementById("todayDate").textContent =
+          new Date().toLocaleDateString("id-ID", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+        setTodayDate();
+      });
+
+      function doLogin() {
+        const pw = document.getElementById("pwInput").value;
+        if (authLogin(pw)) {
+          showPanel();
+        } else {
+          document.getElementById("loginError").style.display = "block";
+          document.getElementById("pwInput").value = "";
+          document.getElementById("pwInput").focus();
+        }
+      }
+
+      function doLogout() {
+        authLogout();
+        document.getElementById("adminPanel").style.display = "none";
+        document.getElementById("loginScreen").style.display = "flex";
+        document.getElementById("pwInput").value = "";
+        document.getElementById("loginError").style.display = "none";
+      }
+
+      function showPanel() {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("adminPanel").style.display = "flex";
+        renderDashboard();
+        updatePendingBadge();
+      }
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
     async function doLogout() {
       await authLogout();
@@ -780,6 +1133,7 @@ Gunakan toolbar di atas:
       document.getElementById('loginError').style.display = 'none';
     }
 
+<<<<<<< HEAD
     function showPanel() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'flex';
@@ -826,6 +1180,29 @@ Gunakan toolbar di atas:
     async function renderDashboard() {
       document.getElementById('statsRow').innerHTML =
         '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+=======
+      // ── VIEWS ─────────────────────────────────────────────────
+      function showView(name) {
+        ["dashboard", "write", "manage", "members"].forEach((v) => {
+          document.getElementById("view-" + v).style.display =
+            v === name ? "block" : "none";
+          document
+            .getElementById("btn-" + v)
+            .classList.toggle("active", v === name);
+        });
+        if (name === "dashboard") renderDashboard();
+        if (name === "manage") renderManage();
+        if (name === "members") renderMembers();
+        if (name === "write" && !document.getElementById("editingId").value)
+          clearForm();
+      }
+
+      // ── DASHBOARD ─────────────────────────────────────────────
+      function renderDashboard() {
+        const articles = dbGetAll();
+        const cats = [...new Set(articles.map((a) => a.category))].length;
+        const totalViews = articles.reduce((s, a) => s + (a.views || 0), 0);
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
       const [articles, requests] = await Promise.all([dbGetAll(), dbGetContactRequests()]);
 
@@ -837,6 +1214,7 @@ Gunakan toolbar di atas:
         <div class="stat-card"><div class="sc-num">${articles.length}</div><div class="sc-label">Total Artikel</div></div>
         <div class="stat-card"><div class="sc-num">${cats}</div><div class="sc-label">Kategori Aktif</div></div>
         <div class="stat-card"><div class="sc-num">${totalViews.toLocaleString()}</div><div class="sc-label">Total Dilihat</div></div>
+<<<<<<< HEAD
         <div class="stat-card" style="border-color:${pendingReqs > 0 ? 'rgba(196,68,68,.4)' : 'var(--border)'};">
           <div class="sc-num" style="color:${pendingReqs > 0 ? '#C44444' : 'var(--text)'};">${pendingReqs}</div>
           <div class="sc-label">Permintaan Baru</div>
@@ -846,6 +1224,15 @@ Gunakan toolbar di atas:
       // Recent articles
       const recent = articles.slice(0, 5);
       document.getElementById('recentList').innerHTML = recent.map(a => `
+=======
+        <div class="stat-card"><div class="sc-num">${articles.filter((a) => a.featured).length}</div><div class="sc-label">Artikel Unggulan</div></div>
+      `;
+
+        const recent = articles.slice(0, 5);
+        document.getElementById("recentList").innerHTML = recent
+          .map(
+            (a) => `
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         <div class="recent-item">
           <div class="ri-left">
             <span class="ri-tag ${catClass(a.category)}">${a.category}</span>
@@ -853,10 +1240,11 @@ Gunakan toolbar di atas:
           </div>
           <div class="ri-right">
             <span class="ri-author">${a.author}</span>
-            <span class="ri-date">${a.date_label || formatDateLabel(a.date)}</span>
+            <span class="ri-date">${a.dateLabel || formatDateLabel(a.date)}</span>
             <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎</button>
           </div>
         </div>
+<<<<<<< HEAD
       `).join('');
 
       // Recent requests preview (latest 5)
@@ -881,9 +1269,15 @@ Gunakan toolbar di atas:
               </div>
             </div>`;
         }).join('');
+=======
+      `,
+          )
+          .join("");
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
       }
     }
 
+<<<<<<< HEAD
     // ── MANAGE ARTICLES ───────────────────────────────────────
     async function renderManage() {
       const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
@@ -896,6 +1290,22 @@ Gunakan toolbar di atas:
       const articles = all
         .filter(a => (!cat || a.category === cat))
         .filter(a => !q || a.title.toLowerCase().includes(q) || a.author.toLowerCase().includes(q));
+=======
+      // ── MANAGE ────────────────────────────────────────────────
+      function renderManage() {
+        const q = (
+          document.getElementById("manageSearch").value || ""
+        ).toLowerCase();
+        const cat = document.getElementById("manageCat").value;
+        let articles = dbGetAll()
+          .filter((a) => !cat || a.category === cat)
+          .filter(
+            (a) =>
+              !q ||
+              a.title.toLowerCase().includes(q) ||
+              a.author.toLowerCase().includes(q),
+          );
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
       document.getElementById('manageCount').textContent = articles.length + ' artikel ditampilkan';
 
@@ -904,16 +1314,25 @@ Gunakan toolbar di atas:
           <td class="td-title" title="${a.title}">${a.title}</td>
           <td><span class="article-tag-pill ${catClass(a.category)}">${a.category}</span></td>
           <td>${a.author}</td>
+<<<<<<< HEAD
           <td>${a.date_label || formatDateLabel(a.date)}</td>
           <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : '—'}</td>
           <td class="td-actions">
             <button class="btn-icon" onclick="editArticle(${a.id})">✎ Edit</button>
             <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g,"\\'")}')">✕ Hapus</button>
+=======
+          <td>${a.dateLabel || formatDateLabel(a.date)}</td>
+          <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : "—"}</td>
+          <td class="td-actions">
+            <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎ Edit</button>
+            <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g, "\\'")}')">✕ Hapus</button>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
           </td>
         </tr>
       `).join('');
     }
 
+<<<<<<< HEAD
     // ── REQUESTS VIEW ─────────────────────────────────────────
     async function renderRequests() {
       const q          = (document.getElementById('reqSearch').value || '').toLowerCase();
@@ -1187,6 +1606,58 @@ Gunakan toolbar di atas:
         const newArticle = { ...payload, status: 'published' };
         await dbAdd(newArticle);
         showToast('✓ Artikel berhasil diterbitkan!');
+=======
+      // ── WRITE / EDIT ──────────────────────────────────────────
+      function setTodayDate() {
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("fDate").value = today;
+      }
+
+      function clearForm() {
+        ["fTitle", "fSubtitle", "fAuthor", "fAuthorRole", "fBody"].forEach(
+          (id) => {
+            document.getElementById(id).value = "";
+          },
+        );
+        document.getElementById("fCategory").value = "";
+        document.getElementById("fReadTime").value = "5";
+        document.getElementById("fFeatured").checked = false;
+        document.getElementById("featuredLabel").textContent = "Tidak";
+        document.getElementById("editingId").value = "";
+        document.getElementById("writeTitle").textContent =
+          "Tulis Artikel Baru";
+        document.getElementById("publishLabel").textContent =
+          "Terbitkan Artikel";
+        setTodayDate();
+        updateCounts();
+        document.getElementById("previewPanel").style.display = "none";
+        document.getElementById("editorPanel").style.display = "block";
+      }
+
+      function editArticle(id) {
+        const a = dbGetById(id);
+        if (!a) return;
+        showView("write");
+        document.getElementById("fTitle").value = a.title;
+        document.getElementById("fSubtitle").value = a.subtitle;
+        document.getElementById("fCategory").value = a.category;
+        document.getElementById("fReadTime").value = a.readTime || 5;
+        document.getElementById("fAuthor").value = a.author;
+        document.getElementById("fAuthorRole").value = a.authorRole || "";
+        document.getElementById("fDate").value = a.date;
+        document.getElementById("fFeatured").checked = !!a.featured;
+        document.getElementById("featuredLabel").textContent = a.featured
+          ? "Ya"
+          : "Tidak";
+        document.getElementById("fBody").value = a.body;
+        document.getElementById("editingId").value = a.id;
+        document.getElementById("writeTitle").textContent = "Edit Artikel";
+        document.getElementById("publishLabel").textContent =
+          "Simpan Perubahan";
+        updateCounts();
+        document.getElementById("previewPanel").style.display = "none";
+        document.getElementById("editorPanel").style.display = "block";
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
       }
 
       if (btn) { btn.disabled = false; }
@@ -1221,6 +1692,7 @@ Gunakan toolbar di atas:
       }
     }
 
+<<<<<<< HEAD
     function _buildInlinePreview() {
       const title    = document.getElementById('fTitle').value    || '(Judul kosong)';
       const subtitle = document.getElementById('fSubtitle').value || '';
@@ -1294,6 +1766,101 @@ Gunakan toolbar di atas:
       let prefix = '';
       if (blockPrefixes.includes(before) && s > 0 && ta.value[s - 1] !== '\n') {
         prefix = '\n';
+=======
+      function publishArticle() {
+        const title = document.getElementById("fTitle").value.trim();
+        const subtitle = document.getElementById("fSubtitle").value.trim();
+        const category = document.getElementById("fCategory").value;
+        const author = document.getElementById("fAuthor").value.trim();
+        const body = document.getElementById("fBody").value.trim();
+        const readTime = document.getElementById("fReadTime").value || "5";
+        const authorRole = document.getElementById("fAuthorRole").value.trim();
+        const date = document.getElementById("fDate").value;
+        const featured = document.getElementById("fFeatured").checked;
+        const editingId = document.getElementById("editingId").value;
+
+        if (!title || !subtitle || !category || !author || !body) {
+          showToast("⚠ Lengkapi semua kolom wajib.", "error");
+          return;
+        }
+
+        const dateLabel = date
+          ? new Date(date).toLocaleDateString("id-ID", {
+              month: "long",
+              year: "numeric",
+            })
+          : formatDateLabel(new Date().toISOString());
+
+        const payload = {
+          title,
+          subtitle,
+          category,
+          author,
+          authorInitials: toInitials(author),
+          authorRole,
+          date: date || new Date().toISOString().split("T")[0],
+          dateLabel,
+          readTime,
+          featured,
+          body,
+        };
+
+        if (editingId) {
+          dbUpdate(editingId, payload);
+          showToast("✓ Artikel berhasil diperbarui!");
+        } else {
+          dbAdd(payload);
+          showToast("✓ Artikel berhasil diterbitkan!");
+        }
+
+        clearForm();
+        showView("manage");
+      }
+
+      // ── PREVIEW ───────────────────────────────────────────────
+      function togglePreview() {
+        const ep = document.getElementById("editorPanel");
+        const pp = document.getElementById("previewPanel");
+        const showing = pp.style.display !== "none";
+        if (showing) {
+          pp.style.display = "none";
+          ep.style.display = "block";
+          document.getElementById("previewBtn").textContent = "Pratinjau";
+          document.getElementById("previewBtn2").textContent = "Pratinjau";
+        } else {
+          buildPreview();
+          ep.style.display = "none";
+          pp.style.display = "block";
+          document.getElementById("previewBtn").textContent = "← Editor";
+          document.getElementById("previewBtn2").textContent = "← Editor";
+        }
+      }
+
+      function buildPreview() {
+        const title =
+          document.getElementById("fTitle").value || "(Judul kosong)";
+        const subtitle = document.getElementById("fSubtitle").value || "";
+        const category = document.getElementById("fCategory").value || "";
+        const author = document.getElementById("fAuthor").value || "";
+        const body = document.getElementById("fBody").value || "";
+        const date = document.getElementById("fDate").value;
+        const dateLabel = date
+          ? new Date(date).toLocaleDateString("id-ID", {
+              month: "long",
+              year: "numeric",
+            })
+          : "Hari ini";
+
+        document.getElementById("previewContent").innerHTML = `
+        <div class="prev-tag ${catClass(category)}" style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-bottom:1rem;">${category || "Kategori"}</div>
+        <h1 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#1A1816;margin-bottom:.75rem;line-height:1.15;">${title}</h1>
+        <p style="font-size:1.05rem;color:#6B6460;margin-bottom:1.25rem;">${subtitle}</p>
+        <div style="display:flex;gap:.5rem;align-items:center;font-size:13px;color:#6B6460;padding:1rem 0;border-top:1px solid rgba(26,24,22,.1);border-bottom:1px solid rgba(26,24,22,.1);margin-bottom:2rem;">
+          <strong style="color:#1A1816;">${author || "Penulis"}</strong> · <span>${dateLabel}</span>
+        </div>
+        <div class="article-body">${bodyToHtml(body)}</div>
+      `;
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
       }
       const replacement = prefix + before + selected + after;
       ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
@@ -1303,6 +1870,7 @@ Gunakan toolbar di atas:
       autoGrowBody(ta);
     }
 
+<<<<<<< HEAD
     function insertDivider() {
       const ta = document.getElementById('fBody');
       const s = ta.selectionStart;
@@ -1844,3 +2412,198 @@ Gunakan toolbar di atas:
 
 </body>
 </html>
+=======
+      // ── DELETE ────────────────────────────────────────────────
+      let pendingDeleteId = null;
+      function askDelete(id, title) {
+        pendingDeleteId = id;
+        document.getElementById("modalArticleTitle").textContent =
+          '"' + title + '"';
+        document.getElementById("modalOverlay").style.display = "flex";
+      }
+      function closeModal() {
+        pendingDeleteId = null;
+        document.getElementById("modalOverlay").style.display = "none";
+      }
+      function confirmDelete() {
+        if (pendingDeleteId) {
+          dbDelete(pendingDeleteId);
+          showToast("✓ Artikel dihapus.");
+          closeModal();
+          renderManage();
+        }
+      }
+
+      // ── HELPERS ───────────────────────────────────────────────
+      function insertMd(before, after = "") {
+        const ta = document.getElementById("fBody");
+        const s = ta.selectionStart,
+          e = ta.selectionEnd;
+        const selected = ta.value.slice(s, e);
+        const replacement = before + selected + after;
+        ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
+        ta.focus();
+        ta.selectionStart = ta.selectionEnd = s + replacement.length;
+      }
+
+      function updateCounts() {
+        document.getElementById("titleCount").textContent =
+          document.getElementById("fTitle").value.length + " / 120";
+        document.getElementById("subtitleCount").textContent =
+          document.getElementById("fSubtitle").value.length + " / 220";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("fTitle")
+          .addEventListener("input", updateCounts);
+        document
+          .getElementById("fSubtitle")
+          .addEventListener("input", updateCounts);
+        document
+          .getElementById("fFeatured")
+          .addEventListener("change", function () {
+            document.getElementById("featuredLabel").textContent = this.checked
+              ? "Ya"
+              : "Tidak";
+          });
+      });
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast show " + type;
+        clearTimeout(t._timer);
+        t._timer = setTimeout(() => (t.className = "toast"), 3000);
+      }
+
+      // ── MEMBERS ───────────────────────────────────────────────
+      let memberFilter = "pending";
+
+      function setMemberFilter(status) {
+        memberFilter = status;
+        document
+          .querySelectorAll(".mf-btn")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.status === status),
+          );
+        renderMembers();
+      }
+
+      async function renderMembers() {
+        const all = await membersGetAll();
+        const pending = all.filter((m) => m.status === "pending");
+        const approved = all.filter((m) => m.status === "approved");
+        const rejected = all.filter((m) => m.status === "rejected");
+
+        document.getElementById("countPending").textContent =
+          pending.length || "";
+        document.getElementById("countApproved").textContent =
+          approved.length || "";
+        document.getElementById("countRejected").textContent =
+          rejected.length || "";
+
+        const filtered = all.filter((m) => m.status === memberFilter);
+        const grid = document.getElementById("membersGrid");
+        const empty = document.getElementById("membersEmpty");
+
+        if (filtered.length === 0) {
+          grid.innerHTML = "";
+          empty.style.display = "flex";
+          const msgs = {
+            pending: "Tidak ada pendaftaran yang menunggu persetujuan.",
+            approved: "Belum ada anggota yang disetujui.",
+            rejected: "Tidak ada pendaftaran yang ditolak.",
+          };
+          document.getElementById("membersEmptyText").textContent =
+            msgs[memberFilter];
+          return;
+        }
+
+        empty.style.display = "none";
+        grid.innerHTML = filtered
+          .map(
+            (m) => `
+        <div class="member-card" id="mc-${m.id}">
+          <div class="mc-top">
+            <div class="mc-avatar">${m.initials}</div>
+            <div class="mc-info">
+              <strong class="mc-name">${m.name}</strong>
+              <span class="mc-email">${m.email}</span>
+            </div>
+            <div class="mc-status-badge status-${m.status}">
+              ${m.status === "pending" ? "⏳ Menunggu" : ""}
+              ${m.status === "approved" ? "✓ Disetujui" : ""}
+              ${m.status === "rejected" ? "✕ Ditolak" : ""}
+            </div>
+          </div>
+          <div class="mc-meta">
+            <span>Daftar: ${new Date(m.joinedAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>
+            ${m.approvedAt ? `<span>Disetujui: ${new Date(m.approvedAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>` : ""}
+            ${m.rejectedAt ? `<span>Ditolak: ${new Date(m.rejectedAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>` : ""}
+          </div>
+          <div class="mc-actions">
+            ${m.status !== "approved" ? `<button class="btn-approve" onclick="handleApprove(${m.id})">✓ Setujui</button>` : ""}
+            ${m.status !== "rejected" ? `<button class="btn-reject"  onclick="handleReject(${m.id})">✕ Tolak</button>` : ""}
+            <button class="btn-icon danger" onclick="handleDeleteMember(${m.id}, '${m.name.replace(/'/g, "\\'")}')">Hapus</button>
+          </div>
+        </div>
+      `,
+          )
+          .join("");
+
+        updatePendingBadge();
+      }
+
+      async function handleApprove(id) {
+        await memberApprove(id);
+        showToast("✓ Anggota disetujui!");
+        renderMembers();
+        updatePendingBadge();
+      }
+
+      async function handleReject(id) {
+        await memberReject(id);
+        showToast("Pendaftaran ditolak.", "error");
+        renderMembers();
+        updatePendingBadge();
+      }
+
+      async function handleDeleteMember(id, name) {
+        if (
+          !confirm(`Hapus akun "${name}"? Tindakan ini tidak bisa dibatalkan.`)
+        )
+          return;
+        await memberDelete(id);
+        showToast("✓ Akun dihapus.");
+        renderMembers();
+        updatePendingBadge();
+      }
+
+      async function updatePendingBadge() {
+        const all = await membersGetAll();
+        const count = all.filter((m) => m.status === "pending").length;
+        const badge = document.getElementById("pendingBadge");
+        if (count > 0) {
+          badge.textContent = count;
+          badge.style.display = "inline-flex";
+        } else {
+          badge.style.display = "none";
+        }
+      }
+
+      // Tag pill style needed for preview
+      const style = document.createElement("style");
+      style.textContent = `
+      .tag-sains{color:#185FA5;background:rgba(55,138,221,.1)}
+      .tag-sosial{color:#3B6D11;background:rgba(99,153,34,.1)}
+      .tag-ekonomi{color:#854F0B;background:rgba(186,117,23,.1)}
+      .tag-hukum{color:#533AB7;background:rgba(127,119,221,.1)}
+      .tag-lingkungan{color:#0F6E56;background:rgba(29,158,117,.1)}
+      .tag-seni{color:#993556;background:rgba(212,83,126,.1)}
+    `;
+      document.head.appendChild(style);
+    </script>
+  </body>
+</html>
+>>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
