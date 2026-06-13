@@ -517,7 +517,7 @@
           .slice(0, 4);
 
         const featuredHtml = `
-        <a href="/articles/article-detail-new.html?id=${featured.id}" class="article-card featured" style="text-decoration:none;">
+        <a href="article-detail-new.html?id=${featured.id}" class="article-card featured" style="text-decoration:none;">
           ${featured.cover_image ? `<img src="${featured.cover_image}" class="article-card-thumb featured-thumb" alt="" loading="lazy" onerror="this.style.display='none'" />` : ""}
           <div class="article-tag">${featured.category}</div>
           <h3>${featured.title}</h3>
@@ -531,7 +531,7 @@
         const regularHtml = regular
           .map(
             (a) => `
-        <a href="/articles/article-detail-new.html?id=${a.id}" class="article-card" style="text-decoration:none;">
+        <a href="article-detail-new.html?id=${a.id}" class="article-card" style="text-decoration:none;">
           ${a.cover_image ? `<img src="${a.cover_image}" class="article-card-thumb" alt="" loading="lazy" onerror="this.style.display='none'" />` : ""}
           <div class="article-tag">${a.category}</div>
           <h3>${a.title}</h3>
