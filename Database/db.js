@@ -321,3 +321,158 @@ async function dbUpsertRecruitment(payload) {
   if (error) return { ok: false, error: error.message };
   return { ok: true, data };
 }
+
+async function dbSubmitJoinRequest({ name, email, university, major, motivation }) {
+  const { data, error } = await db
+    .from('members')
+    .insert([{
+      name,
+      email,
+      university,
+      major,
+      motivation,
+      status: 'pending',
+    }])
+    .select()
+    .single();
+  if (error) return { ok: false, error: error.message };
+  return { ok: true, data };
+}
+ 
+/**
+ * Admin: get all members filtered by status.
+ * status = 'pending' | 'approved' | 'rejected' | 'active' | undefined (all)
+ */
+async function dbGetMembers(status) {
+  let query = db
+    .from('members')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (status) query = query.eq('status', status);
+  const { data, error } = await query;
+  if (error) { console.error(error); return []; }
+  return data;
+}
+ 
+/**
+ * Admin: approve a join request.
+ * Calls the Edge Function to generate a token and send the invite email.
+ */
+async function dbApproveMember(memberId) {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) return { ok: false, error: 'Tidak ada sesi admin.' };
+ 
+  const response = await fetch(
+    `${SUPABASE_URL}/functions/v1/notify-member`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ type: 'invite', memberId }),
+    }
+  );
+ 
+  if (!response.ok) {
+    const err = await response.text();
+    return { ok: false, error: err || 'Gagal mengirim undangan.' };
+  }
+ 
+  return { ok: true };
+}
+ 
+/**
+ * Admin: reject a join request.
+ * Calls the Edge Function to send a rejection notification email.
+ */
+async function dbRejectMember(memberId, reason = '') {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) return { ok: false, error: 'Tidak ada sesi admin.' };
+ 
+  const response = await fetch(
+    `${SUPABASE_URL}/functions/v1/notify-member`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ type: 'reject', memberId, reason }),
+    }
+  );
+ 
+  if (!response.ok) {
+    const err = await response.text();
+    return { ok: false, error: err || 'Gagal mengirim notifikasi.' };
+  }
+ 
+  return { ok: true };
+}
+ 
+/**
+ * Public: validate an invite token from the URL.
+ * Returns the member record if the token is valid, not expired, and unused.
+ */
+async function dbValidateInviteToken(token) {
+  const { data, error } = await db
+    .from('members')
+    .select('id, name, email, status, invite_expires_at, invite_used')
+    .eq('invite_token', token)
+    .single();
+ 
+  if (error || !data) {
+    return { ok: false, error: 'Link undangan tidak ditemukan atau sudah tidak berlaku.' };
+  }
+ 
+  if (data.invite_used) {
+    return { ok: false, error: 'Link undangan ini sudah pernah digunakan. Silakan masuk dengan akunmu.' };
+  }
+ 
+  if (new Date(data.invite_expires_at) < new Date()) {
+    return { ok: false, error: 'Link undangan ini sudah kedaluwarsa (berlaku 48 jam). Hubungi admin untuk undangan baru.' };
+  }
+ 
+  return { ok: true, member: data };
+}
+ 
+/**
+ * Public: complete registration after invite link validation.
+ * 1. Creates Supabase Auth account with the approved email.
+ * 2. Marks the invite token as used.
+ * 3. Updates member status to 'active'.
+ */
+async function dbCompleteRegistration(token, email, name, password) {
+  // Step 1: Create the Supabase Auth account
+  const { data, error } = await db.auth.signUp({
+    email,
+    password,
+    options: { data: { name } },
+  });
+ 
+  if (error) return { ok: false, error: error.message };
+  if (!data.user) return { ok: false, error: 'Gagal membuat akun. Email mungkin sudah terdaftar.' };
+ 
+  // Step 2: Mark invite as used & set status active
+  const { error: updateError } = await db
+    .from('members')
+    .update({
+      invite_used: true,
+      status: 'active',
+      approved_at: new Date().toISOString(),
+    })
+    .eq('invite_token', token);
+ 
+  if (updateError) {
+    // Auth account was created but member update failed — non-fatal,
+    // admin can fix this manually. Still return ok so user gets in.
+    console.error('dbCompleteRegistration: failed to mark invite used:', updateError.message);
+  }
+ 
+  // Step 3: Wait a moment for the profile trigger to fire, then cache user
+  await new Promise(r => setTimeout(r, 800));
+  const { data: profile } = await db.from('profiles').select('*').eq('id', data.user.id).single();
+  if (profile) sessionStorage.setItem('paramuda_user', JSON.stringify({ ...data.user, ...profile }));
+ 
+  return { ok: true };
+}

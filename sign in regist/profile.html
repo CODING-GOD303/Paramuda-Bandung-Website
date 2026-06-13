@@ -337,11 +337,11 @@
   <nav class="navbar scrolled" id="navbar">
     <div class="nav-container">
       <img class="Logo-navbar" src="/Images/Logo Paramuda Indonesia.png" alt="">
-      <a href="/Hero Page/Hero Page.html" class="logo">Paramuda.Id</a>
+      <a href="index.html" class="logo">Paramuda.Id</a>
       <ul class="nav-menu" id="navMenu">
-        <li><a href="/Hero Page/Hero Page.html#profile" class="nav-link">Home</a></li>
+        <li><a href="index.html#profile" class="nav-link">Home</a></li>
         <li><a href="/articles/articles-new.html" class="nav-link">Articles</a></li>
-        <li><a href="/Hero Page/Hero Page.html#location" class="nav-link">About Us</a></li>
+        <li><a href="index.html#location" class="nav-link">About Us</a></li>
         <li><a onclick="doLogout()" class="nav-link btn-nav">Log out</a></li>
       </ul>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -543,10 +543,10 @@
         <p>Organisasi Kemahasiswaan · Bandung</p>
       </div>
       <div class="footer-links">
-        <a href="/Hero Page/Hero Page.html#profile">Profile</a>
+        <a href="index.html#profile">Profile</a>
         <a href="/articles/articles-new.html">Artikel</a>
-        <a href="/Hero Page/Hero Page.html#location">Lokasi</a>
-        <a href="/Hero Page/Hero Page.html#contact">Kontak</a>
+        <a href="index.html#location">Lokasi</a>
+        <a href="index.html#contact">Kontak</a>
       </div>
       <p class="footer-copy">© 2025 Paramuda Bandung. Semua hak dilindungi.</p>
     </div>
@@ -1332,7 +1332,7 @@
     // ── LOGOUT ────────────────────────────────────────────────
     async function doLogout() {
       await authLogout();
-      window.location.href = '/Hero Page/Hero Page.html';
+      window.location.href = 'index.html';
     }
  
     // ── LIKED IDS (stored in sessionStorage by article-detail) ─

@@ -1,5 +1,4 @@
 <!doctype html>
-<<<<<<< HEAD
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -13,282 +12,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   <script src="/Database/db.js"></script>
-
-  <style>
-    /* ── REQUEST-SPECIFIC STYLES ───────────────────────────── */
-    .req-status-baru    { color:#C44444; background:rgba(196,68,68,.1);   padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-    .req-status-dibaca  { color:#533AB7; background:rgba(127,119,221,.1); padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-    .req-status-selesai { color:#0F6E56; background:rgba(29,158,117,.1);  padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-
-    .req-subject {
-      display: inline-block;
-      font-size: 11px; font-weight: 700;
-      letter-spacing: .05em; text-transform: uppercase;
-      padding: .2rem .55rem; border-radius: 4px;
-      color: #185FA5; background: rgba(55,138,221,.1);
-      white-space: nowrap;
-    }
-
-    .req-message-cell {
-      max-width: 220px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 13px;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-    .req-message-cell:hover { color: var(--text); }
-
-    /* Inline message expand */
-    .req-expanded td { white-space: normal !important; }
-
-    /* Dot badge on sidebar button */
-    .snav-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 18px; height: 18px; border-radius: 50%;
-      font-size: 10px; font-weight: 700;
-      background: #C44444; color: #fff;
-      margin-left: auto; flex-shrink: 0;
-    }
-
-    /* Filter row in requests view */
-    .req-controls {
-      display: flex;
-      gap: .75rem;
-      margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .req-controls select,
-    .req-controls input {
-      font-family: var(--font-body);
-      font-size: 13px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: .5rem .9rem;
-      color: var(--text);
-      outline: none;
-    }
-    .req-controls input { flex: 1; min-width: 160px; }
-
-    /* Message detail modal */
-    .req-detail-modal {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,.45);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; padding: 1.5rem;
-    }
-    .req-detail-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 2rem;
-      width: 100%; max-width: 480px;
-      display: flex; flex-direction: column; gap: .75rem;
-    }
-    .req-detail-card h3 {
-      font-family: var(--font-head);
-      font-size: 1rem; font-weight: 800; color: var(--text);
-    }
-    .req-detail-row { display: flex; gap: .5rem; font-size: 13px; }
-    .req-detail-row strong { color: var(--text-muted); min-width: 80px; flex-shrink: 0; }
-    .req-detail-msg {
-      background: rgba(26,24,22,.04);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: .9rem 1rem;
-      font-size: 14px; line-height: 1.7;
-      color: var(--text);
-      white-space: pre-wrap;
-    }
-    .req-detail-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: .5rem; }
-
-    /* ── SUBMISSION REVIEW STYLES ──────────────────────────── */
-    .sub-type-new  { color:#0F6E56; background:rgba(29,158,117,.1); padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-    .sub-type-edit { color:#185FA5; background:rgba(55,138,221,.1); padding:.2rem .6rem; border-radius:4px; font-size:11px; font-weight:700; white-space:nowrap; }
-
-    /* Diff viewer */
-    .diff-modal {
-      position:fixed; inset:0; background:rgba(0,0,0,.5);
-      display:flex; align-items:flex-start; justify-content:center;
-      z-index:9999; padding:2rem 1rem; overflow-y:auto;
-    }
-    .diff-card {
-      background:var(--white); border-radius:var(--radius); padding:0;
-      width:100%; max-width:800px; overflow:hidden;
-      box-shadow:0 24px 64px rgba(0,0,0,.18);
-    }
-    .diff-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:1.25rem 1.75rem; border-bottom:1px solid var(--border);
-    }
-    .diff-header h3 { font-family:var(--font-head); font-size:1rem; font-weight:800; color:var(--text); }
-    .diff-body { padding:1.5rem 1.75rem; display:flex; flex-direction:column; gap:1.25rem; overflow-y:auto; max-height:70vh; }
-    .diff-section h4 {
-      font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
-      color:var(--text-muted); margin-bottom:.5rem;
-    }
-    .diff-cols { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-    .diff-col { background:rgba(26,24,22,.03); border:1px solid var(--border); border-radius:6px; padding:.9rem 1rem; font-size:13px; line-height:1.7; color:var(--text); }
-    .diff-col.original { border-color:rgba(196,68,68,.3); background:rgba(196,68,68,.03); }
-    .diff-col.proposed { border-color:rgba(29,158,117,.3); background:rgba(29,158,117,.03); }
-    .diff-col-label { font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.4rem; }
-    .diff-col.original .diff-col-label { color:#C44444; }
-    .diff-col.proposed .diff-col-label { color:#0F6E56; }
-    .diff-footer { display:flex; gap:.75rem; justify-content:flex-end; padding:1rem 1.75rem; border-top:1px solid var(--border); }
-
-    /* Reject reason input */
-    .reject-input-wrap { display:flex; flex-direction:column; gap:.5rem; padding:1rem 1.75rem; border-top:1px solid var(--border); background:rgba(196,68,68,.03); }
-    .reject-input-wrap label { font-size:12px; font-weight:600; color:#C44444; }
-    .reject-input-wrap textarea { font-family:var(--font-body); font-size:13px; padding:.6rem .9rem; border:1.5px solid rgba(196,68,68,.3); border-radius:6px; outline:none; resize:none; }
-    .reject-input-wrap textarea:focus { border-color:#C44444; }
-
-    /* ── COVER IMAGE FIELD ─────────────────────────────────── */
-    .cover-upload-wrap {
-      border: 1.5px dashed var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: border-color .2s;
-      cursor: pointer;
-      position: relative;
-    }
-    .cover-upload-wrap:hover { border-color: var(--accent); }
-    .cover-upload-wrap.has-image { border-style: solid; }
-    .cover-preview {
-      width: 100%; height: 200px;
-      object-fit: cover; display: block;
-      border-radius: calc(var(--radius) - 2px);
-    }
-    .cover-placeholder {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: .5rem; height: 120px;
-      color: var(--text-muted); font-size: 13px;
-    }
-    .cover-placeholder span { font-size: 1.5rem; }
-    .cover-actions {
-      display: flex; gap: .5rem; margin-top: .5rem; flex-wrap: wrap; align-items: center;
-    }
-    .cover-url-input {
-      flex: 1; min-width: 0;
-      font-family: var(--font-body); font-size: 13px;
-      background: var(--white); border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm); padding: .5rem .75rem;
-      color: var(--text); outline: none; transition: border-color .2s;
-    }
-    .cover-url-input:focus { border-color: var(--accent); }
-    .cover-status { font-size: 11px; color: var(--text-muted); min-height: 14px; }
-
-    /* ══ CROP MODAL ═══════════════════════════════════════════ */
-    .crop-overlay {
-      position: fixed; inset: 0; z-index: 99999;
-      background: rgba(0,0,0,.85);
-      display: flex; align-items: center; justify-content: center;
-      padding: 1rem;
-    }
-    .crop-modal {
-      background: #1a1816; border-radius: 14px;
-      width: 100%; max-width: 720px;
-      display: flex; flex-direction: column; gap: 0;
-      overflow: hidden; box-shadow: 0 32px 80px rgba(0,0,0,.6);
-    }
-    .crop-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: .9rem 1.25rem;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .crop-header h3 {
-      font-family: var(--font-head, "Syne",sans-serif);
-      font-size: .95rem; font-weight: 700; color: #fff;
-    }
-    .crop-close {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: rgba(255,255,255,.1); border: none;
-      color: rgba(255,255,255,.7); font-size: 13px;
-      cursor: pointer; display:flex;align-items:center;justify-content:center;
-      transition: background .2s;
-    }
-    .crop-close:hover { background: rgba(255,255,255,.2); color:#fff; }
-
-    /* canvas area */
-    .crop-canvas-wrap {
-      background: #111; position: relative;
-      height: 380px; overflow: hidden;
-    }
-    .crop-canvas-wrap img { max-width: 100%; display: block; }
-
-    /* ratio + controls bar */
-    .crop-controls {
-      padding: .75rem 1.25rem;
-      border-top: 1px solid rgba(255,255,255,.08);
-      display: flex; flex-direction: column; gap: .65rem;
-    }
-    .crop-ratios {
-      display: flex; gap: .4rem; flex-wrap: wrap; align-items: center;
-    }
-    .crop-ratios span {
-      font-size: 11px; font-weight: 600; color: rgba(255,255,255,.4);
-      letter-spacing: .06em; text-transform: uppercase; margin-right: .2rem;
-    }
-    .ratio-btn {
-      font-family: var(--font-body,"Manrope",sans-serif);
-      font-size: 11px; font-weight: 600;
-      color: rgba(255,255,255,.55); background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.12); border-radius: 50px;
-      padding: .25rem .75rem; cursor: pointer; transition: all .15s;
-      white-space: nowrap;
-    }
-    .ratio-btn:hover { color:#fff; border-color:rgba(255,255,255,.3); }
-    .ratio-btn.active {
-      color: #fff; background: var(--accent,#008026);
-      border-color: var(--accent,#008026);
-    }
-    .crop-tools {
-      display: flex; gap: .4rem; align-items: center; flex-wrap: wrap;
-    }
-    .crop-tool-btn {
-      font-size: 16px; width: 34px; height: 34px;
-      border-radius: 8px; background: rgba(255,255,255,.07);
-      border: 1px solid rgba(255,255,255,.1);
-      color: rgba(255,255,255,.7); cursor: pointer; transition: all .15s;
-      display:flex;align-items:center;justify-content:center;
-    }
-    .crop-tool-btn:hover { background:rgba(255,255,255,.15); color:#fff; }
-    .crop-tool-sep { width:1px; height:22px; background:rgba(255,255,255,.12); margin:0 .15rem; }
-    .crop-zoom-wrap {
-      display: flex; align-items: center; gap: .5rem; margin-left: auto;
-    }
-    .crop-zoom-wrap label {
-      font-size: 11px; color: rgba(255,255,255,.4); white-space: nowrap;
-    }
-    .crop-zoom-wrap input[type=range] {
-      width: 90px; accent-color: var(--accent,#008026); cursor: pointer;
-    }
-
-    /* footer */
-    .crop-footer {
-      display: flex; gap: .6rem; justify-content: flex-end;
-      padding: .85rem 1.25rem;
-      border-top: 1px solid rgba(255,255,255,.08);
-    }
-    .crop-btn-cancel {
-      font-family: var(--font-body,"Manrope",sans-serif);
-      font-size: 13px; font-weight: 500; color: rgba(255,255,255,.5);
-      background: transparent; border: 1px solid rgba(255,255,255,.15);
-      border-radius: 50px; padding: .5rem 1.25rem; cursor: pointer; transition: all .2s;
-    }
-    .crop-btn-cancel:hover { color:#fff; border-color:rgba(255,255,255,.35); }
-    .crop-btn-save {
-      font-family: var(--font-body,"Manrope",sans-serif);
-      font-size: 13px; font-weight: 600; color: #fff;
-      background: var(--accent,#008026); border: none;
-      border-radius: 50px; padding: .5rem 1.5rem;
-      cursor: pointer; transition: opacity .2s;
-    }
-    .crop-btn-save:hover { opacity: .85; }
-    .crop-btn-save:disabled { opacity: .5; cursor:not-allowed; }
-    .crop-saving-label { font-size:12px; color:rgba(255,255,255,.45); align-self:center; }
-  </style>
 </head>
 <body>
 
@@ -304,46 +27,6 @@
         <div class="pw-wrap">
           <input type="password" id="pwInput" placeholder="Password..." />
           <button class="pw-toggle" id="pwToggle" onclick="togglePw()">👁</button>
-=======
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin — Paramuda Bandung</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="admin.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="db.js"></script>
-    <script src="members.js"></script>
-  </head>
-  <body>
-    <!-- ── LOGIN SCREEN ─────────────────────────────────────── -->
-    <div class="login-screen" id="loginScreen">
-      <div class="login-card">
-        <div class="login-logo">Paramuda</div>
-        <div class="login-sub">Panel Admin</div>
-        <div class="login-form">
-          <label>Password</label>
-          <div class="pw-wrap">
-            <input
-              type="password"
-              id="pwInput"
-              placeholder="Masukkan password admin..."
-            />
-            <button class="pw-toggle" id="pwToggle" onclick="togglePw()">
-              👁
-            </button>
-          </div>
-          <div class="login-error" id="loginError">
-            Password salah. Coba lagi.
-          </div>
-          <button class="btn-login" onclick="doLogin()">Masuk →</button>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
         <div class="login-error" id="loginError">Email atau password salah.</div>
         <button class="btn-login" id="loginBtn" onclick="doLogin()">Masuk →</button>
@@ -352,7 +35,6 @@
     </div>
   </div>
 
-<<<<<<< HEAD
   <!--ADMIN PANEL-->
   <div class="admin-panel" id="adminPanel" style="display:none;">
 
@@ -361,6 +43,11 @@
       <div class="sidebar-logo">Paramuda.Id</div>
       <div class="sidebar-label">Menu</div>
       <nav class="sidebar-nav">
+        <button class="snav-btn" onclick="showView('pendaftaran')" id="btn-pendaftaran"
+          style="display:flex;align-items:center;gap:.6rem;">
+          <span>👥</span> Pendaftaran
+          <span class="snav-badge" id="memberBadge" style="display:none;">0</span>
+        </button>
         <button class="snav-btn active" onclick="showView('dashboard')" id="btn-dashboard">
           <span>◈</span> Dashboard
         </button>
@@ -394,64 +81,14 @@
         <div class="view-header">
           <h1>Dashboard</h1>
           <span class="view-date" id="todayDate"></span>
-=======
-    <!-- ── ADMIN PANEL ───────────────────────────────────────── -->
-    <div class="admin-panel" id="adminPanel" style="display: none">
-      <!-- SIDEBAR -->
-      <aside class="admin-sidebar">
-        <div class="sidebar-logo">Paramuda</div>
-        <div class="sidebar-label">Menu</div>
-        <nav class="sidebar-nav">
-          <button
-            class="snav-btn active"
-            onclick="showView('dashboard')"
-            id="btn-dashboard"
-          >
-            <span>◈</span> Dashboard
-          </button>
-          <button class="snav-btn" onclick="showView('write')" id="btn-write">
-            <span>✦</span> Tulis Artikel
-          </button>
-          <button class="snav-btn" onclick="showView('manage')" id="btn-manage">
-            <span>☰</span> Kelola Artikel
-          </button>
-          <button
-            class="snav-btn"
-            onclick="showView('members')"
-            id="btn-members"
-          >
-            <span>◎</span> Anggota
-            <span
-              class="snav-badge"
-              id="pendingBadge"
-              style="display: none"
-            ></span>
-          </button>
-        </nav>
-        <div class="sidebar-bottom">
-          <a href="articles.html" target="_blank" class="sidebar-link"
-            >Lihat Website →</a
-          >
-          <button class="btn-logout" onclick="doLogout()">Keluar</button>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
 
-<<<<<<< HEAD
         <div class="stats-row" id="statsRow"></div>
 
         <div class="dash-section">
           <div class="dash-section-header">
             <h3>Artikel Terbaru</h3>
             <button class="btn-sm" onclick="showView('write')">+ Tulis Baru</button>
-=======
-      <!-- MAIN CONTENT -->
-      <main class="admin-main">
-        <!-- DASHBOARD -->
-        <div class="view" id="view-dashboard">
-          <div class="view-header">
-            <h1>Dashboard</h1>
-            <span class="view-date" id="todayDate"></span>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
           </div>
           <div class="recent-list" id="recentList"></div>
         </div>
@@ -462,7 +99,6 @@
             <h3>Permintaan Terbaru</h3>
             <button class="btn-sm" onclick="showView('requests')">Lihat Semua →</button>
           </div>
-<<<<<<< HEAD
           <div id="dashReqList"></div>
         </div>
       </div>
@@ -491,35 +127,6 @@
               <span class="char-count" id="subtitleCount">0 / 220</span>
             </div>
             <div class="field-row">
-=======
-        </div>
-
-        <!-- WRITE / EDIT -->
-        <div class="view" id="view-write" style="display: none">
-          <div class="view-header">
-            <h1 id="writeTitle">Tulis Artikel Baru</h1>
-            <div class="header-actions">
-              <button
-                class="btn-preview"
-                onclick="togglePreview()"
-                id="previewBtn"
-              >
-                Pratinjau
-              </button>
-              <button
-                class="btn-publish"
-                onclick="publishArticle()"
-                id="publishBtn"
-              >
-                Terbitkan
-              </button>
-            </div>
-          </div>
-
-          <div class="write-layout">
-            <!-- EDITOR -->
-            <div class="editor-panel" id="editorPanel">
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
               <div class="field-group">
                 <label>Kategori <span class="req">*</span></label>
                 <select id="fCategory">
@@ -536,7 +143,6 @@
                 <label>Perkiraan Waktu Baca (menit)</label>
                 <input type="number" id="fReadTime" placeholder="5" min="1" max="60" value="5" />
               </div>
-<<<<<<< HEAD
             </div>
             <div class="field-row">
               <div class="field-group">
@@ -622,117 +228,6 @@ Gunakan toolbar di atas:
   •        → - item list
   —        → garis pemisah"></textarea>
                 </div>
-=======
-              <div class="field-row">
-                <div class="field-group">
-                  <label>Kategori <span class="req">*</span></label>
-                  <select id="fCategory">
-                    <option value="">Pilih kategori...</option>
-                    <option>Sains & Teknologi</option>
-                    <option>Sosial & Humaniora</option>
-                    <option>Ekonomi & Bisnis</option>
-                    <option>Hukum & Kebijakan</option>
-                    <option>Kesehatan & Lingkungan</option>
-                    <option>Seni & Kreativitas</option>
-                  </select>
-                </div>
-                <div class="field-group">
-                  <label>Perkiraan Waktu Baca (menit)</label>
-                  <input
-                    type="number"
-                    id="fReadTime"
-                    placeholder="5"
-                    min="1"
-                    max="60"
-                    value="5"
-                  />
-                </div>
-              </div>
-              <div class="field-row">
-                <div class="field-group">
-                  <label>Nama Penulis <span class="req">*</span></label>
-                  <input
-                    type="text"
-                    id="fAuthor"
-                    placeholder="Nama lengkap..."
-                  />
-                </div>
-                <div class="field-group">
-                  <label>Jabatan / Prodi</label>
-                  <input
-                    type="text"
-                    id="fAuthorRole"
-                    placeholder="Mahasiswa Teknik Informatika..."
-                  />
-                </div>
-              </div>
-              <div class="field-row">
-                <div class="field-group">
-                  <label>Tanggal Terbit</label>
-                  <input type="date" id="fDate" />
-                </div>
-                <div class="field-group">
-                  <label>Tandai sebagai Unggulan?</label>
-                  <div class="toggle-wrap">
-                    <label class="toggle">
-                      <input type="checkbox" id="fFeatured" />
-                      <span class="toggle-slider"></span>
-                    </label>
-                    <span class="toggle-label" id="featuredLabel">Tidak</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- BODY EDITOR -->
-              <div class="field-group body-field">
-                <label>Isi Artikel <span class="req">*</span></label>
-                <div class="toolbar">
-                  <button
-                    type="button"
-                    onclick="insertMd('## ')"
-                    title="Heading 2"
-                  >
-                    H2
-                  </button>
-                  <button
-                    type="button"
-                    onclick="insertMd('### ')"
-                    title="Heading 3"
-                  >
-                    H3
-                  </button>
-                  <button
-                    type="button"
-                    onclick="insertMd('**', '**')"
-                    title="Bold"
-                  >
-                    <b>B</b>
-                  </button>
-                  <button type="button" onclick="insertMd('> ')" title="Quote">
-                    ❝
-                  </button>
-                  <button type="button" onclick="insertMd('- ')" title="List">
-                    • List
-                  </button>
-                  <span class="toolbar-hint"
-                    >Gunakan ## untuk judul seksi, ### untuk sub-judul, **teks**
-                    untuk tebal, > untuk kutipan</span
-                  >
-                </div>
-                <textarea
-                  id="fBody"
-                  rows="20"
-                  placeholder="Tulis isi artikel di sini...
-
-Gunakan format:
-## Judul Seksi
-### Sub Judul
-**teks tebal**
-> kutipan
-- item list"
-                ></textarea>
-              </div>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
                 <div class="editor-preview-pane" id="adminPreviewPane"></div>
 
@@ -744,42 +239,24 @@ Gunakan format:
               </div><!-- /.editor-wrap -->
             </div>
 
-<<<<<<< HEAD
             <input type="hidden" id="editingId" value="" />
-=======
-            <!-- PREVIEW -->
-            <div class="preview-panel" id="previewPanel" style="display: none">
-              <div class="preview-badge">Pratinjau</div>
-              <div id="previewContent"></div>
-            </div>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
           </div>
 
           <!-- legacy previewPanel kept as hidden stub so old JS refs don't crash -->
           <div id="previewPanel" style="display:none;"></div>
         </div>
 
-<<<<<<< HEAD
         <div class="write-footer">
           <button class="btn-cancel" onclick="cancelEdit()">Batal</button>
           <div class="footer-right">
             <button class="btn-preview" onclick="togglePreview()" id="previewBtn2">Pratinjau</button>
             <button class="btn-publish" onclick="publishArticle()">
               <span id="publishLabel">Terbitkan Artikel</span>
-=======
-        <!-- MANAGE -->
-        <div class="view" id="view-manage" style="display: none">
-          <div class="view-header">
-            <h1>Kelola Artikel</h1>
-            <button class="btn-publish" onclick="showView('write')">
-              + Tulis Baru
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
             </button>
           </div>
         </div>
       </div>
 
-<<<<<<< HEAD
       <!--MANAGE-->
       <div class="view" id="view-manage" style="display:none;">
         <div class="view-header">
@@ -881,48 +358,9 @@ Gunakan format:
           <div class="header-actions">
             <span style="font-size:13px;color:var(--text-muted);" id="kirimCount"></span>
           </div>
-=======
-        <!-- MEMBERS -->
-        <div class="view" id="view-members" style="display: none">
-          <div class="view-header">
-            <h1>Kelola Anggota</h1>
-            <div class="members-filter-wrap">
-              <button
-                class="mf-btn active"
-                data-status="pending"
-                onclick="setMemberFilter('pending')"
-              >
-                Menunggu <span id="countPending" class="mf-count"></span>
-              </button>
-              <button
-                class="mf-btn"
-                data-status="approved"
-                onclick="setMemberFilter('approved')"
-              >
-                Disetujui <span id="countApproved" class="mf-count"></span>
-              </button>
-              <button
-                class="mf-btn"
-                data-status="rejected"
-                onclick="setMemberFilter('rejected')"
-              >
-                Ditolak <span id="countRejected" class="mf-count"></span>
-              </button>
-            </div>
-          </div>
-
-          <!-- EMPTY STATE -->
-          <div class="members-empty" id="membersEmpty" style="display: none">
-            <div class="empty-icon-wrap">◎</div>
-            <p id="membersEmptyText"></p>
-          </div>
-
-          <!-- PENDING CARDS -->
-          <div class="members-grid" id="membersGrid"></div>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         </div>
+        
 
-<<<<<<< HEAD
         <div class="stats-row" id="kirimStats" style="margin-bottom:1.5rem;"></div>
 
         <div class="manage-controls">
@@ -948,23 +386,85 @@ Gunakan format:
             </thead>
             <tbody id="kirimBody"></tbody>
           </table>
-=======
-    <!-- DELETE CONFIRM MODAL -->
-    <div class="modal-overlay" id="modalOverlay" style="display: none">
-      <div class="modal">
-        <div class="modal-icon">⚠</div>
-        <h3>Hapus Artikel?</h3>
-        <p id="modalArticleTitle"></p>
-        <div class="modal-actions">
-          <button class="btn-cancel" onclick="closeModal()">Batal</button>
-          <button class="btn-delete" onclick="confirmDelete()">
-            Ya, Hapus
-          </button>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
+        </div>
+      </div>
+      <div class="view" id="view-pendaftaran" style="display:none;">
+        <div class="view-header">
+          <h1>Pendaftaran Anggota</h1>
+          <div class="header-actions">
+            <span style="font-size:13px;color:var(--text-muted);" id="memberCount"></span>
+          </div>
+        </div>
+      
+        <!-- Stats pills -->
+        <div class="stats-row" id="memberStats" style="margin-bottom:1.5rem;"></div>
+      
+        <!-- Filter + search -->
+        <div class="manage-controls">
+          <input type="text" id="memberSearch" placeholder="Cari nama / email..."
+            oninput="renderPendaftaran()" />
+          <select id="memberFilter" onchange="renderPendaftaran()">
+            <option value="pending">⏳ Menunggu Review</option>
+            <option value="approved">✓ Disetujui (belum aktivasi)</option>
+            <option value="active">✅ Aktif</option>
+            <option value="rejected">✕ Ditolak</option>
+            <option value="">Semua</option>
+          </select>
+        </div>
+      
+        <!-- Table -->
+        <div class="manage-table-wrap">
+          <table class="manage-table">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Universitas</th>
+                <th>Prodi</th>
+                <th>Dikirim</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="memberBody"></tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Member detail modal -->
+      <div class="req-detail-modal" id="memberDetailModal" style="display:none;">
+        <div class="req-detail-card" style="max-width:540px;">
+          <h3 id="mdName"></h3>
+          <div class="req-detail-row"><strong>Email</strong><span id="mdEmail"></span></div>
+          <div class="req-detail-row"><strong>Universitas</strong><span id="mdUniversity"></span></div>
+          <div class="req-detail-row"><strong>Prodi</strong><span id="mdMajor"></span></div>
+          <div class="req-detail-row"><strong>Tanggal</strong><span id="mdDate"></span></div>
+          <div class="req-detail-row"><strong>Status</strong><span id="mdStatus"></span></div>
+          <div style="margin-top:.5rem;">
+            <div style="font-size:12px;font-weight:600;color:var(--text-muted);
+                        letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;">
+              Motivasi
+            </div>
+            <div class="req-detail-msg" id="mdMotivation" style="white-space:pre-wrap;"></div>
+          </div>
+      
+          <!-- Reject reason (shown conditionally) -->
+          <div id="mdRejectWrap" style="display:none;margin-top:.5rem;">
+            <label style="font-size:12px;font-weight:600;color:#C44444;
+                          display:block;margin-bottom:.35rem;">
+              Alasan penolakan (opsional)
+            </label>
+            <textarea id="mdRejectReason" rows="3"
+              style="width:100%;font-family:var(--font-body);font-size:13px;
+                    padding:.6rem .9rem;border:1.5px solid rgba(196,68,68,.3);
+                    border-radius:6px;outline:none;resize:none;box-sizing:border-box;"
+              placeholder="Tulis alasan penolakan untuk calon anggota..."></textarea>
+          </div>
+      
+          <div class="req-detail-actions" id="mdActions"></div>
         </div>
       </div>
 
-<<<<<<< HEAD
     </main>
   </div>
 
@@ -1076,53 +576,6 @@ Gunakan format:
 
       showPanel();
     }
-=======
-    <!-- TOAST -->
-    <div class="toast" id="toast"></div>
-
-    <script>
-      // ── AUTH ──────────────────────────────────────────────────
-      window.addEventListener("DOMContentLoaded", () => {
-        if (authCheck()) showPanel();
-        document.getElementById("pwInput").addEventListener("keydown", (e) => {
-          if (e.key === "Enter") doLogin();
-        });
-        document.getElementById("todayDate").textContent =
-          new Date().toLocaleDateString("id-ID", {
-            weekday: "long",
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          });
-        setTodayDate();
-      });
-
-      function doLogin() {
-        const pw = document.getElementById("pwInput").value;
-        if (authLogin(pw)) {
-          showPanel();
-        } else {
-          document.getElementById("loginError").style.display = "block";
-          document.getElementById("pwInput").value = "";
-          document.getElementById("pwInput").focus();
-        }
-      }
-
-      function doLogout() {
-        authLogout();
-        document.getElementById("adminPanel").style.display = "none";
-        document.getElementById("loginScreen").style.display = "flex";
-        document.getElementById("pwInput").value = "";
-        document.getElementById("loginError").style.display = "none";
-      }
-
-      function showPanel() {
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("adminPanel").style.display = "flex";
-        renderDashboard();
-        updatePendingBadge();
-      }
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
     async function doLogout() {
       await authLogout();
@@ -1133,7 +586,6 @@ Gunakan format:
       document.getElementById('loginError').style.display = 'none';
     }
 
-<<<<<<< HEAD
     function showPanel() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'flex';
@@ -1180,29 +632,6 @@ Gunakan format:
     async function renderDashboard() {
       document.getElementById('statsRow').innerHTML =
         '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
-=======
-      // ── VIEWS ─────────────────────────────────────────────────
-      function showView(name) {
-        ["dashboard", "write", "manage", "members"].forEach((v) => {
-          document.getElementById("view-" + v).style.display =
-            v === name ? "block" : "none";
-          document
-            .getElementById("btn-" + v)
-            .classList.toggle("active", v === name);
-        });
-        if (name === "dashboard") renderDashboard();
-        if (name === "manage") renderManage();
-        if (name === "members") renderMembers();
-        if (name === "write" && !document.getElementById("editingId").value)
-          clearForm();
-      }
-
-      // ── DASHBOARD ─────────────────────────────────────────────
-      function renderDashboard() {
-        const articles = dbGetAll();
-        const cats = [...new Set(articles.map((a) => a.category))].length;
-        const totalViews = articles.reduce((s, a) => s + (a.views || 0), 0);
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
       const [articles, requests] = await Promise.all([dbGetAll(), dbGetContactRequests()]);
 
@@ -1214,7 +643,6 @@ Gunakan format:
         <div class="stat-card"><div class="sc-num">${articles.length}</div><div class="sc-label">Total Artikel</div></div>
         <div class="stat-card"><div class="sc-num">${cats}</div><div class="sc-label">Kategori Aktif</div></div>
         <div class="stat-card"><div class="sc-num">${totalViews.toLocaleString()}</div><div class="sc-label">Total Dilihat</div></div>
-<<<<<<< HEAD
         <div class="stat-card" style="border-color:${pendingReqs > 0 ? 'rgba(196,68,68,.4)' : 'var(--border)'};">
           <div class="sc-num" style="color:${pendingReqs > 0 ? '#C44444' : 'var(--text)'};">${pendingReqs}</div>
           <div class="sc-label">Permintaan Baru</div>
@@ -1224,15 +652,6 @@ Gunakan format:
       // Recent articles
       const recent = articles.slice(0, 5);
       document.getElementById('recentList').innerHTML = recent.map(a => `
-=======
-        <div class="stat-card"><div class="sc-num">${articles.filter((a) => a.featured).length}</div><div class="sc-label">Artikel Unggulan</div></div>
-      `;
-
-        const recent = articles.slice(0, 5);
-        document.getElementById("recentList").innerHTML = recent
-          .map(
-            (a) => `
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
         <div class="recent-item">
           <div class="ri-left">
             <span class="ri-tag ${catClass(a.category)}">${a.category}</span>
@@ -1244,7 +663,6 @@ Gunakan format:
             <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎</button>
           </div>
         </div>
-<<<<<<< HEAD
       `).join('');
 
       // Recent requests preview (latest 5)
@@ -1269,15 +687,9 @@ Gunakan format:
               </div>
             </div>`;
         }).join('');
-=======
-      `,
-          )
-          .join("");
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
       }
     }
 
-<<<<<<< HEAD
     // ── MANAGE ARTICLES ───────────────────────────────────────
     async function renderManage() {
       const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
@@ -1290,22 +702,6 @@ Gunakan format:
       const articles = all
         .filter(a => (!cat || a.category === cat))
         .filter(a => !q || a.title.toLowerCase().includes(q) || a.author.toLowerCase().includes(q));
-=======
-      // ── MANAGE ────────────────────────────────────────────────
-      function renderManage() {
-        const q = (
-          document.getElementById("manageSearch").value || ""
-        ).toLowerCase();
-        const cat = document.getElementById("manageCat").value;
-        let articles = dbGetAll()
-          .filter((a) => !cat || a.category === cat)
-          .filter(
-            (a) =>
-              !q ||
-              a.title.toLowerCase().includes(q) ||
-              a.author.toLowerCase().includes(q),
-          );
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
 
       document.getElementById('manageCount').textContent = articles.length + ' artikel ditampilkan';
 
@@ -1314,25 +710,16 @@ Gunakan format:
           <td class="td-title" title="${a.title}">${a.title}</td>
           <td><span class="article-tag-pill ${catClass(a.category)}">${a.category}</span></td>
           <td>${a.author}</td>
-<<<<<<< HEAD
           <td>${a.date_label || formatDateLabel(a.date)}</td>
           <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : '—'}</td>
           <td class="td-actions">
             <button class="btn-icon" onclick="editArticle(${a.id})">✎ Edit</button>
             <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g,"\\'")}')">✕ Hapus</button>
-=======
-          <td>${a.dateLabel || formatDateLabel(a.date)}</td>
-          <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : "—"}</td>
-          <td class="td-actions">
-            <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎ Edit</button>
-            <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g, "\\'")}')">✕ Hapus</button>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
           </td>
         </tr>
       `).join('');
     }
 
-<<<<<<< HEAD
     // ── REQUESTS VIEW ─────────────────────────────────────────
     async function renderRequests() {
       const q          = (document.getElementById('reqSearch').value || '').toLowerCase();
@@ -1606,58 +993,6 @@ Gunakan format:
         const newArticle = { ...payload, status: 'published' };
         await dbAdd(newArticle);
         showToast('✓ Artikel berhasil diterbitkan!');
-=======
-      // ── WRITE / EDIT ──────────────────────────────────────────
-      function setTodayDate() {
-        const today = new Date().toISOString().split("T")[0];
-        document.getElementById("fDate").value = today;
-      }
-
-      function clearForm() {
-        ["fTitle", "fSubtitle", "fAuthor", "fAuthorRole", "fBody"].forEach(
-          (id) => {
-            document.getElementById(id).value = "";
-          },
-        );
-        document.getElementById("fCategory").value = "";
-        document.getElementById("fReadTime").value = "5";
-        document.getElementById("fFeatured").checked = false;
-        document.getElementById("featuredLabel").textContent = "Tidak";
-        document.getElementById("editingId").value = "";
-        document.getElementById("writeTitle").textContent =
-          "Tulis Artikel Baru";
-        document.getElementById("publishLabel").textContent =
-          "Terbitkan Artikel";
-        setTodayDate();
-        updateCounts();
-        document.getElementById("previewPanel").style.display = "none";
-        document.getElementById("editorPanel").style.display = "block";
-      }
-
-      function editArticle(id) {
-        const a = dbGetById(id);
-        if (!a) return;
-        showView("write");
-        document.getElementById("fTitle").value = a.title;
-        document.getElementById("fSubtitle").value = a.subtitle;
-        document.getElementById("fCategory").value = a.category;
-        document.getElementById("fReadTime").value = a.readTime || 5;
-        document.getElementById("fAuthor").value = a.author;
-        document.getElementById("fAuthorRole").value = a.authorRole || "";
-        document.getElementById("fDate").value = a.date;
-        document.getElementById("fFeatured").checked = !!a.featured;
-        document.getElementById("featuredLabel").textContent = a.featured
-          ? "Ya"
-          : "Tidak";
-        document.getElementById("fBody").value = a.body;
-        document.getElementById("editingId").value = a.id;
-        document.getElementById("writeTitle").textContent = "Edit Artikel";
-        document.getElementById("publishLabel").textContent =
-          "Simpan Perubahan";
-        updateCounts();
-        document.getElementById("previewPanel").style.display = "none";
-        document.getElementById("editorPanel").style.display = "block";
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
       }
 
       if (btn) { btn.disabled = false; }
@@ -1692,7 +1027,6 @@ Gunakan format:
       }
     }
 
-<<<<<<< HEAD
     function _buildInlinePreview() {
       const title    = document.getElementById('fTitle').value    || '(Judul kosong)';
       const subtitle = document.getElementById('fSubtitle').value || '';
@@ -1766,101 +1100,6 @@ Gunakan format:
       let prefix = '';
       if (blockPrefixes.includes(before) && s > 0 && ta.value[s - 1] !== '\n') {
         prefix = '\n';
-=======
-      function publishArticle() {
-        const title = document.getElementById("fTitle").value.trim();
-        const subtitle = document.getElementById("fSubtitle").value.trim();
-        const category = document.getElementById("fCategory").value;
-        const author = document.getElementById("fAuthor").value.trim();
-        const body = document.getElementById("fBody").value.trim();
-        const readTime = document.getElementById("fReadTime").value || "5";
-        const authorRole = document.getElementById("fAuthorRole").value.trim();
-        const date = document.getElementById("fDate").value;
-        const featured = document.getElementById("fFeatured").checked;
-        const editingId = document.getElementById("editingId").value;
-
-        if (!title || !subtitle || !category || !author || !body) {
-          showToast("⚠ Lengkapi semua kolom wajib.", "error");
-          return;
-        }
-
-        const dateLabel = date
-          ? new Date(date).toLocaleDateString("id-ID", {
-              month: "long",
-              year: "numeric",
-            })
-          : formatDateLabel(new Date().toISOString());
-
-        const payload = {
-          title,
-          subtitle,
-          category,
-          author,
-          authorInitials: toInitials(author),
-          authorRole,
-          date: date || new Date().toISOString().split("T")[0],
-          dateLabel,
-          readTime,
-          featured,
-          body,
-        };
-
-        if (editingId) {
-          dbUpdate(editingId, payload);
-          showToast("✓ Artikel berhasil diperbarui!");
-        } else {
-          dbAdd(payload);
-          showToast("✓ Artikel berhasil diterbitkan!");
-        }
-
-        clearForm();
-        showView("manage");
-      }
-
-      // ── PREVIEW ───────────────────────────────────────────────
-      function togglePreview() {
-        const ep = document.getElementById("editorPanel");
-        const pp = document.getElementById("previewPanel");
-        const showing = pp.style.display !== "none";
-        if (showing) {
-          pp.style.display = "none";
-          ep.style.display = "block";
-          document.getElementById("previewBtn").textContent = "Pratinjau";
-          document.getElementById("previewBtn2").textContent = "Pratinjau";
-        } else {
-          buildPreview();
-          ep.style.display = "none";
-          pp.style.display = "block";
-          document.getElementById("previewBtn").textContent = "← Editor";
-          document.getElementById("previewBtn2").textContent = "← Editor";
-        }
-      }
-
-      function buildPreview() {
-        const title =
-          document.getElementById("fTitle").value || "(Judul kosong)";
-        const subtitle = document.getElementById("fSubtitle").value || "";
-        const category = document.getElementById("fCategory").value || "";
-        const author = document.getElementById("fAuthor").value || "";
-        const body = document.getElementById("fBody").value || "";
-        const date = document.getElementById("fDate").value;
-        const dateLabel = date
-          ? new Date(date).toLocaleDateString("id-ID", {
-              month: "long",
-              year: "numeric",
-            })
-          : "Hari ini";
-
-        document.getElementById("previewContent").innerHTML = `
-        <div class="prev-tag ${catClass(category)}" style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-bottom:1rem;">${category || "Kategori"}</div>
-        <h1 style="font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#1A1816;margin-bottom:.75rem;line-height:1.15;">${title}</h1>
-        <p style="font-size:1.05rem;color:#6B6460;margin-bottom:1.25rem;">${subtitle}</p>
-        <div style="display:flex;gap:.5rem;align-items:center;font-size:13px;color:#6B6460;padding:1rem 0;border-top:1px solid rgba(26,24,22,.1);border-bottom:1px solid rgba(26,24,22,.1);margin-bottom:2rem;">
-          <strong style="color:#1A1816;">${author || "Penulis"}</strong> · <span>${dateLabel}</span>
-        </div>
-        <div class="article-body">${bodyToHtml(body)}</div>
-      `;
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32
       }
       const replacement = prefix + before + selected + after;
       ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
@@ -1870,7 +1109,6 @@ Gunakan format:
       autoGrowBody(ta);
     }
 
-<<<<<<< HEAD
     function insertDivider() {
       const ta = document.getElementById('fBody');
       const s = ta.selectionStart;
@@ -2359,6 +1597,190 @@ Gunakan format:
       .tag-seni      { color:#993556; background:rgba(212,83,126,.1) }
     `;
     document.head.appendChild(style);
+    // ── MEMBER BADGE ──────────────────────────────────────────────
+async function refreshMemberBadge() {
+  const pending = await dbGetMembers('pending');
+  const badge   = document.getElementById('memberBadge');
+  if (pending.length > 0) {
+    badge.textContent    = pending.length > 99 ? '99+' : pending.length;
+    badge.style.display  = 'inline-flex';
+  } else {
+    badge.style.display  = 'none';
+  }
+}
+ 
+// ── PENDAFTARAN VIEW ──────────────────────────────────────────
+let _memberCache = [];
+let _currentMemberId = null;
+ 
+async function renderPendaftaran() {
+  const q      = (document.getElementById('memberSearch').value || '').toLowerCase();
+  const filter = document.getElementById('memberFilter').value;
+  const tbody  = document.getElementById('memberBody');
+  tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+ 
+  const all = await dbGetMembers();
+  _memberCache = all;
+ 
+  // Stats
+  const counts = { pending:0, approved:0, active:0, rejected:0 };
+  all.forEach(m => { if (counts[m.status] !== undefined) counts[m.status]++; });
+  document.getElementById('memberStats').innerHTML = `
+    <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
+      <div class="sc-num" style="color:#C44444;">${counts.pending}</div>
+      <div class="sc-label">⏳ Menunggu</div>
+    </div>
+    <div class="stat-card" style="border-color:rgba(55,138,221,.3);">
+      <div class="sc-num" style="color:#185FA5;">${counts.approved}</div>
+      <div class="sc-label">✓ Disetujui</div>
+    </div>
+    <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
+      <div class="sc-num" style="color:#0F6E56;">${counts.active}</div>
+      <div class="sc-label">✅ Aktif</div>
+    </div>
+    <div class="stat-card">
+      <div class="sc-num">${all.length}</div>
+      <div class="sc-label">Total Permintaan</div>
+    </div>
+  `;
+ 
+  let list = all
+    .filter(m => !filter || m.status === filter)
+    .filter(m => !q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
+ 
+  document.getElementById('memberCount').textContent = list.length + ' anggota';
+ 
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada data.</td></tr>';
+    return;
+  }
+ 
+  const statusLabel = {
+    pending:  '<span style="color:#C44444;background:rgba(196,68,68,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">⏳ Menunggu</span>',
+    approved: '<span style="color:#185FA5;background:rgba(55,138,221,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✉ Undangan Terkirim</span>',
+    active:   '<span style="color:#0F6E56;background:rgba(29,158,117,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✅ Aktif</span>',
+    rejected: '<span style="color:#6B6460;background:rgba(107,100,96,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✕ Ditolak</span>',
+  };
+ 
+  tbody.innerHTML = list.map(m => `
+    <tr>
+      <td style="font-weight:600;">${m.name}</td>
+      <td style="font-size:12px;color:var(--text-muted);">${m.email}</td>
+      <td style="font-size:13px;">${m.university || '—'}</td>
+      <td style="font-size:13px;">${m.major || '—'}</td>
+      <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${fmtReqDate(m.created_at)}</td>
+      <td>${statusLabel[m.status] || m.status}</td>
+      <td class="td-actions">
+        <button class="btn-icon" onclick="openMemberDetail('${m.id}')">👁 Lihat</button>
+        ${m.status === 'pending' ? `
+          <button class="btn-icon" onclick="quickApproveMember('${m.id}')">✓ Setujui</button>
+          <button class="btn-icon danger" onclick="openMemberDetail('${m.id}', true)">✕ Tolak</button>
+        ` : ''}
+        ${m.status === 'approved' ? `
+          <button class="btn-icon" onclick="resendInvite('${m.id}')">↻ Kirim Ulang</button>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+ 
+  refreshMemberBadge();
+}
+ 
+function openMemberDetail(id, showRejectMode = false) {
+  const m = _memberCache.find(x => String(x.id) === String(id));
+  if (!m) return;
+  _currentMemberId = id;
+ 
+  document.getElementById('mdName').textContent       = m.name;
+  document.getElementById('mdEmail').textContent      = m.email;
+  document.getElementById('mdUniversity').textContent = m.university || '—';
+  document.getElementById('mdMajor').textContent      = m.major || '—';
+  document.getElementById('mdDate').textContent       = fmtReqDate(m.created_at);
+  document.getElementById('mdMotivation').textContent = m.motivation || '(Tidak ada motivasi)';
+ 
+  const statusMap = { pending:'⏳ Menunggu Review', approved:'✉ Undangan Terkirim', active:'✅ Aktif', rejected:'✕ Ditolak' };
+  document.getElementById('mdStatus').textContent     = statusMap[m.status] || m.status;
+ 
+  // Build action buttons based on current status
+  const actions = document.getElementById('mdActions');
+  const rejectWrap = document.getElementById('mdRejectWrap');
+ 
+  rejectWrap.style.display = 'none';
+  document.getElementById('mdRejectReason').value = '';
+ 
+  if (m.status === 'pending') {
+    if (showRejectMode) {
+      rejectWrap.style.display = 'block';
+      actions.innerHTML = `
+        <button class="btn-cancel" onclick="closeMemberDetail()">Batal</button>
+        <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;"
+          onclick="confirmRejectMember('${m.id}')">Kirim Penolakan</button>
+      `;
+    } else {
+      actions.innerHTML = `
+        <button class="btn-cancel" onclick="closeMemberDetail()">Tutup</button>
+        <button class="btn-sm" onclick="openMemberDetail('${m.id}', true)">✕ Tolak</button>
+        <button class="btn-publish" style="font-size:12px;padding:.5rem 1.25rem;"
+          onclick="confirmApproveMember('${m.id}')">✓ Setujui & Kirim Undangan</button>
+      `;
+    }
+  } else {
+    actions.innerHTML = `<button class="btn-cancel" onclick="closeMemberDetail()">Tutup</button>`;
+    if (m.status === 'approved') {
+      actions.innerHTML += `
+        <button class="btn-sm" onclick="resendInvite('${m.id}')">↻ Kirim Ulang Undangan</button>
+      `;
+    }
+  }
+ 
+  document.getElementById('memberDetailModal').style.display = 'flex';
+}
+ 
+function closeMemberDetail() {
+  document.getElementById('memberDetailModal').style.display = 'none';
+  _currentMemberId = null;
+}
+ 
+async function confirmApproveMember(id) {
+  const btn = document.querySelector('#memberDetailModal .btn-publish');
+  if (btn) { btn.textContent = 'Mengirim...'; btn.disabled = true; }
+ 
+  const result = await dbApproveMember(id);
+ 
+  if (!result.ok) {
+    showToast('⚠ Gagal: ' + result.error, 'error');
+    if (btn) { btn.textContent = '✓ Setujui & Kirim Undangan'; btn.disabled = false; }
+    return;
+  }
+ 
+  showToast('✓ Undangan berhasil dikirim!');
+  closeMemberDetail();
+  renderPendaftaran();
+}
+ 
+async function quickApproveMember(id) {
+  if (!confirm('Setujui anggota ini dan kirim undangan?')) return;
+  const result = await dbApproveMember(id);
+  if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+  showToast('✓ Undangan berhasil dikirim!');
+  renderPendaftaran();
+}
+ 
+async function confirmRejectMember(id) {
+  const reason = document.getElementById('mdRejectReason').value.trim();
+  const result = await dbRejectMember(id, reason);
+  if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+  showToast('✓ Permintaan ditolak.');
+  closeMemberDetail();
+  renderPendaftaran();
+}
+ 
+async function resendInvite(id) {
+  if (!confirm('Kirim ulang undangan ke anggota ini?')) return;
+  const result = await dbApproveMember(id);
+  if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+  showToast('✓ Undangan dikirim ulang!');
+}
   </script>
 
   <!-- ══ SHARED CROP MODAL ════════════════════════════════════ -->
@@ -2412,198 +1834,3 @@ Gunakan format:
 
 </body>
 </html>
-=======
-      // ── DELETE ────────────────────────────────────────────────
-      let pendingDeleteId = null;
-      function askDelete(id, title) {
-        pendingDeleteId = id;
-        document.getElementById("modalArticleTitle").textContent =
-          '"' + title + '"';
-        document.getElementById("modalOverlay").style.display = "flex";
-      }
-      function closeModal() {
-        pendingDeleteId = null;
-        document.getElementById("modalOverlay").style.display = "none";
-      }
-      function confirmDelete() {
-        if (pendingDeleteId) {
-          dbDelete(pendingDeleteId);
-          showToast("✓ Artikel dihapus.");
-          closeModal();
-          renderManage();
-        }
-      }
-
-      // ── HELPERS ───────────────────────────────────────────────
-      function insertMd(before, after = "") {
-        const ta = document.getElementById("fBody");
-        const s = ta.selectionStart,
-          e = ta.selectionEnd;
-        const selected = ta.value.slice(s, e);
-        const replacement = before + selected + after;
-        ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
-        ta.focus();
-        ta.selectionStart = ta.selectionEnd = s + replacement.length;
-      }
-
-      function updateCounts() {
-        document.getElementById("titleCount").textContent =
-          document.getElementById("fTitle").value.length + " / 120";
-        document.getElementById("subtitleCount").textContent =
-          document.getElementById("fSubtitle").value.length + " / 220";
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        document
-          .getElementById("fTitle")
-          .addEventListener("input", updateCounts);
-        document
-          .getElementById("fSubtitle")
-          .addEventListener("input", updateCounts);
-        document
-          .getElementById("fFeatured")
-          .addEventListener("change", function () {
-            document.getElementById("featuredLabel").textContent = this.checked
-              ? "Ya"
-              : "Tidak";
-          });
-      });
-
-      function showToast(msg, type = "success") {
-        const t = document.getElementById("toast");
-        t.textContent = msg;
-        t.className = "toast show " + type;
-        clearTimeout(t._timer);
-        t._timer = setTimeout(() => (t.className = "toast"), 3000);
-      }
-
-      // ── MEMBERS ───────────────────────────────────────────────
-      let memberFilter = "pending";
-
-      function setMemberFilter(status) {
-        memberFilter = status;
-        document
-          .querySelectorAll(".mf-btn")
-          .forEach((b) =>
-            b.classList.toggle("active", b.dataset.status === status),
-          );
-        renderMembers();
-      }
-
-      async function renderMembers() {
-        const all = await membersGetAll();
-        const pending = all.filter((m) => m.status === "pending");
-        const approved = all.filter((m) => m.status === "approved");
-        const rejected = all.filter((m) => m.status === "rejected");
-
-        document.getElementById("countPending").textContent =
-          pending.length || "";
-        document.getElementById("countApproved").textContent =
-          approved.length || "";
-        document.getElementById("countRejected").textContent =
-          rejected.length || "";
-
-        const filtered = all.filter((m) => m.status === memberFilter);
-        const grid = document.getElementById("membersGrid");
-        const empty = document.getElementById("membersEmpty");
-
-        if (filtered.length === 0) {
-          grid.innerHTML = "";
-          empty.style.display = "flex";
-          const msgs = {
-            pending: "Tidak ada pendaftaran yang menunggu persetujuan.",
-            approved: "Belum ada anggota yang disetujui.",
-            rejected: "Tidak ada pendaftaran yang ditolak.",
-          };
-          document.getElementById("membersEmptyText").textContent =
-            msgs[memberFilter];
-          return;
-        }
-
-        empty.style.display = "none";
-        grid.innerHTML = filtered
-          .map(
-            (m) => `
-        <div class="member-card" id="mc-${m.id}">
-          <div class="mc-top">
-            <div class="mc-avatar">${m.initials}</div>
-            <div class="mc-info">
-              <strong class="mc-name">${m.name}</strong>
-              <span class="mc-email">${m.email}</span>
-            </div>
-            <div class="mc-status-badge status-${m.status}">
-              ${m.status === "pending" ? "⏳ Menunggu" : ""}
-              ${m.status === "approved" ? "✓ Disetujui" : ""}
-              ${m.status === "rejected" ? "✕ Ditolak" : ""}
-            </div>
-          </div>
-          <div class="mc-meta">
-            <span>Daftar: ${new Date(m.joinedAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>
-            ${m.approvedAt ? `<span>Disetujui: ${new Date(m.approvedAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>` : ""}
-            ${m.rejectedAt ? `<span>Ditolak: ${new Date(m.rejectedAt).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>` : ""}
-          </div>
-          <div class="mc-actions">
-            ${m.status !== "approved" ? `<button class="btn-approve" onclick="handleApprove(${m.id})">✓ Setujui</button>` : ""}
-            ${m.status !== "rejected" ? `<button class="btn-reject"  onclick="handleReject(${m.id})">✕ Tolak</button>` : ""}
-            <button class="btn-icon danger" onclick="handleDeleteMember(${m.id}, '${m.name.replace(/'/g, "\\'")}')">Hapus</button>
-          </div>
-        </div>
-      `,
-          )
-          .join("");
-
-        updatePendingBadge();
-      }
-
-      async function handleApprove(id) {
-        await memberApprove(id);
-        showToast("✓ Anggota disetujui!");
-        renderMembers();
-        updatePendingBadge();
-      }
-
-      async function handleReject(id) {
-        await memberReject(id);
-        showToast("Pendaftaran ditolak.", "error");
-        renderMembers();
-        updatePendingBadge();
-      }
-
-      async function handleDeleteMember(id, name) {
-        if (
-          !confirm(`Hapus akun "${name}"? Tindakan ini tidak bisa dibatalkan.`)
-        )
-          return;
-        await memberDelete(id);
-        showToast("✓ Akun dihapus.");
-        renderMembers();
-        updatePendingBadge();
-      }
-
-      async function updatePendingBadge() {
-        const all = await membersGetAll();
-        const count = all.filter((m) => m.status === "pending").length;
-        const badge = document.getElementById("pendingBadge");
-        if (count > 0) {
-          badge.textContent = count;
-          badge.style.display = "inline-flex";
-        } else {
-          badge.style.display = "none";
-        }
-      }
-
-      // Tag pill style needed for preview
-      const style = document.createElement("style");
-      style.textContent = `
-      .tag-sains{color:#185FA5;background:rgba(55,138,221,.1)}
-      .tag-sosial{color:#3B6D11;background:rgba(99,153,34,.1)}
-      .tag-ekonomi{color:#854F0B;background:rgba(186,117,23,.1)}
-      .tag-hukum{color:#533AB7;background:rgba(127,119,221,.1)}
-      .tag-lingkungan{color:#0F6E56;background:rgba(29,158,117,.1)}
-      .tag-seni{color:#993556;background:rgba(212,83,126,.1)}
-    `;
-      document.head.appendChild(style);
-    </script>
-  </body>
-</html>
->>>>>>> d4c2836ca8cf72cc351cc18909e47c773ec45f32

@@ -1,363 +1,291 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daftar — Paramuda Bandung</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="auth.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="members.js"></script>
-  </head>
-  <body>
-    <!-- ── PENDING APPROVAL POPUP ────────────────────────────── -->
-    <div class="verify-overlay" id="pendingOverlay" style="display: none">
-      <div class="verify-modal" id="pendingModal">
-        <div class="verify-icon-wrap">
-          <div class="pending-icon-circle">
-            <span class="pending-icon-inner">⏳</span>
-          </div>
-          <div class="verify-rings">
-            <div class="ring r1"></div>
-            <div class="ring r2"></div>
-            <div class="ring r3"></div>
-          </div>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bergabung | Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="auth.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../Database/db.js"></script>
+</head>
+<body>
+
+  <!-- ── SUCCESS OVERLAY ───────────────────────────────────── -->
+  <div class="verify-overlay" id="successOverlay" style="display:none;">
+    <div class="verify-modal" id="successModal">
+      <div class="verify-icon-wrap">
+        <div class="verify-envelope">
+          <div class="env-body"></div>
+          <div class="env-flap"></div>
+          <div class="env-letter"><span>✦</span></div>
         </div>
-
-        <h2 class="verify-title">Pendaftaran diterima!</h2>
-        <p class="verify-desc">
-          Halo <strong id="pendingName"></strong>, akunmu sedang
-          <strong>menunggu persetujuan admin</strong>. Kamu akan bisa masuk
-          setelah admin menyetujui pendaftaranmu.
-        </p>
-
-        <div class="pending-steps">
-          <div class="pstep approved">
-            <div class="pstep-icon">✓</div>
-            <div class="pstep-body">
-              <strong>Akun dibuat</strong>
-              <span>Data pendaftaranmu telah tersimpan</span>
-            </div>
-          </div>
-          <div class="pstep-line"></div>
-          <div class="pstep active">
-            <div class="pstep-icon pulse">⋯</div>
-            <div class="pstep-body">
-              <strong>Menunggu persetujuan</strong>
-              <span>Admin sedang meninjau pendaftaranmu</span>
-            </div>
-          </div>
-          <div class="pstep-line"></div>
-          <div class="pstep">
-            <div class="pstep-icon dim">→</div>
-            <div class="pstep-body">
-              <strong>Akun aktif</strong>
-              <span>Kamu bisa masuk dan mengakses konten</span>
-            </div>
-          </div>
+        <div class="verify-rings">
+          <div class="ring r1"></div>
+          <div class="ring r2"></div>
+          <div class="ring r3"></div>
         </div>
-
-        <div class="verify-actions">
-          <a href="index.html" class="btn-verify-primary">Kembali ke Beranda</a>
-          <a href="login.html" class="btn-verify-resend"
-            >Sudah disetujui? Masuk →</a
-          >
-        </div>
-
-        <p class="verify-hint">
-          Butuh bantuan? Hubungi kami di <strong>paramuda@student.ac.id</strong>
-        </p>
       </div>
+      <h2 class="verify-title">Permintaan terkirim!</h2>
+      <p class="verify-desc">
+        Permintaan bergabungmu telah diterima dan sedang ditinjau oleh admin Paramuda.
+        Jika disetujui, kami akan mengirim undangan ke
+        <strong id="submittedEmail"></strong>.
+      </p>
+      <div class="verify-steps">
+        <div class="vstep">
+          <div class="vstep-num">1</div>
+          <span>Admin meninjau permintaanmu</span>
+        </div>
+        <div class="vstep-connector"></div>
+        <div class="vstep">
+          <div class="vstep-num">2</div>
+          <span>Kamu mendapat email undangan</span>
+        </div>
+        <div class="vstep-connector"></div>
+        <div class="vstep">
+          <div class="vstep-num">3</div>
+          <span>Buka link undangan & buat akunmu</span>
+        </div>
+      </div>
+      <div class="verify-actions">
+        <a href="index.html" class="btn-verify-primary">Kembali ke Beranda →</a>
+      </div>
+      <p class="verify-hint">Proses peninjauan biasanya memakan waktu 1–3 hari kerja.</p>
     </div>
+  </div>
 
-    <!-- ── AUTH PAGE ──────────────────────────────────────────── -->
-    <div class="auth-page">
-      <div class="auth-left">
-        <a href="index.html" class="auth-logo">Paramuda</a>
-        <div class="auth-left-body">
-          <div class="auth-decoration">
-            <div class="deco-card dc1">
-              <span class="deco-icon">✦</span><span>Jurnal Ilmiah</span>
-            </div>
-            <div class="deco-card dc2">
-              <span class="deco-icon">◈</span><span>Opini & Esai</span>
-            </div>
-            <div class="deco-card dc3">
-              <span class="deco-icon">◉</span><span>Riset Mahasiswa</span>
-            </div>
-          </div>
-          <h2 class="auth-left-title">
-            Mulai berkontribusi untuk generasi penerus bangsa.
-          </h2>
-          <p class="auth-left-desc">
-            Bergabunglah dengan mahasiswa yang aktif menulis, meneliti, dan
-            berbagi gagasan di Paramuda Bandung.
-          </p>
-          <div class="auth-perks">
-            <div class="perk-item">
-              <span class="perk-icon">✦</span>
-              <div>
-                <strong>Akses Semua Artikel</strong
-                ><span>Baca seluruh publikasi anggota Paramuda</span>
-              </div>
-            </div>
-            <div class="perk-item">
-              <span class="perk-icon">◈</span>
-              <div>
-                <strong>Kirim Tulisanmu</strong
-                ><span>Publikasikan artikel dan jurnalmu</span>
-              </div>
-            </div>
-            <div class="perk-item">
-              <span class="perk-icon">◉</span>
-              <div>
-                <strong>Jaringan Akademik</strong
-                ><span>Terhubung dengan mahasiswa peneliti se-Bandung</span>
-              </div>
-            </div>
-          </div>
+  <!-- ── AUTH PAGE ──────────────────────────────────────────── -->
+  <div class="auth-page">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <a href="index.html" class="auth-logo">Paramuda</a>
+      <div class="auth-left-body">
+        <div class="auth-decoration">
+          <div class="deco-card dc1"><span class="deco-icon">✦</span><span>Jurnal Ilmiah</span></div>
+          <div class="deco-card dc2"><span class="deco-icon">◈</span><span>Opini & Esai</span></div>
+          <div class="deco-card dc3"><span class="deco-icon">◉</span><span>Riset Mahasiswa</span></div>
         </div>
-      </div>
-
-      <div class="auth-right">
-        <div class="auth-form-wrap">
-          <div class="auth-header">
-            <h1>Buat akun baru</h1>
-            <p>Pendaftaran akan ditinjau oleh admin sebelum diaktifkan</p>
+        <h2 class="auth-left-title">Bergabung dengan komunitas akademik Paramuda Bandung.</h2>
+        <p class="auth-left-desc">Isi formulir ini untuk mengajukan permohonan bergabung. Tim admin akan meninjau dan menghubungimu melalui email.</p>
+        <div class="auth-perks">
+          <div class="perk-item">
+            <span class="perk-icon">✦</span>
+            <div><strong>Proses Sederhana</strong><span>Isi formulir, tunggu persetujuan admin</span></div>
           </div>
-
-          <div
-            class="auth-banner error"
-            id="errorBanner"
-            style="display: none"
-          ></div>
-
-          <form id="registerForm" novalidate>
-            <div class="form-field">
-              <label for="name">Nama Lengkap <span class="req">*</span></label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Masukkan nama lengkapmu"
-                autocomplete="name"
-              />
-              <span class="field-error" id="nameError"></span>
-            </div>
-
-            <div class="form-field">
-              <label for="email">Email <span class="req">*</span></label>
-              <input
-                type="email"
-                id="email"
-                placeholder="email@contoh.com"
-                autocomplete="email"
-              />
-              <span class="field-error" id="emailError"></span>
-            </div>
-
-            <div class="form-field">
-              <label for="password">Password <span class="req">*</span></label>
-              <div class="input-wrap">
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="Minimal 8 karakter"
-                  autocomplete="new-password"
-                  oninput="checkStrength()"
-                />
-                <button
-                  type="button"
-                  class="eye-btn"
-                  onclick="toggleEye('password')"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                </button>
-              </div>
-              <div class="strength-bar">
-                <div class="strength-fill" id="strengthFill"></div>
-              </div>
-              <span class="strength-label" id="strengthLabel"></span>
-              <span class="field-error" id="passwordError"></span>
-            </div>
-
-            <div class="form-check" style="margin-bottom: 1.25rem">
-              <label class="check-label">
-                <input type="checkbox" id="agreeTerms" />
-                <span class="check-box"></span>
-                <span
-                  >Saya setuju dengan
-                  <a href="#" class="inline-link">ketentuan penggunaan</a>
-                  Paramuda</span
-                >
-              </label>
-              <span class="field-error" id="termsError"></span>
-            </div>
-
-            <button type="submit" class="btn-auth" id="submitBtn">
-              <span id="btnText">Daftar Sekarang</span>
-              <span
-                id="btnLoader"
-                class="btn-loader"
-                style="display: none"
-              ></span>
-            </button>
-          </form>
-
-          <div class="auth-divider"><span>atau</span></div>
-          <div class="auth-footer">
-            Sudah punya akun? <a href="sign in.html">Masuk di sini →</a>
+          <div class="perk-item">
+            <span class="perk-icon">◈</span>
+            <div><strong>Undangan via Email</strong><span>Link aktivasi dikirim langsung ke emailmu</span></div>
           </div>
-          <a href="/Hero Page/Hero Page.html" class="back-link"
-            >← Kembali ke beranda</a
-          >
+          <div class="perk-item">
+            <span class="perk-icon">◉</span>
+            <div><strong>Komunitas Terverifikasi</strong><span>Hanya anggota yang telah disetujui admin</span></div>
+          </div>
         </div>
       </div>
     </div>
 
-    <script>
-      if (memberIsLoggedIn()) window.location.href = "articles.html";
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+        <div class="auth-header">
+          <h1>Ajukan Permintaan Bergabung</h1>
+          <p>Isi data dirimu untuk dipertimbangkan oleh admin Paramuda</p>
+        </div>
 
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-          clearErrors();
+        <div class="auth-banner error"   id="errorBanner"   style="display:none;"></div>
+        <div class="auth-banner success" id="successBanner" style="display:none;"></div>
 
-          const name = document.getElementById("name").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value;
-          const agreed = document.getElementById("agreeTerms").checked;
-          let valid = true;
+        <form id="joinForm" novalidate>
 
-          if (!name || name.length < 2) {
-            showFieldError(
-              "nameError",
-              "Nama wajib diisi (minimal 2 karakter).",
-            );
-            valid = false;
-          }
-          if (!email) {
-            showFieldError("emailError", "Email wajib diisi.");
-            valid = false;
-          } else if (!/\S+@\S+\.\S+/.test(email)) {
-            showFieldError("emailError", "Format email tidak valid.");
-            valid = false;
-          }
-          if (!password || password.length < 8) {
-            showFieldError("passwordError", "Password minimal 8 karakter.");
-            valid = false;
-          }
-          if (!agreed) {
-            showFieldError(
-              "termsError",
-              "Kamu harus menyetujui ketentuan penggunaan.",
-            );
-            valid = false;
-          }
-          if (!valid) return;
+          <!-- Name -->
+          <div class="form-field">
+            <label for="name">Nama Lengkap <span class="req">*</span></label>
+            <input type="text" id="name" placeholder="Masukkan nama lengkapmu" autocomplete="name" />
+            <span class="field-error" id="nameError"></span>
+          </div>
 
-          // Check email uniqueness before hitting Supabase Auth
-          setLoading(true);
-          const existing = await memberFindByEmail(email);
-          if (existing) {
-            setLoading(false);
-            showFieldError("emailError", "Email sudah terdaftar.");
-            return;
-          }
+          <!-- Email -->
+          <div class="form-field">
+            <label for="email">Email Aktif <span class="req">*</span></label>
+            <input type="email" id="email" placeholder="email@contoh.com" autocomplete="email" />
+            <span class="field-hint">Undangan akan dikirim ke email ini jika disetujui.</span>
+            <span class="field-error" id="emailError"></span>
+          </div>
 
-          const result = await memberRegister({ name, email, password });
-          setLoading(false);
+          <!-- University -->
+          <div class="form-field">
+            <label for="university">*Informasi <span class="req">*</span></label>
+            <input type="text" id="*Info" placeholder="Lorem Ipsum" />
+            <span class="field-error" id="Gagal"></span>
+          </div>
 
-          if (result.ok) {
-            showPendingPopup(name);
+          <!-- Major -->
+          <div class="form-field">
+            <label for="Division">Divisi <span class="req">*</span></label>
+            <input type="text" id="major" placeholder="Public Relation, Social Manager..." />
+            <span class="field-error" id="Divisi salah"></span>
+          </div>
+
+          <!-- Motivation -->
+          <div class="form-field">
+            <label for="motivation">Motivasi Bergabung <span class="req">*</span></label>
+            <textarea id="motivation" rows="4"
+              placeholder="Ceritakan mengapa kamu ingin bergabung dengan Paramuda dan kontribusi apa yang ingin kamu berikan..."
+              style="resize:vertical;min-height:100px;"></textarea>
+            <span class="field-hint" id="motivationCount">0 / 500 karakter</span>
+            <span class="field-error" id="motivationError"></span>
+          </div>
+
+          <!-- Terms -->
+          <div class="form-check" style="margin-bottom:1.25rem;">
+            <label class="check-label">
+              <input type="checkbox" id="agreeTerms" />
+              <span class="check-box"></span>
+              <span>Saya setuju dengan <a href="#" class="inline-link">ketentuan penggunaan</a> Paramuda</span>
+            </label>
+            <span class="field-error" id="termsError"></span>
+          </div>
+
+          <button type="submit" class="btn-auth" id="submitBtn">
+            <span id="btnText">Kirim Permintaan</span>
+            <span id="btnLoader" class="btn-loader" style="display:none;"></span>
+          </button>
+
+        </form>
+
+        <div class="auth-divider"><span>atau</span></div>
+        <div class="auth-footer">Sudah punya undangan? <a href="register-complete.html">Aktivasi akun →</a></div>
+        <div class="auth-footer" style="margin-top:.5rem;">Sudah punya akun? <a href="sign in.html">Masuk di sini →</a></div>
+        <a href="index.html" class="back-link">← Kembali ke beranda</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .field-hint {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted, #6B6460);
+      margin-top: .25rem;
+    }
+    textarea {
+      width: 100%;
+      background: var(--bg, #F8F6F2);
+      border: 1.5px solid var(--border, rgba(26,24,22,0.12));
+      border-radius: var(--radius-sm, 6px);
+      padding: .65rem 1rem;
+      font-family: var(--font-body, 'Manrope', sans-serif);
+      font-size: 14px;
+      color: var(--text, #1A1816);
+      outline: none;
+      transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    textarea:focus { border-color: var(--accent, #005a1b); }
+  </style>
+
+  <script>
+    // ── REDIRECT IF ALREADY LOGGED IN ─────────────────────────
+    (async () => {
+      const { data: { session } } = await db.auth.getSession();
+      if (session) window.location.href = '../articles/articles-new.html';
+    })();
+
+    // ── MOTIVATION COUNTER ────────────────────────────────────
+    document.getElementById('motivation').addEventListener('input', function () {
+      document.getElementById('motivationCount').textContent =
+        this.value.length + ' / 500 karakter';
+    });
+
+    // ── FORM SUBMIT ───────────────────────────────────────────
+    document.getElementById('joinForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clearErrors();
+
+      const name       = document.getElementById('name').value.trim();
+      const email      = document.getElementById('email').value.trim();
+      const university = document.getElementById('university').value.trim();
+      const major      = document.getElementById('major').value.trim();
+      const motivation = document.getElementById('motivation').value.trim();
+      const agreed     = document.getElementById('agreeTerms').checked;
+      let valid = true;
+
+      if (!name || name.length < 2)         { showFieldError('nameError',       'Nama wajib diisi (minimal 2 karakter).'); valid = false; }
+      if (!email)                            { showFieldError('emailError',      'Email wajib diisi.'); valid = false; }
+      else if (!/\S+@\S+\.\S+/.test(email)) { showFieldError('emailError',      'Format email tidak valid.'); valid = false; }
+      if (!university)                       { showFieldError('universityError', 'Asal universitas wajib diisi.'); valid = false; }
+      if (!major)                            { showFieldError('majorError',      'Program studi wajib diisi.'); valid = false; }
+      if (!motivation || motivation.length < 20) { showFieldError('motivationError', 'Motivasi wajib diisi (minimal 20 karakter).'); valid = false; }
+      if (motivation.length > 500)           { showFieldError('motivationError', 'Motivasi maksimal 500 karakter.'); valid = false; }
+      if (!agreed)                           { showFieldError('termsError',      'Kamu harus menyetujui ketentuan penggunaan.'); valid = false; }
+      if (!valid) return;
+
+      setLoading(true);
+
+      try {
+        const result = await dbSubmitJoinRequest({ name, email, university, major, motivation });
+
+        if (!result.ok) {
+          const msg = result.error || '';
+          if (msg.toLowerCase().includes('duplicate') || msg.toLowerCase().includes('unique')) {
+            showFieldError('emailError', 'Email ini sudah mengajukan permintaan sebelumnya.');
           } else {
-            showBanner("error", result.error);
+            showBanner('error', 'Gagal mengirim permintaan: ' + msg);
           }
-        });
+          setLoading(false);
+          return;
+        }
 
-      function showPendingPopup(name) {
-        document.getElementById("pendingName").textContent = name.split(" ")[0];
-        const overlay = document.getElementById("pendingOverlay");
-        const modal = document.getElementById("pendingModal");
-        overlay.style.display = "flex";
-        requestAnimationFrame(() => {
-          overlay.classList.add("active");
-          modal.classList.add("active");
-        });
-      }
+        setLoading(false);
+        showSuccessPopup(email);
 
-      function toggleEye(id) {
-        const el = document.getElementById(id);
-        el.type = el.type === "password" ? "text" : "password";
+      } catch (err) {
+        console.error('Join request error:', err);
+        showBanner('error', 'Terjadi kesalahan. Periksa koneksi dan coba lagi.');
+        setLoading(false);
       }
+    });
 
-      function checkStrength() {
-        const pw = document.getElementById("password").value;
-        const fill = document.getElementById("strengthFill");
-        const label = document.getElementById("strengthLabel");
-        let score = 0;
-        if (pw.length >= 8) score++;
-        if (/[A-Z]/.test(pw)) score++;
-        if (/[0-9]/.test(pw)) score++;
-        if (/[^A-Za-z0-9]/.test(pw)) score++;
-        const levels = [
-          { pct: "25%", color: "#E05252", text: "Lemah" },
-          { pct: "50%", color: "#E08C52", text: "Cukup" },
-          { pct: "75%", color: "#D4B84A", text: "Baik" },
-          { pct: "100%", color: "#2D6B5A", text: "Kuat" },
-        ];
-        const lvl = levels[Math.max(0, score - 1)];
-        fill.style.width = pw.length ? lvl.pct : "0%";
-        fill.style.background = pw.length ? lvl.color : "";
-        label.textContent = pw.length ? lvl.text : "";
-        label.style.color = lvl.color;
-      }
+    // ── SUCCESS POPUP ─────────────────────────────────────────
+    function showSuccessPopup(email) {
+      document.getElementById('submittedEmail').textContent = email;
+      const overlay = document.getElementById('successOverlay');
+      const modal   = document.getElementById('successModal');
+      overlay.style.display = 'flex';
+      requestAnimationFrame(() => {
+        overlay.classList.add('active');
+        modal.classList.add('active');
+      });
+    }
 
-      function setLoading(on) {
-        document.getElementById("btnText").style.display = on
-          ? "none"
-          : "inline";
-        document.getElementById("btnLoader").style.display = on
-          ? "inline-block"
-          : "none";
-        document.getElementById("submitBtn").disabled = on;
-      }
+    // ── HELPERS ───────────────────────────────────────────────
+    function setLoading(on) {
+      document.getElementById('btnText').style.display   = on ? 'none'         : 'inline';
+      document.getElementById('btnLoader').style.display = on ? 'inline-block' : 'none';
+      document.getElementById('submitBtn').disabled = on;
+    }
 
-      function showFieldError(id, msg) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.textContent = msg;
-        el.style.display = "block";
-      }
+    function showFieldError(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent  = msg;
+      el.style.display = 'block';
+    }
 
-      function clearErrors() {
-        document.querySelectorAll(".field-error").forEach((el) => {
-          el.textContent = "";
-          el.style.display = "none";
-        });
-        document.getElementById("errorBanner").style.display = "none";
-      }
+    function clearErrors() {
+      document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.style.display = 'none'; });
+      ['errorBanner', 'successBanner'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+    }
 
-      function showBanner(type, msg) {
-        const el = document.getElementById(type + "Banner");
-        el.textContent = msg;
-        el.style.display = "flex";
-      }
-    </script>
-  </body>
+    function showBanner(type, msg) {
+      const el = document.getElementById(type + 'Banner');
+      el.textContent   = msg;
+      el.style.display = 'flex';
+    }
+  </script>
+</body>
 </html>

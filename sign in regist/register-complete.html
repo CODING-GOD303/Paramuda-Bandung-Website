@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aktivasi Akun | Paramuda Bandung</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="auth.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../Database/db.js"></script>
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- LEFT PANEL -->
+    <div class="auth-left">
+      <a href="index.html" class="auth-logo">Paramuda</a>
+      <div class="auth-left-body">
+        <div class="auth-decoration">
+          <div class="deco-card dc1"><span class="deco-icon">✦</span><span>Selamat Datang</span></div>
+          <div class="deco-card dc2"><span class="deco-icon">◈</span><span>Anggota Baru</span></div>
+          <div class="deco-card dc3"><span class="deco-icon">◉</span><span>Paramuda Bandung</span></div>
+        </div>
+        <h2 class="auth-left-title">Kamu telah disetujui untuk bergabung dengan Paramuda.</h2>
+        <p class="auth-left-desc">Buat password untuk mengaktifkan akunmu dan mulai berkontribusi di komunitas akademik Paramuda Bandung.</p>
+        <div class="auth-perks">
+          <div class="perk-item">
+            <span class="perk-icon">✦</span>
+            <div><strong>Akses Penuh</strong><span>Baca & kirim artikel setelah aktivasi</span></div>
+          </div>
+          <div class="perk-item">
+            <span class="perk-icon">◈</span>
+            <div><strong>Satu Langkah Lagi</strong><span>Buat password dan akunmu siap</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+
+        <!-- LOADING STATE -->
+        <div id="stateLoading" style="text-align:center;padding:3rem 0;">
+          <div class="btn-loader" style="display:inline-block;width:28px;height:28px;border-width:3px;"></div>
+          <p style="margin-top:1rem;color:var(--text-muted);font-size:14px;">Memvalidasi undangan...</p>
+        </div>
+
+        <!-- INVALID / EXPIRED TOKEN -->
+        <div id="stateInvalid" style="display:none;text-align:center;padding:3rem 0;">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">⚠️</div>
+          <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;margin-bottom:.75rem;">
+            Link tidak valid
+          </h2>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin-bottom:1.5rem;" id="invalidMsg">
+            Link undangan ini sudah tidak berlaku atau telah digunakan.
+          </p>
+          <a href="regist.html" class="btn-auth" style="display:inline-block;text-decoration:none;">
+            Ajukan Permintaan Baru
+          </a>
+        </div>
+
+        <!-- ACTIVATION FORM -->
+        <div id="stateForm" style="display:none;">
+          <div class="auth-header">
+            <h1>Aktifkan Akunmu</h1>
+            <p>Halo, <strong id="memberName"></strong>! Buat password untuk melanjutkan.</p>
+          </div>
+
+          <div class="auth-banner error"   id="errorBanner"   style="display:none;"></div>
+          <div class="auth-banner success" id="successBanner" style="display:none;"></div>
+
+          <!-- Read-only email display -->
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" id="displayEmail" disabled
+              style="opacity:.6;cursor:not-allowed;" />
+            <span class="field-hint">Email ini terdaftar dari undangan admin.</span>
+          </div>
+
+          <form id="activateForm" novalidate>
+            <div class="form-field">
+              <label for="password">Buat Password <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input type="password" id="password" placeholder="Minimal 8 karakter"
+                  autocomplete="new-password" oninput="checkStrength()" />
+                <button type="button" class="eye-btn" onclick="toggleEye('password')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+              <span class="strength-label" id="strengthLabel"></span>
+              <span class="field-error" id="passwordError"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="confirm">Konfirmasi Password <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input type="password" id="confirm" placeholder="Ulangi password"
+                  autocomplete="new-password" />
+                <button type="button" class="eye-btn" onclick="toggleEye('confirm')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+              </div>
+              <span class="field-error" id="confirmError"></span>
+            </div>
+
+            <button type="submit" class="btn-auth" id="submitBtn">
+              <span id="btnText">Aktifkan Akun</span>
+              <span id="btnLoader" class="btn-loader" style="display:none;"></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div id="stateSuccess" style="display:none;text-align:center;padding:3rem 0;">
+          <div style="font-size:2.5rem;margin-bottom:1rem;">🎉</div>
+          <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;margin-bottom:.75rem;">
+            Akun berhasil diaktifkan!
+          </h2>
+          <p style="color:var(--text-muted);font-size:14px;line-height:1.7;margin-bottom:1.5rem;">
+            Selamat bergabung dengan Paramuda! Kamu sudah bisa masuk dan mulai berkontribusi.
+          </p>
+          <a href="sign in.html" class="btn-auth" style="display:inline-block;text-decoration:none;">
+            Masuk Sekarang →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .field-hint {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted, #6B6460);
+      margin-top: .25rem;
+    }
+  </style>
+
+  <script>
+    let _memberRecord = null;  // the members row from Supabase
+    let _inviteToken  = null;
+
+    // ── ON LOAD: validate token from URL ──────────────────────
+    window.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      _inviteToken  = params.get('token');
+
+      if (!_inviteToken) {
+        showState('invalid');
+        document.getElementById('invalidMsg').textContent =
+          'Link tidak mengandung token undangan. Pastikan kamu membuka link lengkap dari email.';
+        return;
+      }
+
+      // Validate the token against the members table
+      const result = await dbValidateInviteToken(_inviteToken);
+
+      if (!result.ok) {
+        showState('invalid');
+        document.getElementById('invalidMsg').textContent = result.error ||
+          'Link undangan ini sudah tidak berlaku atau telah digunakan.';
+        return;
+      }
+
+      _memberRecord = result.member;
+      document.getElementById('memberName').textContent  = _memberRecord.name;
+      document.getElementById('displayEmail').value      = _memberRecord.email;
+      showState('form');
+    });
+
+    // ── ACTIVATION FORM ───────────────────────────────────────
+    document.getElementById('activateForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      clearErrors();
+
+      const password = document.getElementById('password').value;
+      const confirm  = document.getElementById('confirm').value;
+      let valid = true;
+
+      if (!password || password.length < 8) {
+        showFieldError('passwordError', 'Password minimal 8 karakter.'); valid = false;
+      } else if (password !== confirm) {
+        showFieldError('confirmError',  'Password tidak cocok.'); valid = false;
+      }
+      if (!valid) return;
+
+      setLoading(true);
+
+      try {
+        const result = await dbCompleteRegistration(_inviteToken, _memberRecord.email, _memberRecord.name, password);
+
+        if (!result.ok) {
+          showBanner('error', result.error || 'Gagal mengaktifkan akun. Coba lagi.');
+          setLoading(false);
+          return;
+        }
+
+        setLoading(false);
+        showState('success');
+
+      } catch (err) {
+        console.error('Activation error:', err);
+        showBanner('error', 'Terjadi kesalahan. Periksa koneksi dan coba lagi.');
+        setLoading(false);
+      }
+    });
+
+    // ── HELPERS ───────────────────────────────────────────────
+    function showState(state) {
+      ['loading', 'invalid', 'form', 'success'].forEach(s => {
+        document.getElementById('state' + s.charAt(0).toUpperCase() + s.slice(1)).style.display =
+          s === state ? 'block' : 'none';
+      });
+    }
+
+    function toggleEye(id) {
+      const el = document.getElementById(id);
+      el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    function checkStrength() {
+      const pw    = document.getElementById('password').value;
+      const fill  = document.getElementById('strengthFill');
+      const label = document.getElementById('strengthLabel');
+      let score = 0;
+      if (pw.length >= 8)           score++;
+      if (/[A-Z]/.test(pw))         score++;
+      if (/[0-9]/.test(pw))         score++;
+      if (/[^A-Za-z0-9]/.test(pw))  score++;
+      const levels = [
+        { pct:'25%',  color:'#E05252', text:'Lemah' },
+        { pct:'50%',  color:'#E08C52', text:'Cukup' },
+        { pct:'75%',  color:'#D4B84A', text:'Baik'  },
+        { pct:'100%', color:'#2D6B5A', text:'Kuat'  },
+      ];
+      const lvl = levels[Math.max(0, score - 1)];
+      fill.style.width      = pw.length ? lvl.pct   : '0%';
+      fill.style.background = pw.length ? lvl.color : '';
+      label.textContent     = pw.length ? lvl.text  : '';
+      label.style.color     = lvl.color;
+    }
+
+    function setLoading(on) {
+      document.getElementById('btnText').style.display   = on ? 'none'         : 'inline';
+      document.getElementById('btnLoader').style.display = on ? 'inline-block' : 'none';
+      document.getElementById('submitBtn').disabled = on;
+    }
+
+    function showFieldError(id, msg) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent   = msg;
+      el.style.display = 'block';
+    }
+
+    function clearErrors() {
+      document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.style.display = 'none'; });
+      ['errorBanner', 'successBanner'].forEach(id => { document.getElementById(id).style.display = 'none'; });
+    }
+
+    function showBanner(type, msg) {
+      const el = document.getElementById(type + 'Banner');
+      el.textContent   = msg;
+      el.style.display = 'flex';
+    }
+  </script>
+</body>
+</html>
