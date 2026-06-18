@@ -15,7 +15,7 @@
 </head>
 <body>
 
-  <!--LOGIN SCREEN-->
+  <!-- ══ LOGIN SCREEN ══════════════════════════════════════════ -->
   <div class="login-screen" id="loginScreen">
     <div class="login-card">
       <div class="login-logo">Paramuda</div>
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <!--ADMIN PANEL-->
+  <!-- ══ ADMIN PANEL ════════════════════════════════════════════ -->
   <div class="admin-panel" id="adminPanel" style="display:none;">
 
     <!-- SIDEBAR -->
@@ -43,13 +43,13 @@
       <div class="sidebar-logo">Paramuda.Id</div>
       <div class="sidebar-label">Menu</div>
       <nav class="sidebar-nav">
+        <button class="snav-btn active" onclick="showView('dashboard')" id="btn-dashboard">
+          <span>◈</span> Dashboard
+        </button>
         <button class="snav-btn" onclick="showView('pendaftaran')" id="btn-pendaftaran"
           style="display:flex;align-items:center;gap:.6rem;">
           <span>👥</span> Pendaftaran
           <span class="snav-badge" id="memberBadge" style="display:none;">0</span>
-        </button>
-        <button class="snav-btn active" onclick="showView('dashboard')" id="btn-dashboard">
-          <span>◈</span> Dashboard
         </button>
         <button class="snav-btn" onclick="showView('write')" id="btn-write">
           <span>✦</span> Tulis Artikel
@@ -57,14 +57,15 @@
         <button class="snav-btn" onclick="showView('manage')" id="btn-manage">
           <span>☰</span> Kelola Artikel
         </button>
-        <!-- NEW: Requests -->
-        <button class="snav-btn" onclick="showView('requests')" id="btn-requests" style="display:flex;align-items:center;gap:.6rem;">
-          <span>📋</span> Permintaan
-          <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
-        </button>
-        <button class="snav-btn" onclick="showView('kiriman')" id="btn-kiriman" style="display:flex;align-items:center;gap:.6rem;">
+        <button class="snav-btn" onclick="showView('kiriman')" id="btn-kiriman"
+          style="display:flex;align-items:center;gap:.6rem;">
           <span>✦</span> Kiriman Artikel
           <span class="snav-badge" id="kirimBadge" style="display:none;">0</span>
+        </button>
+        <button class="snav-btn" onclick="showView('requests')" id="btn-requests"
+          style="display:flex;align-items:center;gap:.6rem;">
+          <span>📋</span> Permintaan
+          <span class="snav-badge" id="pendingBadge" style="display:none;">0</span>
         </button>
       </nav>
       <div class="sidebar-bottom">
@@ -73,18 +74,16 @@
       </div>
     </aside>
 
-    <!--MAIN CONTENT-->
+    <!-- MAIN CONTENT -->
     <main class="admin-main">
 
-      <!-- DASHBOARD -->
+      <!-- ══ DASHBOARD ══════════════════════════════════════════ -->
       <div class="view" id="view-dashboard">
         <div class="view-header">
           <h1>Dashboard</h1>
           <span class="view-date" id="todayDate"></span>
         </div>
-
         <div class="stats-row" id="statsRow"></div>
-
         <div class="dash-section">
           <div class="dash-section-header">
             <h3>Artikel Terbaru</h3>
@@ -92,8 +91,6 @@
           </div>
           <div class="recent-list" id="recentList"></div>
         </div>
-
-        <!-- NEW: Pending requests preview on dashboard -->
         <div class="dash-section" style="margin-top:1.5rem;" id="dashReqSection">
           <div class="dash-section-header">
             <h3>Permintaan Terbaru</h3>
@@ -103,7 +100,48 @@
         </div>
       </div>
 
-      <!--WRITE/EDIT-->
+      <!-- ══ PENDAFTARAN ANGGOTA ═════════════════════════════════ -->
+      <div class="view" id="view-pendaftaran" style="display:none;">
+        <div class="view-header">
+          <h1>Pendaftaran Anggota</h1>
+          <div class="header-actions">
+            <span style="font-size:13px;color:var(--text-muted);" id="memberCount"></span>
+          </div>
+        </div>
+
+        <div class="stats-row" id="memberStats" style="margin-bottom:1.5rem;"></div>
+
+        <div class="manage-controls">
+          <input type="text" id="memberSearch" placeholder="Cari nama / email..."
+            oninput="renderPendaftaran()" />
+          <select id="memberFilter" onchange="renderPendaftaran()">
+            <option value="pending">⏳ Menunggu Review</option>
+            <option value="approved">✉ Undangan Terkirim</option>
+            <option value="active">✅ Aktif</option>
+            <option value="rejected">✕ Ditolak</option>
+            <option value="">Semua</option>
+          </select>
+        </div>
+
+        <div class="manage-table-wrap">
+          <table class="manage-table">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Universitas</th>
+                <th>Prodi</th>
+                <th>Dikirim</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="memberBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ TULIS ARTIKEL ══════════════════════════════════════ -->
       <div class="view" id="view-write" style="display:none;">
         <div class="view-header">
           <h1 id="writeTitle">Tulis Artikel Baru</h1>
@@ -114,7 +152,6 @@
         </div>
 
         <div class="write-layout">
-          <!--EDITOR-->
           <div class="editor-panel" id="editorPanel">
             <div class="field-group">
               <label>Judul Artikel <span class="req">*</span></label>
@@ -171,7 +208,7 @@
               </div>
             </div>
 
-            <!--COVER IMAGE-->
+            <!-- COVER IMAGE -->
             <div class="field-group">
               <label>Gambar Cover</label>
               <div class="cover-upload-wrap" id="coverWrap" onclick="document.getElementById('coverFileInput').click()">
@@ -181,15 +218,17 @@
                   <p>Klik untuk pilih foto, atau tempel URL di bawah</p>
                 </div>
               </div>
-              <input type="file" id="coverFileInput" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;" onchange="handleCoverUpload(event)" />
+              <input type="file" id="coverFileInput" accept="image/jpeg,image/png,image/webp,image/gif"
+                style="display:none;" onchange="handleCoverUpload(event)" />
               <div class="cover-actions">
-                <input type="text" id="fCoverUrl" class="cover-url-input" placeholder="Atau tempel URL gambar..." oninput="previewCoverUrl(this.value)" />
+                <input type="text" id="fCoverUrl" class="cover-url-input"
+                  placeholder="Atau tempel URL gambar..." oninput="previewCoverUrl(this.value)" />
                 <button type="button" class="btn-icon" onclick="clearCover()" title="Hapus gambar">✕ Hapus</button>
               </div>
               <div class="cover-status" id="coverStatus"></div>
             </div>
 
-            <!--BODY EDITOR-->
+            <!-- BODY EDITOR -->
             <div class="field-group body-field">
               <label>
                 Isi Artikel <span class="req">*</span>
@@ -198,51 +237,35 @@
                 </span>
               </label>
               <div class="editor-wrap">
-
                 <div class="toolbar">
-                  <button type="button" onclick="insertMd('## ','')"   title="Heading 2">H2</button>
-                  <button type="button" onclick="insertMd('### ','')"  title="Heading 3">H3</button>
+                  <button type="button" onclick="insertMd('## ','')"  title="Heading 2">H2</button>
+                  <button type="button" onclick="insertMd('### ','')" title="Heading 3">H3</button>
                   <div class="toolbar-sep"></div>
-                  <button type="button" onclick="insertMd('**','**')"  title="Tebal"><b>B</b></button>
-                  <button type="button" onclick="insertMd('_','_')"    title="Miring"><i>I</i></button>
+                  <button type="button" onclick="insertMd('**','**')" title="Tebal"><b>B</b></button>
+                  <button type="button" onclick="insertMd('_','_')"   title="Miring"><i>I</i></button>
                   <div class="toolbar-sep"></div>
-                  <button type="button" onclick="insertMd('> ','')"    title="Kutipan">❝</button>
-                  <button type="button" onclick="insertMd('- ','')"    title="List">• List</button>
-                  <button type="button" onclick="insertDivider()"      title="Garis pemisah">—</button>
+                  <button type="button" onclick="insertMd('> ','')"   title="Kutipan">❝</button>
+                  <button type="button" onclick="insertMd('- ','')"   title="List">• List</button>
+                  <button type="button" onclick="insertDivider()"     title="Garis pemisah">—</button>
                   <div class="toolbar-sep"></div>
                   <button type="button" class="toolbar-preview-btn" id="adminPreviewToggle"
                     onclick="toggleInlinePreview()">👁 Pratinjau</button>
                 </div>
-
                 <div id="adminEditorPane">
                   <textarea id="fBody" class="editor-textarea"
-                    placeholder="Mulai menulis artikel di sini...
-
-Tekan Enter untuk paragraf baru.
-
-Gunakan toolbar di atas:
-  H2 / H3  → Judul seksi
-  B        → **teks tebal**
-  I        → _teks miring_
-  ❝        → > kutipan
-  •        → - item list
-  —        → garis pemisah"></textarea>
+                    placeholder="Mulai menulis artikel di sini...&#10;&#10;Tekan Enter untuk paragraf baru.&#10;&#10;Gunakan toolbar di atas:&#10;  H2 / H3  → Judul seksi&#10;  B        → **teks tebal**&#10;  I        → _teks miring_&#10;  ❝        → > kutipan&#10;  •        → - item list&#10;  —        → garis pemisah"></textarea>
                 </div>
-
                 <div class="editor-preview-pane" id="adminPreviewPane"></div>
-
                 <div class="editor-footer">
                   <span id="fWordCount">0 kata</span>
                   <span id="fCharCount">0 karakter</span>
                 </div>
-
-              </div><!-- /.editor-wrap -->
+              </div>
             </div>
 
             <input type="hidden" id="editingId" value="" />
           </div>
-
-          <!-- legacy previewPanel kept as hidden stub so old JS refs don't crash -->
+          <!-- legacy stub -->
           <div id="previewPanel" style="display:none;"></div>
         </div>
 
@@ -257,7 +280,7 @@ Gunakan toolbar di atas:
         </div>
       </div>
 
-      <!--MANAGE-->
+      <!-- ══ KELOLA ARTIKEL ═════════════════════════════════════ -->
       <div class="view" id="view-manage" style="display:none;">
         <div class="view-header">
           <h1>Kelola Artikel</h1>
@@ -293,9 +316,41 @@ Gunakan toolbar di atas:
         <p class="manage-count" id="manageCount"></p>
       </div>
 
-      <!-- ══════════════════════════════════════════════
-           NEW VIEW: PERMINTAAN (Contact Requests)
-           ══════════════════════════════════════════ -->
+      <!-- ══ KIRIMAN ARTIKEL ════════════════════════════════════ -->
+      <div class="view" id="view-kiriman" style="display:none;">
+        <div class="view-header">
+          <h1>Kiriman Artikel</h1>
+          <div class="header-actions">
+            <span style="font-size:13px;color:var(--text-muted);" id="kirimCount"></span>
+          </div>
+        </div>
+        <div class="stats-row" id="kirimStats" style="margin-bottom:1.5rem;"></div>
+        <div class="manage-controls">
+          <input type="text" id="kirimSearch" placeholder="Cari judul / penulis..." oninput="renderKiriman()" />
+          <select id="kirimFilter" onchange="renderKiriman()">
+            <option value="">Semua Pending</option>
+            <option value="pending">✦ Artikel Baru</option>
+            <option value="pending_edit">✎ Permintaan Edit</option>
+          </select>
+        </div>
+        <div class="manage-table-wrap">
+          <table class="manage-table">
+            <thead>
+              <tr>
+                <th>Judul</th>
+                <th>Jenis</th>
+                <th>Penulis</th>
+                <th>Kategori</th>
+                <th>Dikirim</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="kirimBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ PERMINTAAN (Contact Requests) ══════════════════════ -->
       <div class="view" id="view-requests" style="display:none;">
         <div class="view-header">
           <h1>Permintaan Masuk</h1>
@@ -303,11 +358,7 @@ Gunakan toolbar di atas:
             <button class="btn-sm" onclick="markAllRead()">✓ Tandai Semua Dibaca</button>
           </div>
         </div>
-
-        <!-- Stats pills -->
         <div class="stats-row" id="reqStatsRow" style="margin-bottom:1.5rem;"></div>
-
-        <!-- Filter + search -->
         <div class="req-controls">
           <input type="text" id="reqSearch" placeholder="Cari nama / email..." oninput="renderRequests()" />
           <select id="reqStatusFilter" onchange="renderRequests()">
@@ -327,8 +378,6 @@ Gunakan toolbar di atas:
             <option>Lainnya</option>
           </select>
         </div>
-
-        <!-- Table -->
         <div class="manage-table-wrap">
           <table class="manage-table">
             <thead>
@@ -348,127 +397,12 @@ Gunakan toolbar di atas:
         <p class="manage-count" id="requestsCount"></p>
       </div>
 
-
-      <!-- ══════════════════════════════════════════════
-           KIRIMAN — Member Article Submissions
-           ══════════════════════════════════════════ -->
-      <div class="view" id="view-kiriman" style="display:none;">
-        <div class="view-header">
-          <h1>Kiriman Artikel</h1>
-          <div class="header-actions">
-            <span style="font-size:13px;color:var(--text-muted);" id="kirimCount"></span>
-          </div>
-        </div>
-        
-
-        <div class="stats-row" id="kirimStats" style="margin-bottom:1.5rem;"></div>
-
-        <div class="manage-controls">
-          <input type="text" id="kirimSearch" placeholder="Cari judul / penulis..." oninput="renderKiriman()" />
-          <select id="kirimFilter" onchange="renderKiriman()">
-            <option value="">Semua Pending</option>
-            <option value="pending">✦ Artikel Baru</option>
-            <option value="pending_edit">✎ Permintaan Edit</option>
-          </select>
-        </div>
-
-        <div class="manage-table-wrap">
-          <table class="manage-table">
-            <thead>
-              <tr>
-                <th>Judul</th>
-                <th>Jenis</th>
-                <th>Penulis</th>
-                <th>Kategori</th>
-                <th>Dikirim</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="kirimBody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="view" id="view-pendaftaran" style="display:none;">
-        <div class="view-header">
-          <h1>Pendaftaran Anggota</h1>
-          <div class="header-actions">
-            <span style="font-size:13px;color:var(--text-muted);" id="memberCount"></span>
-          </div>
-        </div>
-      
-        <!-- Stats pills -->
-        <div class="stats-row" id="memberStats" style="margin-bottom:1.5rem;"></div>
-      
-        <!-- Filter + search -->
-        <div class="manage-controls">
-          <input type="text" id="memberSearch" placeholder="Cari nama / email..."
-            oninput="renderPendaftaran()" />
-          <select id="memberFilter" onchange="renderPendaftaran()">
-            <option value="pending">⏳ Menunggu Review</option>
-            <option value="approved">✓ Disetujui (belum aktivasi)</option>
-            <option value="active">✅ Aktif</option>
-            <option value="rejected">✕ Ditolak</option>
-            <option value="">Semua</option>
-          </select>
-        </div>
-      
-        <!-- Table -->
-        <div class="manage-table-wrap">
-          <table class="manage-table">
-            <thead>
-              <tr>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Universitas</th>
-                <th>Prodi</th>
-                <th>Dikirim</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="memberBody"></tbody>
-          </table>
-        </div>
-      </div>
-      
-      <!-- Member detail modal -->
-      <div class="req-detail-modal" id="memberDetailModal" style="display:none;">
-        <div class="req-detail-card" style="max-width:540px;">
-          <h3 id="mdName"></h3>
-          <div class="req-detail-row"><strong>Email</strong><span id="mdEmail"></span></div>
-          <div class="req-detail-row"><strong>Universitas</strong><span id="mdUniversity"></span></div>
-          <div class="req-detail-row"><strong>Prodi</strong><span id="mdMajor"></span></div>
-          <div class="req-detail-row"><strong>Tanggal</strong><span id="mdDate"></span></div>
-          <div class="req-detail-row"><strong>Status</strong><span id="mdStatus"></span></div>
-          <div style="margin-top:.5rem;">
-            <div style="font-size:12px;font-weight:600;color:var(--text-muted);
-                        letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;">
-              Motivasi
-            </div>
-            <div class="req-detail-msg" id="mdMotivation" style="white-space:pre-wrap;"></div>
-          </div>
-      
-          <!-- Reject reason (shown conditionally) -->
-          <div id="mdRejectWrap" style="display:none;margin-top:.5rem;">
-            <label style="font-size:12px;font-weight:600;color:#C44444;
-                          display:block;margin-bottom:.35rem;">
-              Alasan penolakan (opsional)
-            </label>
-            <textarea id="mdRejectReason" rows="3"
-              style="width:100%;font-family:var(--font-body);font-size:13px;
-                    padding:.6rem .9rem;border:1.5px solid rgba(196,68,68,.3);
-                    border-radius:6px;outline:none;resize:none;box-sizing:border-box;"
-              placeholder="Tulis alasan penolakan untuk calon anggota..."></textarea>
-          </div>
-      
-          <div class="req-detail-actions" id="mdActions"></div>
-        </div>
-      </div>
-
     </main>
   </div>
 
-  <!--DELETE CONFIRM MODAL (articles)-->
+  <!-- ══ MODALS ════════════════════════════════════════════════ -->
+
+  <!-- Delete confirm (articles) -->
   <div class="modal-overlay" id="modalOverlay" style="display:none;">
     <div class="modal">
       <div class="modal-icon">⚠</div>
@@ -481,7 +415,7 @@ Gunakan toolbar di atas:
     </div>
   </div>
 
-  <!-- MESSAGE DETAIL MODAL (requests) -->
+  <!-- Contact request detail modal -->
   <div class="req-detail-modal" id="reqDetailModal" style="display:none;">
     <div class="req-detail-card">
       <h3 id="rdName"></h3>
@@ -492,14 +426,43 @@ Gunakan toolbar di atas:
       <div class="req-detail-msg" id="rdMessage"></div>
       <div class="req-detail-actions">
         <button class="btn-cancel" onclick="closeReqDetail()">Tutup</button>
-        <button class="btn-sm" id="rdMarkDone" onclick="">Tandai Selesai</button>
-        <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;" id="rdDelete" onclick="">Hapus</button>
+        <button class="btn-sm" id="rdMarkDone">Tandai Selesai</button>
+        <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;" id="rdDelete">Hapus</button>
       </div>
     </div>
   </div>
 
+  <!-- Member detail modal -->
+  <div class="req-detail-modal" id="memberDetailModal" style="display:none;">
+    <div class="req-detail-card" style="max-width:540px;">
+      <h3 id="mdName"></h3>
+      <div class="req-detail-row"><strong>Email</strong><span id="mdEmail"></span></div>
+      <div class="req-detail-row"><strong>Universitas</strong><span id="mdUniversity"></span></div>
+      <div class="req-detail-row"><strong>Prodi</strong><span id="mdMajor"></span></div>
+      <div class="req-detail-row"><strong>Tanggal</strong><span id="mdDate"></span></div>
+      <div class="req-detail-row"><strong>Status</strong><span id="mdStatus"></span></div>
+      <div style="margin-top:.5rem;">
+        <div style="font-size:12px;font-weight:600;color:var(--text-muted);
+                    letter-spacing:.06em;text-transform:uppercase;margin-bottom:.4rem;">
+          Motivasi
+        </div>
+        <div class="req-detail-msg" id="mdMotivation" style="white-space:pre-wrap;"></div>
+      </div>
+      <div id="mdRejectWrap" style="display:none;margin-top:.75rem;">
+        <label style="font-size:12px;font-weight:600;color:#C44444;display:block;margin-bottom:.35rem;">
+          Alasan penolakan (opsional)
+        </label>
+        <textarea id="mdRejectReason" rows="3"
+          style="width:100%;font-family:var(--font-body);font-size:13px;
+                 padding:.6rem .9rem;border:1.5px solid rgba(196,68,68,.3);
+                 border-radius:6px;outline:none;resize:none;box-sizing:border-box;"
+          placeholder="Tulis alasan penolakan untuk calon anggota..."></textarea>
+      </div>
+      <div class="req-detail-actions" id="mdActions"></div>
+    </div>
+  </div>
 
-  <!-- DIFF / REVIEW MODAL -->
+  <!-- Diff / review modal -->
   <div class="diff-modal" id="diffModal" style="display:none;">
     <div class="diff-card">
       <div class="diff-header">
@@ -523,1299 +486,38 @@ Gunakan toolbar di atas:
     </div>
   </div>
 
-  <!--TOAST-->
+  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <script>
-    // ── AUTH ──────────────────────────────────────────────────
-    window.addEventListener('DOMContentLoaded', async () => {
-      const user = await authGetCurrentUser();
-      if (user && user.role === 'admin') {
-        showPanel();
-      }
-
-      document.getElementById('pwInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
-      });
-      document.getElementById('emailInput').addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
-      });
-      document.getElementById('todayDate').textContent =
-        new Date().toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-      setTodayDate();
-    });
-
-    async function doLogin() {
-      const email = document.getElementById('emailInput').value.trim();
-      const pw    = document.getElementById('pwInput').value;
-      const btn   = document.getElementById('loginBtn');
-      const errEl = document.getElementById('loginError');
-
-      errEl.style.display = 'none';
-      btn.textContent = 'Masuk...';
-      btn.disabled = true;
-
-      const result = await authLogin(email, pw);
-
-      btn.textContent = 'Masuk →';
-      btn.disabled = false;
-
-      if (!result.ok) {
-        errEl.textContent = result.error || 'Email atau password salah.';
-        errEl.style.display = 'block';
-        document.getElementById('pwInput').value = '';
-        return;
-      }
-
-      if (result.user.role !== 'admin') {
-        errEl.textContent = 'Akun ini tidak memiliki akses admin.';
-        errEl.style.display = 'block';
-        await authLogout();
-        return;
-      }
-
-      showPanel();
-    }
-
-    async function doLogout() {
-      await authLogout();
-      document.getElementById('adminPanel').style.display = 'none';
-      document.getElementById('loginScreen').style.display = 'flex';
-      document.getElementById('pwInput').value = '';
-      document.getElementById('emailInput').value = '';
-      document.getElementById('loginError').style.display = 'none';
-    }
-
-    function showPanel() {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminPanel').style.display = 'flex';
-      renderDashboard();
-      refreshPendingBadge();
-    }
-
-    function togglePw() {
-      const input = document.getElementById('pwInput');
-      input.type = input.type === 'password' ? 'text' : 'password';
-    }
-
-    // ── VIEWS ─────────────────────────────────────────────────
-    function showView(name) {
-      ['dashboard','write','manage','requests','kiriman'].forEach(v => {
-        document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none';
-        document.getElementById('btn-' + v).classList.toggle('active', v === name);
-      });
-      if (name === 'dashboard') renderDashboard();
-      if (name === 'manage')    renderManage();
-      if (name === 'requests')  renderRequests();
-      if (name === 'kiriman')   renderKiriman();
-      if (name === 'write' && !document.getElementById('editingId').value) clearForm();
-    }
-
-    // ── PENDING BADGE (sidebar) ───────────────────────────────
-    async function refreshPendingBadge() {
-      const [reqs, subs] = await Promise.all([dbGetContactRequests(), dbGetPendingSubmissions()]);
-
-      // Contact requests badge
-      const reqCount = reqs.filter(r => r.status === 'baru').length;
-      const badge = document.getElementById('pendingBadge');
-      if (reqCount > 0) { badge.textContent = reqCount > 99 ? '99+' : reqCount; badge.style.display = 'inline-flex'; }
-      else { badge.style.display = 'none'; }
-
-      // Submissions badge
-      const subCount = subs.length;
-      const kirimBadge = document.getElementById('kirimBadge');
-      if (subCount > 0) { kirimBadge.textContent = subCount > 99 ? '99+' : subCount; kirimBadge.style.display = 'inline-flex'; }
-      else { kirimBadge.style.display = 'none'; }
-    }
-
-    // ── DASHBOARD ─────────────────────────────────────────────
-    async function renderDashboard() {
-      document.getElementById('statsRow').innerHTML =
-        '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
-
-      const [articles, requests] = await Promise.all([dbGetAll(), dbGetContactRequests()]);
-
-      const cats        = [...new Set(articles.map(a => a.category))].length;
-      const totalViews  = articles.reduce((s, a) => s + (a.views || 0), 0);
-      const pendingReqs = requests.filter(r => r.status === 'baru').length;
-
-      document.getElementById('statsRow').innerHTML = `
-        <div class="stat-card"><div class="sc-num">${articles.length}</div><div class="sc-label">Total Artikel</div></div>
-        <div class="stat-card"><div class="sc-num">${cats}</div><div class="sc-label">Kategori Aktif</div></div>
-        <div class="stat-card"><div class="sc-num">${totalViews.toLocaleString()}</div><div class="sc-label">Total Dilihat</div></div>
-        <div class="stat-card" style="border-color:${pendingReqs > 0 ? 'rgba(196,68,68,.4)' : 'var(--border)'};">
-          <div class="sc-num" style="color:${pendingReqs > 0 ? '#C44444' : 'var(--text)'};">${pendingReqs}</div>
-          <div class="sc-label">Permintaan Baru</div>
-        </div>
-      `;
-
-      // Recent articles
-      const recent = articles.slice(0, 5);
-      document.getElementById('recentList').innerHTML = recent.map(a => `
-        <div class="recent-item">
-          <div class="ri-left">
-            <span class="ri-tag ${catClass(a.category)}">${a.category}</span>
-            <span class="ri-title">${a.title}</span>
-          </div>
-          <div class="ri-right">
-            <span class="ri-author">${a.author}</span>
-            <span class="ri-date">${a.dateLabel || formatDateLabel(a.date)}</span>
-            <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎</button>
-          </div>
-        </div>
-      `).join('');
-
-      // Recent requests preview (latest 5)
-      const recentReqs = requests.slice(0, 5);
-      if (recentReqs.length === 0) {
-        document.getElementById('dashReqList').innerHTML =
-          '<div style="padding:1rem 1.5rem;font-size:13px;color:var(--text-muted);">Belum ada permintaan masuk.</div>';
-      } else {
-        document.getElementById('dashReqList').innerHTML = recentReqs.map(r => {
-          const statusCls = { baru:'req-status-baru', dibaca:'req-status-dibaca', selesai:'req-status-selesai' }[r.status] || 'req-status-baru';
-          const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
-          return `
-            <div class="recent-item">
-              <div class="ri-left">
-                <span class="${statusCls}">${statusLabel}</span>
-                <span class="ri-title">${r.name} — <span style="font-weight:400;color:var(--text-muted);">${r.subject || 'Tanpa keperluan'}</span></span>
-              </div>
-              <div class="ri-right">
-                <span class="ri-author" style="font-size:12px;">${r.email}</span>
-                <span class="ri-date">${fmtReqDate(r.created_at)}</span>
-                <button class="btn-icon" onclick="openReqDetail('${r.id}')">👁 Lihat</button>
-              </div>
-            </div>`;
-        }).join('');
-      }
-    }
-
-    // ── MANAGE ARTICLES ───────────────────────────────────────
-    async function renderManage() {
-      const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
-      const cat = document.getElementById('manageCat').value;
-
-      document.getElementById('manageBody').innerHTML =
-        '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
-
-      const all = await dbGetAll();
-      const articles = all
-        .filter(a => (!cat || a.category === cat))
-        .filter(a => !q || a.title.toLowerCase().includes(q) || a.author.toLowerCase().includes(q));
-
-      document.getElementById('manageCount').textContent = articles.length + ' artikel ditampilkan';
-
-      document.getElementById('manageBody').innerHTML = articles.map(a => `
-        <tr>
-          <td class="td-title" title="${a.title}">${a.title}</td>
-          <td><span class="article-tag-pill ${catClass(a.category)}">${a.category}</span></td>
-          <td>${a.author}</td>
-          <td>${a.date_label || formatDateLabel(a.date)}</td>
-          <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : '—'}</td>
-          <td class="td-actions">
-            <button class="btn-icon" onclick="editArticle(${a.id})">✎ Edit</button>
-            <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g,"\\'")}')">✕ Hapus</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    // ── REQUESTS VIEW ─────────────────────────────────────────
-    async function renderRequests() {
-      const q          = (document.getElementById('reqSearch').value || '').toLowerCase();
-      const statusF    = document.getElementById('reqStatusFilter').value;
-      const subjectF   = document.getElementById('reqSubjectFilter').value;
-      const tbody      = document.getElementById('requestsBody');
-
-      tbody.innerHTML =
-        '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
-
-      let all = await dbGetContactRequests();
-
-      // Stats
-      const counts = { baru: 0, dibaca: 0, selesai: 0 };
-      all.forEach(r => { counts[r.status] = (counts[r.status] || 0) + 1; });
-      document.getElementById('reqStatsRow').innerHTML = `
-        <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
-          <div class="sc-num" style="color:#C44444;">${counts.baru}</div>
-          <div class="sc-label">🔴 Baru</div>
-        </div>
-        <div class="stat-card" style="border-color:rgba(127,119,221,.3);">
-          <div class="sc-num" style="color:#533AB7;">${counts.dibaca}</div>
-          <div class="sc-label">🟣 Dibaca</div>
-        </div>
-        <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
-          <div class="sc-num" style="color:#0F6E56;">${counts.selesai}</div>
-          <div class="sc-label">🟢 Selesai</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-num">${all.length}</div>
-          <div class="sc-label">Total Permintaan</div>
-        </div>
-      `;
-
-      // Filter
-      let filtered = all
-        .filter(r => !statusF  || r.status  === statusF)
-        .filter(r => !subjectF || r.subject === subjectF)
-        .filter(r => !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q) || (r.message || '').toLowerCase().includes(q));
-
-      document.getElementById('requestsCount').textContent = filtered.length + ' permintaan ditampilkan';
-
-      if (filtered.length === 0) {
-        tbody.innerHTML =
-          '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada permintaan ditemukan.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = filtered.map(r => {
-        const statusCls = {
-          baru:    'req-status-baru',
-          dibaca:  'req-status-dibaca',
-          selesai: 'req-status-selesai',
-        }[r.status] || 'req-status-baru';
-        const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
-        const msgPreview  = (r.message || '').slice(0, 60) + ((r.message || '').length > 60 ? '…' : '');
-
-        return `
-          <tr style="${r.status === 'baru' ? 'background:rgba(196,68,68,.02);' : ''}">
-            <td style="font-weight:600;">${r.name}</td>
-            <td style="font-size:12px;color:var(--text-muted);">${r.email}</td>
-            <td><span class="req-subject">${r.subject || '—'}</span></td>
-            <td class="req-message-cell" onclick="openReqDetail('${r.id}')" title="Klik untuk lihat pesan lengkap">
-              ${msgPreview || '<span style="color:var(--text-muted);font-style:italic;">Tidak ada pesan</span>'}
-            </td>
-            <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${fmtReqDate(r.created_at)}</td>
-            <td><span class="${statusCls}">${statusLabel}</span></td>
-            <td class="td-actions">
-              <button class="btn-icon" onclick="openReqDetail('${r.id}')" title="Lihat detail">👁</button>
-              ${r.status === 'baru'    ? `<button class="btn-icon" onclick="markRequest('${r.id}','dibaca')">Baca</button>` : ''}
-              ${r.status !== 'selesai' ? `<button class="btn-icon" onclick="markRequest('${r.id}','selesai')">✓ Selesai</button>` : ''}
-              <button class="btn-icon danger" onclick="askDeleteRequest('${r.id}')">✕</button>
-            </td>
-          </tr>`;
-      }).join('');
-
-      // Refresh sidebar badge
-      refreshPendingBadge();
-    }
-
-    async function markRequest(id, status) {
-      await dbUpdateContactRequest(id, { status });
-      showToast('✓ Status diperbarui: ' + { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[status]);
-      renderRequests();
-    }
-
-    async function markAllRead() {
-      const all     = await dbGetContactRequests();
-      const newOnes = all.filter(r => r.status === 'baru');
-      await Promise.all(newOnes.map(r => dbUpdateContactRequest(r.id, { status: 'dibaca' })));
-      showToast(`✓ ${newOnes.length} permintaan ditandai dibaca.`);
-      renderRequests();
-    }
-
-    // ── REQUEST DETAIL MODAL ──────────────────────────────────
-    let _allReqCache = [];
-
-    async function openReqDetail(id) {
-      if (_allReqCache.length === 0) {
-        _allReqCache = await dbGetContactRequests();
-      }
-      let r = _allReqCache.find(x => x.id === id || String(x.id) === String(id));
-      if (!r) {
-        // Cache miss — fetch fresh
-        _allReqCache = await dbGetContactRequests();
-        r = _allReqCache.find(x => x.id === id || String(x.id) === String(id));
-      }
-      if (!r) return;
-
-      document.getElementById('rdName').textContent    = r.name;
-      document.getElementById('rdEmail').textContent   = r.email;
-      document.getElementById('rdSubject').textContent = r.subject || '—';
-      document.getElementById('rdDate').textContent    = fmtReqDate(r.created_at);
-      document.getElementById('rdMessage').innerHTML = linkify(r.message || '(Tidak ada pesan)');
-
-      const statusLabel = { baru:'🔴 Baru', dibaca:'🟣 Dibaca', selesai:'🟢 Selesai' }[r.status] || '—';
-      document.getElementById('rdStatus').textContent = statusLabel;
-
-      const doneBtn = document.getElementById('rdMarkDone');
-      if (r.status !== 'selesai') {
-        doneBtn.style.display = 'inline-flex';
-        doneBtn.onclick = async () => {
-          await markRequest(r.id, 'selesai');
-          closeReqDetail();
-        };
-      } else {
-        doneBtn.style.display = 'none';
-      }
-
-      document.getElementById('rdDelete').onclick = async () => {
-        await askDeleteRequest(r.id);
-        closeReqDetail();
-      };
-
-      document.getElementById('reqDetailModal').style.display = 'flex';
-
-      // Auto-mark as read when opened
-      if (r.status === 'baru') {
-        await dbUpdateContactRequest(r.id, { status: 'dibaca' });
-        renderRequests();
-      }
-    }
-
-    function closeReqDetail() {
-      document.getElementById('reqDetailModal').style.display = 'none';
-    }
-
-    // ── DELETE REQUEST ────────────────────────────────────────
-    let pendingDeleteReqId = null;
-
-    function askDeleteRequest(id) {
-      pendingDeleteReqId = id;
-      // Re-use the same modal with different title
-      document.getElementById('modalArticleTitle').textContent = 'Permintaan ini akan dihapus permanen.';
-      document.getElementById('modalOverlay').style.display = 'flex';
-      // Override confirm button to delete request instead of article
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDeleteRequest;
-    }
-
-    async function confirmDeleteRequest() {
-      if (!pendingDeleteReqId) return;
-      await dbDeleteContactRequest(pendingDeleteReqId);
-      showToast('✓ Permintaan dihapus.');
-      pendingDeleteReqId = null;
-      document.getElementById('modalOverlay').style.display = 'none';
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete; // restore
-      renderRequests();
-    }
-
-    // ── WRITE / EDIT ──────────────────────────────────────────
-    function setTodayDate() {
-      document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
-    }
-
-    function clearForm() {
-      ['fTitle','fSubtitle','fAuthor','fAuthorRole','fBody','fCoverUrl'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
-      document.getElementById('fCategory').value   = '';
-      clearCover();
-      document.getElementById('fReadTime').value   = '5';
-      document.getElementById('fFeatured').checked = false;
-      document.getElementById('featuredLabel').textContent = 'Tidak';
-      document.getElementById('editingId').value   = '';
-      document.getElementById('writeTitle').textContent   = 'Tulis Artikel Baru';
-      document.getElementById('publishLabel').textContent = 'Terbitkan Artikel';
-      setTodayDate();
-      updateCounts();
-      document.getElementById('previewPanel').style.display = 'none';
-      document.getElementById('editorPanel').style.display  = 'block';
-    }
-
-    async function editArticle(id) {
-      const a = await dbGetById(id);
-      if (!a) return;
-      showView('write');
-      document.getElementById('fTitle').value      = a.title;
-      document.getElementById('fSubtitle').value   = a.subtitle || '';
-      document.getElementById('fCategory').value   = a.category;
-      document.getElementById('fReadTime').value   = a.read_time || 5;
-      document.getElementById('fAuthor').value     = a.author;
-      document.getElementById('fAuthorRole').value = a.author_role || '';
-      document.getElementById('fDate').value       = a.date || '';
-      // Cover image
-      if (a.cover_image) {
-        document.getElementById('fCoverUrl').value = a.cover_image;
-        previewCoverUrl(a.cover_image);
-      } else {
-        clearCover();
-      }
-      document.getElementById('fFeatured').checked = !!a.featured;
-      document.getElementById('featuredLabel').textContent = a.featured ? 'Ya' : 'Tidak';
-      document.getElementById('fBody').value       = a.body || '';
-      document.getElementById('editingId').value   = a.id;
-      document.getElementById('writeTitle').textContent   = 'Edit Artikel';
-      document.getElementById('publishLabel').textContent = 'Simpan Perubahan';
-      updateCounts();
-      document.getElementById('previewPanel').style.display = 'none';
-      document.getElementById('editorPanel').style.display  = 'block';
-    }
-
-    function cancelEdit() {
-      clearForm();
-      showView('manage');
-    }
-
-    async function publishArticle() {
-      const title       = document.getElementById('fTitle').value.trim();
-      const subtitle    = document.getElementById('fSubtitle').value.trim();
-      const category    = document.getElementById('fCategory').value;
-      const author      = document.getElementById('fAuthor').value.trim();
-      const body        = document.getElementById('fBody').value.trim();
-      const read_time   = parseInt(document.getElementById('fReadTime').value) || 5;
-      const author_role = document.getElementById('fAuthorRole').value.trim();
-      const date        = document.getElementById('fDate').value;
-      const featured    = document.getElementById('fFeatured').checked;
-      const editingId   = document.getElementById('editingId').value;
-      const btn = document.getElementById('publishBtn') || document.getElementById('publishLabel')?.closest('button');
-
-      if (!title || !subtitle || !category || !author || !body) {
-        showToast('⚠ Lengkapi semua kolom wajib.', 'error');
-        return;
-      }
-
-      const date_label = date
-        ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
-        : formatDateLabel(new Date().toISOString());
-
-      const cover_image = document.getElementById('fCoverUrl').value.trim() || null;
-
-      const payload = {
-        title, subtitle, category, author,
-        author_initials: toInitials(author),
-        author_role,
-        date: date || new Date().toISOString().split('T')[0],
-        date_label,
-        read_time,
-        featured,
-        body,
-        cover_image,
-      };
-
-      const publishLabel = document.getElementById('publishLabel');
-      if (btn) { btn.disabled = true; }
-      if (publishLabel) publishLabel.textContent = 'Menyimpan...';
-
-      if (editingId) {
-        await dbUpdate(editingId, payload);
-        showToast('✓ Artikel berhasil diperbarui!');
-      } else {
-        const newArticle = { ...payload, status: 'published' };
-        await dbAdd(newArticle);
-        showToast('✓ Artikel berhasil diterbitkan!');
-      }
-
-      if (btn) { btn.disabled = false; }
-      if (publishLabel) publishLabel.textContent = editingId ? 'Simpan Perubahan' : 'Terbitkan Artikel';
-      clearForm();
-      showView('manage');
-    }
-
-    // ── INLINE PREVIEW ───────────────────────────────────────
-    function togglePreview() { toggleInlinePreview(); }   // alias for footer buttons
-
-    function toggleInlinePreview() {
-      const btn     = document.getElementById('adminPreviewToggle');
-      const editor  = document.getElementById('adminEditorPane');
-      const preview = document.getElementById('adminPreviewPane');
-      const isOpen  = preview.classList.contains('visible');
-      if (isOpen) {
-        preview.classList.remove('visible');
-        editor.style.display = 'block';
-        btn.classList.remove('active');
-        btn.textContent = '👁 Pratinjau';
-        document.getElementById('previewBtn').textContent  = 'Pratinjau';
-        document.getElementById('previewBtn2').textContent = 'Pratinjau';
-      } else {
-        _buildInlinePreview();
-        editor.style.display = 'none';
-        preview.classList.add('visible');
-        btn.classList.add('active');
-        btn.textContent = '✎ Editor';
-        document.getElementById('previewBtn').textContent  = '✎ Editor';
-        document.getElementById('previewBtn2').textContent = '✎ Editor';
-      }
-    }
-
-    function _buildInlinePreview() {
-      const title    = document.getElementById('fTitle').value    || '(Judul kosong)';
-      const subtitle = document.getElementById('fSubtitle').value || '';
-      const category = document.getElementById('fCategory').value || '';
-      const author   = document.getElementById('fAuthor').value   || '';
-      const body     = document.getElementById('fBody').value     || '';
-      const date     = document.getElementById('fDate').value;
-      const date_label = date
-        ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
-        : 'Hari ini';
-
-      const pane = document.getElementById('adminPreviewPane');
-      if (!body.trim()) {
-        pane.innerHTML = '<div class="editor-preview-empty">Belum ada isi artikel untuk ditampilkan.</div>';
-        return;
-      }
-      pane.innerHTML = `
-        <div class="${catClass(category)}"
-          style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;
-                 text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-bottom:1rem;">
-          ${category || 'Kategori'}
-        </div>
-        <h1 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;
-                   color:#1A1816;margin-bottom:.65rem;line-height:1.15;">${title}</h1>
-        <p style="font-size:1rem;color:#6B6460;margin-bottom:1.1rem;">${subtitle}</p>
-        <div style="display:flex;gap:.5rem;align-items:center;font-size:13px;color:#6B6460;
-                    padding:.85rem 0;border-top:1px solid rgba(26,24,22,.1);
-                    border-bottom:1px solid rgba(26,24,22,.1);margin-bottom:1.75rem;">
-          <strong style="color:#1A1816;">${author || 'Penulis'}</strong>
-          <span>·</span><span>${date_label}</span>
-        </div>
-        <div class="editor-preview-pane" style="display:block;min-height:unset;padding:0;border:none;">
-          ${bodyToHtml(body)}
-        </div>`;
-    }
-
-    function buildPreview() { _buildInlinePreview(); } // legacy alias
-
-    // ── DELETE ARTICLE ────────────────────────────────────────
-    let pendingDeleteId = null;
-
-    function askDelete(id, title) {
-      pendingDeleteId = id;
-      document.getElementById('modalArticleTitle').textContent = '"' + title + '"';
-      document.getElementById('modalOverlay').style.display = 'flex';
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
-    }
-
-    function closeModal() {
-      pendingDeleteId = null;
-      pendingDeleteReqId = null;
-      document.getElementById('modalOverlay').style.display = 'none';
-      document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
-    }
-
-    async function confirmDelete() {
-      if (!pendingDeleteId) return;
-      await dbDelete(pendingDeleteId);
-      showToast('✓ Artikel dihapus.');
-      closeModal();
-      renderManage();
-    }
-
-    // ── HELPERS ───────────────────────────────────────────────
-    function insertMd(before, after = '') {
-      const ta = document.getElementById('fBody');
-      const s = ta.selectionStart, e = ta.selectionEnd;
-      const selected = ta.value.slice(s, e);
-      // Block-level prefixes: ensure they start on a new line
-      const blockPrefixes = ['## ','### ','- ','> '];
-      let prefix = '';
-      if (blockPrefixes.includes(before) && s > 0 && ta.value[s - 1] !== '\n') {
-        prefix = '\n';
-      }
-      const replacement = prefix + before + selected + after;
-      ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
-      ta.focus();
-      ta.selectionStart = ta.selectionEnd = s + replacement.length - after.length;
-      fBodyUpdateCounts();
-      autoGrowBody(ta);
-    }
-
-    function insertDivider() {
-      const ta = document.getElementById('fBody');
-      const s = ta.selectionStart;
-      const ins = '\n---\n\n';
-      ta.value = ta.value.slice(0, s) + ins + ta.value.slice(s);
-      ta.focus();
-      ta.selectionStart = ta.selectionEnd = s + ins.length;
-      fBodyUpdateCounts();
-    }
-
-    function fBodyUpdateCounts() {
-      const val = document.getElementById('fBody').value;
-      const words = val.trim() ? val.trim().split(/\s+/).length : 0;
-      document.getElementById('fWordCount').textContent  = words + ' kata';
-      document.getElementById('fCharCount').textContent  = val.length + ' karakter';
-    }
-
-    function autoGrowBody(ta) {
-      ta.style.height = 'auto';
-      ta.style.height = Math.max(380, Math.min(ta.scrollHeight, 700)) + 'px';
-    }
-
-    function updateCounts() {
-      document.getElementById('titleCount').textContent =
-        document.getElementById('fTitle').value.length + ' / 120';
-      document.getElementById('subtitleCount').textContent =
-        document.getElementById('fSubtitle').value.length + ' / 220';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('fTitle').addEventListener('input', updateCounts);
-      document.getElementById('fSubtitle').addEventListener('input', updateCounts);
-      document.getElementById('fFeatured').addEventListener('change', function () {
-        document.getElementById('featuredLabel').textContent = this.checked ? 'Ya' : 'Tidak';
-      });
-
-      // ── Body editor: Enter = paragraph, Shift+Enter = line break ──
-      const ta = document.getElementById('fBody');
-      ta.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          const s = ta.selectionStart, end = ta.selectionEnd;
-          const ins = e.shiftKey ? '\n' : '\n\n';
-          ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
-          ta.selectionStart = ta.selectionEnd = s + ins.length;
-          fBodyUpdateCounts();
-          autoGrowBody(ta);
-        }
-      });
-      ta.addEventListener('input', () => {
-        fBodyUpdateCounts();
-        autoGrowBody(ta);
-      });
-    });
-
-    /**
-     * linkify — escapes HTML, then wraps URLs in clickable <a> tags.
-     * Handles https://, http://, and bare www. addresses.
-     */
-    function linkify(text) {
-      const escaped = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-      const urlPattern = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
-      return escaped.replace(urlPattern, url => {
-        const href = url.startsWith('http') ? url : 'https://' + url;
-        return '<a href="' + href + '" target="_blank" rel="noopener noreferrer" '
-             + 'style="color:var(--accent);text-decoration:underline;word-break:break-all;">'
-             + url + '</a>';
-      });
-    }
-
-        function fmtReqDate(iso) {
-      if (!iso) return '—';
-      return new Date(iso).toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
-    }
-
-
-    // ── KIRIMAN (Article Submissions) ─────────────────────────
-    let _pendingSubs = [];
-    let _diffCurrentId = null;
-
-    async function renderKiriman() {
-      const q      = (document.getElementById('kirimSearch').value || '').toLowerCase();
-      const filter = document.getElementById('kirimFilter').value;
-      const tbody  = document.getElementById('kirimBody');
-      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
-
-      _pendingSubs = await dbGetPendingSubmissions();
-
-      // Stats
-      const newCount  = _pendingSubs.filter(s => s.status === 'pending').length;
-      const editCount = _pendingSubs.filter(s => s.status === 'pending_edit').length;
-      document.getElementById('kirimStats').innerHTML = `
-        <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
-          <div class="sc-num" style="color:#0F6E56;">${newCount}</div>
-          <div class="sc-label">✦ Artikel Baru</div>
-        </div>
-        <div class="stat-card" style="border-color:rgba(55,138,221,.3);">
-          <div class="sc-num" style="color:#185FA5;">${editCount}</div>
-          <div class="sc-label">✎ Permintaan Edit</div>
-        </div>
-        <div class="stat-card">
-          <div class="sc-num">${_pendingSubs.length}</div>
-          <div class="sc-label">Total Pending</div>
-        </div>
-      `;
-
-      let list = _pendingSubs
-        .filter(s => !filter || s.status === filter)
-        .filter(s => !q || (s.title||'').toLowerCase().includes(q) || (s.author||'').toLowerCase().includes(q));
-
-      document.getElementById('kirimCount').textContent = list.length + ' kiriman';
-
-      if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada kiriman pending.</td></tr>';
-        return;
-      }
-
-      tbody.innerHTML = list.map(s => {
-        const isEdit = s.status === 'pending_edit';
-        const typeHtml = isEdit
-          ? '<span class="sub-type-edit">✎ Permintaan Edit</span>'
-          : '<span class="sub-type-new">✦ Artikel Baru</span>';
-        return `
-          <tr>
-            <td class="td-title" title="${s.title||''}">${s.title || '(Tanpa judul)'}</td>
-            <td>${typeHtml}</td>
-            <td>${s.author || '—'}</td>
-            <td><span class="article-tag-pill ${catClass(s.category)}">${s.category||'—'}</span></td>
-            <td style="font-size:12px;color:var(--text-muted);">${fmtReqDate(s.created_at)}</td>
-            <td class="td-actions">
-              <button class="btn-icon" onclick="openDiffModal('${s.id}')">👁 Review</button>
-              <button class="btn-icon" onclick="quickApprove('${s.id}')">✓ Terbitkan</button>
-              <button class="btn-icon danger" onclick="quickReject('${s.id}')">✕ Tolak</button>
-            </td>
-          </tr>`;
-      }).join('');
-
-      refreshPendingBadge();
-    }
-
-    async function openDiffModal(id) {
-      _diffCurrentId = id;
-      const sub = _pendingSubs.find(s => String(s.id) === String(id));
-      if (!sub) {
-        // Stale cache — reload and retry
-        _pendingSubs = await dbGetPendingSubmissions();
-        const subRetry = _pendingSubs.find(s => String(s.id) === String(id));
-        if (!subRetry) { showToast('⚠ Kiriman tidak ditemukan.', 'error'); return; }
-        return openDiffModal(id);
-      }
-
-      document.getElementById('diffTitle').textContent =
-        sub.status === 'pending_edit' ? 'Review Permintaan Edit' : 'Review Artikel Baru';
-      document.getElementById('diffMeta').textContent =
-        `${sub.author} · ${sub.category} · Dikirim ${fmtReqDate(sub.created_at)}`;
-
-      let bodyHtml = '';
-
-      if (sub.status === 'pending_edit' && sub.original_id) {
-        const orig = await dbGetById(sub.original_id);
-        bodyHtml = `
-          <div class="diff-section">
-            <h4>Judul</h4>
-            <div class="diff-cols">
-              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.title||'—'}</div>
-              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.title||'—'}</div>
-            </div>
-          </div>
-          <div class="diff-section">
-            <h4>Ringkasan</h4>
-            <div class="diff-cols">
-              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.subtitle||'—'}</div>
-              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.subtitle||'—'}</div>
-            </div>
-          </div>
-          <div class="diff-section">
-            <h4>Isi Artikel (100 karakter pertama)</h4>
-            <div class="diff-cols">
-              <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${(orig?.body||'—').slice(0,200)}…</div>
-              <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${(sub.body||'—').slice(0,200)}…</div>
-            </div>
-          </div>`;
-      } else {
-        // New article preview
-        bodyHtml = `
-          <div class="diff-section">
-            <h4>Judul</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.title||'—'}</div>
-          </div>
-          <div class="diff-section">
-            <h4>Ringkasan</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.subtitle||'—'}</div>
-          </div>
-          <div class="diff-section">
-            <h4>Kategori · Estimasi Baca</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Info</div>${sub.category||'—'} · ${sub.read_time||5} menit</div>
-          </div>
-          <div class="diff-section">
-            <h4>Isi Artikel</h4>
-            <div class="diff-col proposed" style="width:100%;box-sizing:border-box;max-height:300px;overflow-y:auto;"><div class="diff-col-label">Konten</div><div style="white-space:pre-wrap;font-size:12px;">${(sub.body||'—')}</div></div>
-          </div>`;
-      }
-
-      document.getElementById('diffBody').innerHTML = bodyHtml;
-      document.getElementById('rejectInputWrap').style.display   = 'none';
-      document.getElementById('diffConfirmReject').style.display = 'none';
-      document.getElementById('diffRejectToggle').style.display  = 'inline-flex';
-      document.getElementById('rejectReasonInput').value         = '';
-      document.getElementById('diffModal').style.display         = 'flex';
-    }
-
-    function closeDiff() {
-      document.getElementById('diffModal').style.display = 'none';
-      _diffCurrentId = null;
-    }
-
-    function toggleRejectInput() {
-      const wrap = document.getElementById('rejectInputWrap');
-      const showing = wrap.style.display !== 'none';
-      wrap.style.display = showing ? 'none' : 'flex';
-      document.getElementById('diffConfirmReject').style.display = showing ? 'none' : 'inline-flex';
-      document.getElementById('diffRejectToggle').style.display  = showing ? 'inline-flex' : 'none';
-    }
-
-    async function approveFromDiff() {
-      if (!_diffCurrentId) return;
-      const btn = document.getElementById('diffApproveBtn');
-      btn.textContent = 'Menerbitkan...'; btn.disabled = true;
-      const result = await dbApproveSubmission(_diffCurrentId);
-      btn.textContent = '✓ Terbitkan'; btn.disabled = false;
-      if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-      showToast('✓ Artikel diterbitkan!');
-      closeDiff();
-      renderKiriman();
-    }
-
-    async function confirmReject() {
-      if (!_diffCurrentId) return;
-      const reason = document.getElementById('rejectReasonInput').value.trim();
-      await dbRejectSubmission(_diffCurrentId, reason);
-      showToast('✓ Artikel ditolak.');
-      closeDiff();
-      renderKiriman();
-    }
-
-    async function quickApprove(id) {
-      if (!confirm('Terbitkan artikel ini?')) return;
-      const result = await dbApproveSubmission(id);
-      if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-      showToast('✓ Artikel diterbitkan!');
-      renderKiriman();
-    }
-
-    async function quickReject(id) {
-      const reason = prompt('Alasan penolakan (opsional):') || '';
-      await dbRejectSubmission(id, reason);
-      showToast('✓ Artikel ditolak.');
-      renderKiriman();
-    }
-
-    
-    // ── COVER IMAGE ───────────────────────────────────────────
-    function previewCoverUrl(url) {
-      const preview = document.getElementById('coverPreview');
-      const placeholder = document.getElementById('coverPlaceholder');
-      const wrap = document.getElementById('coverWrap');
-      if (!url) { clearCover(); return; }
-      preview.src = url;
-      preview.style.display = 'block';
-      placeholder.style.display = 'none';
-      wrap.classList.add('has-image');
-      // Stop click-to-upload propagation when image is shown
-      // Allow clicking the image area to change the image
-      wrap.onclick = () => document.getElementById('coverFileInput').click();
-    }
-
-    function handleCoverUpload(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      e.target.value = '';   // reset so same file can be re-selected
-      openCropModal(file, (url) => {
-        document.getElementById('fCoverUrl').value = url;
-        previewCoverUrl(url);
-        const s = document.getElementById('coverStatus');
-        s.textContent = '✓ Gambar berhasil diproses';
-        s.style.color = 'var(--accent)';
-        setTimeout(() => s.textContent = '', 3000);
-      });
-    }
-
-    function clearCover() {
-      const preview = document.getElementById('coverPreview');
-      const placeholder = document.getElementById('coverPlaceholder');
-      const wrap = document.getElementById('coverWrap');
-      preview.src = '';
-      preview.style.display = 'none';
-      placeholder.style.display = 'flex';
-      wrap.classList.remove('has-image');
-      wrap.onclick = () => document.getElementById('coverFileInput').click();
-      document.getElementById('fCoverUrl').value = '';
-      document.getElementById('coverStatus').textContent = '';
-    }
-
-    
-    // ══ CROP MODAL ENGINE ════════════════════════════════════
-    // Requires Cropper.js loaded in <head>
-
-    let _cropper      = null;
-    let _cropCallback = null;   // fn(blob) called on save
-    let _cropFlipX    = 1;
-    let _cropFlipY    = 1;
-    let _cropRatio    = 4/3;    // default
-
-    function openCropModal(file, onSave) {
-      _cropCallback = onSave;
-      _cropFlipX = 1; _cropFlipY = 1;
-      _cropRatio = 4/3;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = document.getElementById('cropImg');
-        img.src = e.target.result;
-
-        document.getElementById('cropOverlay').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-
-        // Highlight default ratio button (4:3)
-        document.querySelectorAll('.ratio-btn').forEach((b,i) => b.classList.toggle('active', i===2));
-
-        // Init / reinit Cropper
-        if (_cropper) { _cropper.destroy(); _cropper = null; }
-        _cropper = new Cropper(img, {
-          aspectRatio:      _cropRatio,
-          viewMode:         1,          // restrict crop box inside canvas
-          autoCropArea:     0.85,
-          movable:          true,
-          zoomable:         true,
-          rotatable:        true,
-          scalable:         true,
-          checkOrientation: true,
-          responsive:       true,
-          restore:          false,
-          guides:           true,
-          center:           true,
-          highlight:        false,
-          cropBoxMovable:   true,
-          cropBoxResizable: true,
-          toggleDragModeOnDblclick: false,
-          zoom(e) {
-            // Keep slider in sync
-            document.getElementById('cropZoomSlider').value = e.detail.ratio;
-          },
-        });
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function cropCancel() {
-      if (_cropper) { _cropper.destroy(); _cropper = null; }
-      document.getElementById('cropOverlay').style.display = 'none';
-      document.body.style.overflow = '';
-      _cropCallback = null;
-    }
-
-    async function cropSave() {
-      const saveBtn   = document.getElementById('cropSaveBtn');
-      const saveLabel = document.getElementById('cropSavingLabel');
-
-      // Guard: cropper and callback must exist
-      if (!_cropper) {
-        alert('Crop belum siap. Coba pilih gambar lagi.');
-        return;
-      }
-      if (!_cropCallback) {
-        console.error('cropSave: _cropCallback is null');
-        return;
-      }
-
-      saveBtn.disabled = true;
-      saveLabel.style.display = 'inline';
-
-      try {
-        // 1. Get the cropped canvas
-        const canvas = _cropper.getCroppedCanvas({
-          maxWidth:  1600,
-          maxHeight: 1200,
-          imageSmoothingEnabled: true,
-          imageSmoothingQuality: 'high',
-        });
-
-        if (!canvas) {
-          throw new Error('getCroppedCanvas() returned null — crop box may be outside image.');
-        }
-
-        // 2. Convert to blob (wrapped in a Promise so we can await it)
-        const blob = await new Promise((resolve, reject) => {
-          // Try JPEG first; fall back to PNG if toBlob returns null blob
-          canvas.toBlob((b) => {
-            if (b && b.size > 0) { resolve(b); }
-            else {
-              // Some browsers/environments return null for JPEG — fall back to PNG
-              canvas.toBlob((b2) => {
-                if (b2 && b2.size > 0) resolve(b2);
-                else reject(new Error('toBlob() returned empty blob on both JPEG and PNG.'));
-              }, 'image/png');
-            }
-          }, 'image/jpeg', 0.88);
-        });
-
-        // 3. Upload to Supabase Storage
-        const ext      = blob.type === 'image/png' ? 'png' : 'jpg';
-        const file     = new File([blob], `cover.${ext}`, { type: blob.type });
-        const result   = await uploadArticleImage(file);
-
-        if (!result.ok) {
-          throw new Error(result.error || 'Upload gagal tanpa pesan error.');
-        }
-
-        // 4. Success — close modal and pass URL to caller
-        const cb = _cropCallback;   // save before cropCancel() nulls it
-        cropCancel();
-        if (cb) cb(result.url);
-
-      } catch (err) {
-        console.error('cropSave error:', err);
-        alert('Gagal memproses gambar: ' + err.message);
-      } finally {
-        saveBtn.disabled = false;
-        saveLabel.style.display = 'none';
-      }
-    }
-
-    function setRatio(ratio, btn) {
-      _cropRatio = ratio;
-      document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      if (_cropper) _cropper.setAspectRatio(isNaN(ratio) ? NaN : ratio);
-    }
-
-    function cropRotate(deg) {
-      if (_cropper) _cropper.rotate(deg);
-    }
-
-    function cropFlip(axis) {
-      if (!_cropper) return;
-      if (axis === 'x') { _cropFlipX *= -1; _cropper.scaleX(_cropFlipX); }
-      else              { _cropFlipY *= -1; _cropper.scaleY(_cropFlipY); }
-    }
-
-    function cropZoom(delta) {
-      if (_cropper) _cropper.zoom(delta);
-    }
-
-    function cropZoomTo(val) {
-      if (_cropper) _cropper.zoomTo(val);
-    }
-
-    function cropReset() {
-      if (_cropper) {
-        _cropper.reset();
-        _cropFlipX = 1; _cropFlipY = 1;
-        document.getElementById('cropZoomSlider').value = 1;
-      }
-    }
-
-    function showToast(msg, type = 'success') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast show ' + type;
-      clearTimeout(t._timer);
-      t._timer = setTimeout(() => t.className = 'toast', 3000);
-    }
-
-    // Tag pill styles for preview
-    const style = document.createElement('style');
-    style.textContent = `
-      .tag-sains     { color:#185FA5; background:rgba(55,138,221,.1) }
-      .tag-sosial    { color:#3B6D11; background:rgba(99,153,34,.1) }
-      .tag-ekonomi   { color:#854F0B; background:rgba(186,117,23,.1) }
-      .tag-hukum     { color:#533AB7; background:rgba(127,119,221,.1) }
-      .tag-lingkungan{ color:#0F6E56; background:rgba(29,158,117,.1) }
-      .tag-seni      { color:#993556; background:rgba(212,83,126,.1) }
-    `;
-    document.head.appendChild(style);
-    // ── MEMBER BADGE ──────────────────────────────────────────────
-async function refreshMemberBadge() {
-  const pending = await dbGetMembers('pending');
-  const badge   = document.getElementById('memberBadge');
-  if (pending.length > 0) {
-    badge.textContent    = pending.length > 99 ? '99+' : pending.length;
-    badge.style.display  = 'inline-flex';
-  } else {
-    badge.style.display  = 'none';
-  }
-}
- 
-// ── PENDAFTARAN VIEW ──────────────────────────────────────────
-let _memberCache = [];
-let _currentMemberId = null;
- 
-async function renderPendaftaran() {
-  const q      = (document.getElementById('memberSearch').value || '').toLowerCase();
-  const filter = document.getElementById('memberFilter').value;
-  const tbody  = document.getElementById('memberBody');
-  tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
- 
-  const all = await dbGetMembers();
-  _memberCache = all;
- 
-  // Stats
-  const counts = { pending:0, approved:0, active:0, rejected:0 };
-  all.forEach(m => { if (counts[m.status] !== undefined) counts[m.status]++; });
-  document.getElementById('memberStats').innerHTML = `
-    <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
-      <div class="sc-num" style="color:#C44444;">${counts.pending}</div>
-      <div class="sc-label">⏳ Menunggu</div>
-    </div>
-    <div class="stat-card" style="border-color:rgba(55,138,221,.3);">
-      <div class="sc-num" style="color:#185FA5;">${counts.approved}</div>
-      <div class="sc-label">✓ Disetujui</div>
-    </div>
-    <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
-      <div class="sc-num" style="color:#0F6E56;">${counts.active}</div>
-      <div class="sc-label">✅ Aktif</div>
-    </div>
-    <div class="stat-card">
-      <div class="sc-num">${all.length}</div>
-      <div class="sc-label">Total Permintaan</div>
-    </div>
-  `;
- 
-  let list = all
-    .filter(m => !filter || m.status === filter)
-    .filter(m => !q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
- 
-  document.getElementById('memberCount').textContent = list.length + ' anggota';
- 
-  if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada data.</td></tr>';
-    return;
-  }
- 
-  const statusLabel = {
-    pending:  '<span style="color:#C44444;background:rgba(196,68,68,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">⏳ Menunggu</span>',
-    approved: '<span style="color:#185FA5;background:rgba(55,138,221,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✉ Undangan Terkirim</span>',
-    active:   '<span style="color:#0F6E56;background:rgba(29,158,117,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✅ Aktif</span>',
-    rejected: '<span style="color:#6B6460;background:rgba(107,100,96,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✕ Ditolak</span>',
-  };
- 
-  tbody.innerHTML = list.map(m => `
-    <tr>
-      <td style="font-weight:600;">${m.name}</td>
-      <td style="font-size:12px;color:var(--text-muted);">${m.email}</td>
-      <td style="font-size:13px;">${m.university || '—'}</td>
-      <td style="font-size:13px;">${m.major || '—'}</td>
-      <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${fmtReqDate(m.created_at)}</td>
-      <td>${statusLabel[m.status] || m.status}</td>
-      <td class="td-actions">
-        <button class="btn-icon" onclick="openMemberDetail('${m.id}')">👁 Lihat</button>
-        ${m.status === 'pending' ? `
-          <button class="btn-icon" onclick="quickApproveMember('${m.id}')">✓ Setujui</button>
-          <button class="btn-icon danger" onclick="openMemberDetail('${m.id}', true)">✕ Tolak</button>
-        ` : ''}
-        ${m.status === 'approved' ? `
-          <button class="btn-icon" onclick="resendInvite('${m.id}')">↻ Kirim Ulang</button>
-        ` : ''}
-      </td>
-    </tr>
-  `).join('');
- 
-  refreshMemberBadge();
-}
- 
-function openMemberDetail(id, showRejectMode = false) {
-  const m = _memberCache.find(x => String(x.id) === String(id));
-  if (!m) return;
-  _currentMemberId = id;
- 
-  document.getElementById('mdName').textContent       = m.name;
-  document.getElementById('mdEmail').textContent      = m.email;
-  document.getElementById('mdUniversity').textContent = m.university || '—';
-  document.getElementById('mdMajor').textContent      = m.major || '—';
-  document.getElementById('mdDate').textContent       = fmtReqDate(m.created_at);
-  document.getElementById('mdMotivation').textContent = m.motivation || '(Tidak ada motivasi)';
- 
-  const statusMap = { pending:'⏳ Menunggu Review', approved:'✉ Undangan Terkirim', active:'✅ Aktif', rejected:'✕ Ditolak' };
-  document.getElementById('mdStatus').textContent     = statusMap[m.status] || m.status;
- 
-  // Build action buttons based on current status
-  const actions = document.getElementById('mdActions');
-  const rejectWrap = document.getElementById('mdRejectWrap');
- 
-  rejectWrap.style.display = 'none';
-  document.getElementById('mdRejectReason').value = '';
- 
-  if (m.status === 'pending') {
-    if (showRejectMode) {
-      rejectWrap.style.display = 'block';
-      actions.innerHTML = `
-        <button class="btn-cancel" onclick="closeMemberDetail()">Batal</button>
-        <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;"
-          onclick="confirmRejectMember('${m.id}')">Kirim Penolakan</button>
-      `;
-    } else {
-      actions.innerHTML = `
-        <button class="btn-cancel" onclick="closeMemberDetail()">Tutup</button>
-        <button class="btn-sm" onclick="openMemberDetail('${m.id}', true)">✕ Tolak</button>
-        <button class="btn-publish" style="font-size:12px;padding:.5rem 1.25rem;"
-          onclick="confirmApproveMember('${m.id}')">✓ Setujui & Kirim Undangan</button>
-      `;
-    }
-  } else {
-    actions.innerHTML = `<button class="btn-cancel" onclick="closeMemberDetail()">Tutup</button>`;
-    if (m.status === 'approved') {
-      actions.innerHTML += `
-        <button class="btn-sm" onclick="resendInvite('${m.id}')">↻ Kirim Ulang Undangan</button>
-      `;
-    }
-  }
- 
-  document.getElementById('memberDetailModal').style.display = 'flex';
-}
- 
-function closeMemberDetail() {
-  document.getElementById('memberDetailModal').style.display = 'none';
-  _currentMemberId = null;
-}
- 
-async function confirmApproveMember(id) {
-  const btn = document.querySelector('#memberDetailModal .btn-publish');
-  if (btn) { btn.textContent = 'Mengirim...'; btn.disabled = true; }
- 
-  const result = await dbApproveMember(id);
- 
-  if (!result.ok) {
-    showToast('⚠ Gagal: ' + result.error, 'error');
-    if (btn) { btn.textContent = '✓ Setujui & Kirim Undangan'; btn.disabled = false; }
-    return;
-  }
- 
-  showToast('✓ Undangan berhasil dikirim!');
-  closeMemberDetail();
-  renderPendaftaran();
-}
- 
-async function quickApproveMember(id) {
-  if (!confirm('Setujui anggota ini dan kirim undangan?')) return;
-  const result = await dbApproveMember(id);
-  if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-  showToast('✓ Undangan berhasil dikirim!');
-  renderPendaftaran();
-}
- 
-async function confirmRejectMember(id) {
-  const reason = document.getElementById('mdRejectReason').value.trim();
-  const result = await dbRejectMember(id, reason);
-  if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-  showToast('✓ Permintaan ditolak.');
-  closeMemberDetail();
-  renderPendaftaran();
-}
- 
-async function resendInvite(id) {
-  if (!confirm('Kirim ulang undangan ke anggota ini?')) return;
-  const result = await dbApproveMember(id);
-  if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
-  showToast('✓ Undangan dikirim ulang!');
-}
-  </script>
-
-  <!-- ══ SHARED CROP MODAL ════════════════════════════════════ -->
+  <!-- ══ CROP MODAL ════════════════════════════════════════════ -->
   <div class="crop-overlay" id="cropOverlay" style="display:none;">
     <div class="crop-modal">
       <div class="crop-header">
         <h3>Sesuaikan Gambar</h3>
         <button class="crop-close" onclick="cropCancel()">✕</button>
       </div>
-
       <div class="crop-canvas-wrap" id="cropCanvasWrap">
         <img id="cropImg" src="" alt="" />
       </div>
-
       <div class="crop-controls">
-        <!-- Aspect ratios -->
         <div class="crop-ratios">
           <span>Rasio</span>
-          <button class="ratio-btn"        onclick="setRatio(16/9,  this)" title="Landscape">16:9</button>
-          <button class="ratio-btn"        onclick="setRatio(3/2,   this)" title="Foto">3:2</button>
-          <button class="ratio-btn active" onclick="setRatio(4/3,   this)" title="Standar">4:3</button>
-          <button class="ratio-btn"        onclick="setRatio(1/1,   this)" title="Kotak">1:1</button>
-          <button class="ratio-btn"        onclick="setRatio(2/3,   this)" title="Portrait">2:3</button>
-          <button class="ratio-btn"        onclick="setRatio(NaN,   this)" title="Bebas">Bebas</button>
+          <button class="ratio-btn"        onclick="setRatio(16/9, this)" title="Landscape">16:9</button>
+          <button class="ratio-btn"        onclick="setRatio(3/2,  this)" title="Foto">3:2</button>
+          <button class="ratio-btn active" onclick="setRatio(4/3,  this)" title="Standar">4:3</button>
+          <button class="ratio-btn"        onclick="setRatio(1/1,  this)" title="Kotak">1:1</button>
+          <button class="ratio-btn"        onclick="setRatio(2/3,  this)" title="Portrait">2:3</button>
+          <button class="ratio-btn"        onclick="setRatio(NaN,  this)" title="Bebas">Bebas</button>
         </div>
-        <!-- Transform tools -->
         <div class="crop-tools">
-          <button class="crop-tool-btn" onclick="cropRotate(-90)"  title="Putar kiri">↺</button>
-          <button class="crop-tool-btn" onclick="cropRotate(90)"   title="Putar kanan">↻</button>
-          <button class="crop-tool-btn" onclick="cropFlip('x')"    title="Balik horizontal">↔</button>
-          <button class="crop-tool-btn" onclick="cropFlip('y')"    title="Balik vertikal">↕</button>
+          <button class="crop-tool-btn" onclick="cropRotate(-90)" title="Putar kiri">↺</button>
+          <button class="crop-tool-btn" onclick="cropRotate(90)"  title="Putar kanan">↻</button>
+          <button class="crop-tool-btn" onclick="cropFlip('x')"   title="Balik horizontal">↔</button>
+          <button class="crop-tool-btn" onclick="cropFlip('y')"   title="Balik vertikal">↕</button>
           <div class="crop-tool-sep"></div>
-          <button class="crop-tool-btn" onclick="cropZoom(.1)"     title="Zoom in">+</button>
-          <button class="crop-tool-btn" onclick="cropZoom(-.1)"    title="Zoom out">−</button>
-          <button class="crop-tool-btn" onclick="cropReset()"      title="Reset">⟳</button>
+          <button class="crop-tool-btn" onclick="cropZoom(.1)"    title="Zoom in">+</button>
+          <button class="crop-tool-btn" onclick="cropZoom(-.1)"   title="Zoom out">−</button>
+          <button class="crop-tool-btn" onclick="cropReset()"     title="Reset">⟳</button>
           <div class="crop-zoom-wrap">
             <label>Zoom</label>
             <input type="range" id="cropZoomSlider" min="0.1" max="3" step="0.05" value="1"
@@ -1823,14 +525,1127 @@ async function resendInvite(id) {
           </div>
         </div>
       </div>
-
       <div class="crop-footer">
         <span class="crop-saving-label" id="cropSavingLabel" style="display:none;">Mengunggah…</span>
         <button class="crop-btn-cancel" onclick="cropCancel()">Batal</button>
-        <button class="crop-btn-save"   id="cropSaveBtn" onclick="cropSave()">✓ Simpan & Unggah</button>
+        <button class="crop-btn-save" id="cropSaveBtn" onclick="cropSave()">✓ Simpan & Unggah</button>
       </div>
     </div>
   </div>
+
+  <script>
+  // ══ TAG STYLES ════════════════════════════════════════════════
+  const _tagStyle = document.createElement('style');
+  _tagStyle.textContent = `
+    .tag-sains      { color:#185FA5; background:rgba(55,138,221,.1) }
+    .tag-sosial     { color:#3B6D11; background:rgba(99,153,34,.1) }
+    .tag-ekonomi    { color:#854F0B; background:rgba(186,117,23,.1) }
+    .tag-hukum      { color:#533AB7; background:rgba(127,119,221,.1) }
+    .tag-lingkungan { color:#0F6E56; background:rgba(29,158,117,.1) }
+    .tag-seni       { color:#993556; background:rgba(212,83,126,.1) }
+  `;
+  document.head.appendChild(_tagStyle);
+
+  // ══ AUTH ══════════════════════════════════════════════════════
+  window.addEventListener('DOMContentLoaded', async () => {
+    const user = await authGetCurrentUser();
+    if (user && user.role === 'admin') showPanel();
+
+    document.getElementById('pwInput').addEventListener('keydown',    e => { if (e.key === 'Enter') doLogin(); });
+    document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    document.getElementById('todayDate').textContent =
+      new Date().toLocaleDateString('id-ID', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    setTodayDate();
+  });
+
+  async function doLogin() {
+    const email = document.getElementById('emailInput').value.trim();
+    const pw    = document.getElementById('pwInput').value;
+    const btn   = document.getElementById('loginBtn');
+    const errEl = document.getElementById('loginError');
+
+    errEl.style.display = 'none';
+    btn.textContent = 'Masuk...';
+    btn.disabled = true;
+
+    const result = await authLogin(email, pw);
+    btn.textContent = 'Masuk →';
+    btn.disabled = false;
+
+    if (!result.ok) {
+      errEl.textContent = result.error || 'Email atau password salah.';
+      errEl.style.display = 'block';
+      document.getElementById('pwInput').value = '';
+      return;
+    }
+    if (result.user.role !== 'admin') {
+      errEl.textContent = 'Akun ini tidak memiliki akses admin.';
+      errEl.style.display = 'block';
+      await authLogout();
+      return;
+    }
+    showPanel();
+  }
+
+  async function doLogout() {
+    await authLogout();
+    document.getElementById('adminPanel').style.display  = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('pwInput').value    = '';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('loginError').style.display = 'none';
+  }
+
+  function showPanel() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display  = 'flex';
+    renderDashboard();
+    refreshPendingBadge();
+    refreshMemberBadge();
+  }
+
+  function togglePw() {
+    const input = document.getElementById('pwInput');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  // ══ VIEWS ═════════════════════════════════════════════════════
+  const ALL_VIEWS = ['dashboard','pendaftaran','write','manage','kiriman','requests'];
+
+  function showView(name) {
+    ALL_VIEWS.forEach(v => {
+      document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none';
+      document.getElementById('btn-' + v).classList.toggle('active', v === name);
+    });
+    if (name === 'dashboard')   renderDashboard();
+    if (name === 'pendaftaran') renderPendaftaran();
+    if (name === 'manage')      renderManage();
+    if (name === 'kiriman')     renderKiriman();
+    if (name === 'requests')    renderRequests();
+    if (name === 'write' && !document.getElementById('editingId').value) clearForm();
+  }
+
+  // ══ SIDEBAR BADGES ════════════════════════════════════════════
+  async function refreshPendingBadge() {
+    const [reqs, subs] = await Promise.all([dbGetContactRequests(), dbGetPendingSubmissions()]);
+    const reqCount  = reqs.filter(r => r.status === 'baru').length;
+    const subCount  = subs.length;
+    const badge     = document.getElementById('pendingBadge');
+    const kirimBadge = document.getElementById('kirimBadge');
+    badge.textContent     = reqCount > 99  ? '99+' : reqCount;
+    badge.style.display   = reqCount  > 0  ? 'inline-flex' : 'none';
+    kirimBadge.textContent  = subCount > 99  ? '99+' : subCount;
+    kirimBadge.style.display = subCount > 0  ? 'inline-flex' : 'none';
+  }
+
+  async function refreshMemberBadge() {
+    const pending = await dbGetMembers('pending');
+    const badge   = document.getElementById('memberBadge');
+    badge.textContent    = pending.length > 99 ? '99+' : pending.length;
+    badge.style.display  = pending.length > 0  ? 'inline-flex' : 'none';
+  }
+
+  // ══ DASHBOARD ═════════════════════════════════════════════════
+  async function renderDashboard() {
+    document.getElementById('statsRow').innerHTML =
+      '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
+
+    const [articles, requests] = await Promise.all([dbGetAll(), dbGetContactRequests()]);
+    const cats        = [...new Set(articles.map(a => a.category))].length;
+    const totalViews  = articles.reduce((s, a) => s + (a.views || 0), 0);
+    const pendingReqs = requests.filter(r => r.status === 'baru').length;
+
+    document.getElementById('statsRow').innerHTML = `
+      <div class="stat-card"><div class="sc-num">${articles.length}</div><div class="sc-label">Total Artikel</div></div>
+      <div class="stat-card"><div class="sc-num">${cats}</div><div class="sc-label">Kategori Aktif</div></div>
+      <div class="stat-card"><div class="sc-num">${totalViews.toLocaleString()}</div><div class="sc-label">Total Dilihat</div></div>
+      <div class="stat-card" style="border-color:${pendingReqs > 0 ? 'rgba(196,68,68,.4)' : 'var(--border)'};">
+        <div class="sc-num" style="color:${pendingReqs > 0 ? '#C44444' : 'var(--text)'};">${pendingReqs}</div>
+        <div class="sc-label">Permintaan Baru</div>
+      </div>
+    `;
+
+    document.getElementById('recentList').innerHTML = articles.slice(0, 5).map(a => `
+      <div class="recent-item">
+        <div class="ri-left">
+          <span class="ri-tag ${catClass(a.category)}">${a.category}</span>
+          <span class="ri-title">${a.title}</span>
+        </div>
+        <div class="ri-right">
+          <span class="ri-author">${a.author}</span>
+          <span class="ri-date">${a.date_label || formatDateLabel(a.date)}</span>
+          <button class="btn-icon" onclick="editArticle(${a.id})" title="Edit">✎</button>
+        </div>
+      </div>
+    `).join('');
+
+    const recentReqs = requests.slice(0, 5);
+    if (recentReqs.length === 0) {
+      document.getElementById('dashReqList').innerHTML =
+        '<div style="padding:1rem 1.5rem;font-size:13px;color:var(--text-muted);">Belum ada permintaan masuk.</div>';
+    } else {
+      document.getElementById('dashReqList').innerHTML = recentReqs.map(r => {
+        const statusCls   = { baru:'req-status-baru', dibaca:'req-status-dibaca', selesai:'req-status-selesai' }[r.status] || 'req-status-baru';
+        const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
+        return `
+          <div class="recent-item">
+            <div class="ri-left">
+              <span class="${statusCls}">${statusLabel}</span>
+              <span class="ri-title">${r.name} — <span style="font-weight:400;color:var(--text-muted);">${r.subject || 'Tanpa keperluan'}</span></span>
+            </div>
+            <div class="ri-right">
+              <span class="ri-author" style="font-size:12px;">${r.email}</span>
+              <span class="ri-date">${fmtReqDate(r.created_at)}</span>
+              <button class="btn-icon" onclick="openReqDetail('${r.id}')">👁 Lihat</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+  }
+
+  // ══ PENDAFTARAN ═══════════════════════════════════════════════
+  let _memberCache = [];
+
+  async function renderPendaftaran() {
+    const q      = (document.getElementById('memberSearch').value || '').toLowerCase();
+    const filter = document.getElementById('memberFilter').value;
+    const tbody  = document.getElementById('memberBody');
+    tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+
+    const all    = await dbGetMembers();
+    _memberCache = all;
+
+    // Stats
+    const counts = { pending:0, approved:0, active:0, rejected:0 };
+    all.forEach(m => { if (counts[m.status] !== undefined) counts[m.status]++; });
+    document.getElementById('memberStats').innerHTML = `
+      <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
+        <div class="sc-num" style="color:#C44444;">${counts.pending}</div>
+        <div class="sc-label">⏳ Menunggu</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(55,138,221,.3);">
+        <div class="sc-num" style="color:#185FA5;">${counts.approved}</div>
+        <div class="sc-label">✉ Undangan Terkirim</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
+        <div class="sc-num" style="color:#0F6E56;">${counts.active}</div>
+        <div class="sc-label">✅ Aktif</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num">${all.length}</div>
+        <div class="sc-label">Total Pendaftar</div>
+      </div>
+    `;
+
+    const list = all
+      .filter(m => !filter || m.status === filter)
+      .filter(m => !q || m.name.toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
+
+    document.getElementById('memberCount').textContent = list.length + ' anggota';
+
+    if (list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada data.</td></tr>';
+      return;
+    }
+
+    const statusLabel = {
+      pending:  '<span style="color:#C44444;background:rgba(196,68,68,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">⏳ Menunggu</span>',
+      approved: '<span style="color:#185FA5;background:rgba(55,138,221,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✉ Undangan Terkirim</span>',
+      active:   '<span style="color:#0F6E56;background:rgba(29,158,117,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✅ Aktif</span>',
+      rejected: '<span style="color:#6B6460;background:rgba(107,100,96,.1);padding:.2rem .6rem;border-radius:4px;font-size:11px;font-weight:700;">✕ Ditolak</span>',
+    };
+
+    tbody.innerHTML = list.map(m => `
+      <tr>
+        <td style="font-weight:600;">${m.name}</td>
+        <td style="font-size:12px;color:var(--text-muted);">${m.email}</td>
+        <td style="font-size:13px;">${m.university || '—'}</td>
+        <td style="font-size:13px;">${m.major || '—'}</td>
+        <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${fmtReqDate(m.joined_at)}</td>
+        <td>${statusLabel[m.status] || m.status}</td>
+        <td class="td-actions">
+          <button class="btn-icon" onclick="openMemberDetail('${m.id}')">👁 Lihat</button>
+          ${m.status === 'pending' ? `
+            <button class="btn-icon" onclick="quickApproveMember('${m.id}')">✓ Setujui</button>
+            <button class="btn-icon danger" onclick="openMemberDetail('${m.id}', true)">✕ Tolak</button>
+          ` : ''}
+          ${m.status === 'approved' ? `
+            <button class="btn-icon" onclick="resendInvite('${m.id}')">↻ Kirim Ulang</button>
+          ` : ''}
+        </td>
+      </tr>
+    `).join('');
+
+    refreshMemberBadge();
+  }
+
+  function openMemberDetail(id, showRejectMode = false) {
+    const m = _memberCache.find(x => String(x.id) === String(id));
+    if (!m) return;
+
+    document.getElementById('mdName').textContent       = m.name;
+    document.getElementById('mdEmail').textContent      = m.email;
+    document.getElementById('mdUniversity').textContent = m.university || '—';
+    document.getElementById('mdMajor').textContent      = m.major || '—';
+    document.getElementById('mdDate').textContent       = fmtReqDate(m.joined_at);
+    document.getElementById('mdMotivation').textContent = m.motivation || '(Tidak ada motivasi)';
+
+    const statusMap = {
+      pending:  '⏳ Menunggu Review',
+      approved: '✉ Undangan Terkirim',
+      active:   '✅ Aktif',
+      rejected: '✕ Ditolak',
+    };
+    document.getElementById('mdStatus').textContent = statusMap[m.status] || m.status;
+
+    const actions    = document.getElementById('mdActions');
+    const rejectWrap = document.getElementById('mdRejectWrap');
+    rejectWrap.style.display = 'none';
+    document.getElementById('mdRejectReason').value = '';
+
+    if (m.status === 'pending') {
+      if (showRejectMode) {
+        rejectWrap.style.display = 'block';
+        actions.innerHTML = `
+          <button class="btn-cancel" onclick="closeMemberDetail()">Batal</button>
+          <button class="btn-delete" style="font-size:12px;padding:.4rem 1rem;"
+            onclick="confirmRejectMember('${m.id}')">Kirim Penolakan</button>
+        `;
+      } else {
+        actions.innerHTML = `
+          <button class="btn-cancel" onclick="closeMemberDetail()">Tutup</button>
+          <button class="btn-sm" onclick="openMemberDetail('${m.id}', true)">✕ Tolak</button>
+          <button class="btn-publish" style="font-size:12px;padding:.5rem 1.25rem;"
+            onclick="confirmApproveMember('${m.id}')">✓ Setujui & Kirim Undangan</button>
+        `;
+      }
+    } else {
+      actions.innerHTML = `<button class="btn-cancel" onclick="closeMemberDetail()">Tutup</button>`;
+      if (m.status === 'approved') {
+        actions.innerHTML += `
+          <button class="btn-sm" onclick="resendInvite('${m.id}')">↻ Kirim Ulang Undangan</button>
+        `;
+      }
+    }
+
+    document.getElementById('memberDetailModal').style.display = 'flex';
+  }
+
+  function closeMemberDetail() {
+    document.getElementById('memberDetailModal').style.display = 'none';
+  }
+
+  async function confirmApproveMember(id) {
+    const btn = document.querySelector('#memberDetailModal .btn-publish');
+    if (btn) { btn.textContent = 'Mengirim...'; btn.disabled = true; }
+    const result = await dbApproveMember(id);
+    if (!result.ok) {
+      showToast('⚠ Gagal: ' + result.error, 'error');
+      if (btn) { btn.textContent = '✓ Setujui & Kirim Undangan'; btn.disabled = false; }
+      return;
+    }
+    showToast('✓ Undangan berhasil dikirim!');
+    closeMemberDetail();
+    renderPendaftaran();
+  }
+
+  async function quickApproveMember(id) {
+    if (!confirm('Setujui anggota ini dan kirim undangan?')) return;
+    const result = await dbApproveMember(id);
+    if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+    showToast('✓ Undangan berhasil dikirim!');
+    renderPendaftaran();
+  }
+
+  async function confirmRejectMember(id) {
+    const reason = document.getElementById('mdRejectReason').value.trim();
+    const result = await dbRejectMember(id, reason);
+    if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+    showToast('✓ Permintaan ditolak.');
+    closeMemberDetail();
+    renderPendaftaran();
+  }
+
+  async function resendInvite(id) {
+    if (!confirm('Kirim ulang undangan ke anggota ini?')) return;
+    const result = await dbApproveMember(id);
+    if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+    showToast('✓ Undangan dikirim ulang!');
+    renderPendaftaran();
+  }
+
+  // ══ MANAGE ARTICLES ═══════════════════════════════════════════
+  async function renderManage() {
+    const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
+    const cat = document.getElementById('manageCat').value;
+    document.getElementById('manageBody').innerHTML =
+      '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+
+    const all      = await dbGetAll();
+    const articles = all
+      .filter(a => !cat || a.category === cat)
+      .filter(a => !q   || a.title.toLowerCase().includes(q) || a.author.toLowerCase().includes(q));
+
+    document.getElementById('manageCount').textContent = articles.length + ' artikel ditampilkan';
+    document.getElementById('manageBody').innerHTML = articles.map(a => `
+      <tr>
+        <td class="td-title" title="${a.title}">${a.title}</td>
+        <td><span class="article-tag-pill ${catClass(a.category)}">${a.category}</span></td>
+        <td>${a.author}</td>
+        <td>${a.date_label || formatDateLabel(a.date)}</td>
+        <td>${a.featured ? '<span class="badge-featured">★ Unggulan</span>' : '—'}</td>
+        <td class="td-actions">
+          <button class="btn-icon" onclick="editArticle(${a.id})">✎ Edit</button>
+          <button class="btn-icon danger" onclick="askDelete(${a.id}, '${a.title.replace(/'/g,"\\'")}')">✕ Hapus</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // ══ KIRIMAN ═══════════════════════════════════════════════════
+  let _pendingSubs   = [];
+  let _diffCurrentId = null;
+
+  async function renderKiriman() {
+    const q      = (document.getElementById('kirimSearch').value || '').toLowerCase();
+    const filter = document.getElementById('kirimFilter').value;
+    const tbody  = document.getElementById('kirimBody');
+    tbody.innerHTML = '<tr><td colspan="6" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+
+    _pendingSubs = await dbGetPendingSubmissions();
+    const newCount  = _pendingSubs.filter(s => s.status === 'pending').length;
+    const editCount = _pendingSubs.filter(s => s.status === 'pending_edit').length;
+
+    document.getElementById('kirimStats').innerHTML = `
+      <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
+        <div class="sc-num" style="color:#0F6E56;">${newCount}</div>
+        <div class="sc-label">✦ Artikel Baru</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(55,138,221,.3);">
+        <div class="sc-num" style="color:#185FA5;">${editCount}</div>
+        <div class="sc-label">✎ Permintaan Edit</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num">${_pendingSubs.length}</div>
+        <div class="sc-label">Total Pending</div>
+      </div>
+    `;
+
+    const list = _pendingSubs
+      .filter(s => !filter || s.status === filter)
+      .filter(s => !q || (s.title||'').toLowerCase().includes(q) || (s.author||'').toLowerCase().includes(q));
+
+    document.getElementById('kirimCount').textContent = list.length + ' kiriman';
+
+    if (list.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada kiriman pending.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = list.map(s => {
+      const isEdit   = s.status === 'pending_edit';
+      const typeHtml = isEdit
+        ? '<span class="sub-type-edit">✎ Permintaan Edit</span>'
+        : '<span class="sub-type-new">✦ Artikel Baru</span>';
+      return `
+        <tr>
+          <td class="td-title" title="${s.title||''}">${s.title || '(Tanpa judul)'}</td>
+          <td>${typeHtml}</td>
+          <td>${s.author || '—'}</td>
+          <td><span class="article-tag-pill ${catClass(s.category)}">${s.category||'—'}</span></td>
+          <td style="font-size:12px;color:var(--text-muted);">${fmtReqDate(s.created_at)}</td>
+          <td class="td-actions">
+            <button class="btn-icon" onclick="openDiffModal('${s.id}')">👁 Review</button>
+            <button class="btn-icon" onclick="quickApprove('${s.id}')">✓ Terbitkan</button>
+            <button class="btn-icon danger" onclick="quickReject('${s.id}')">✕ Tolak</button>
+          </td>
+        </tr>`;
+    }).join('');
+
+    refreshPendingBadge();
+  }
+
+  async function openDiffModal(id) {
+    _diffCurrentId = id;
+    let sub = _pendingSubs.find(s => String(s.id) === String(id));
+    if (!sub) {
+      _pendingSubs = await dbGetPendingSubmissions();
+      sub = _pendingSubs.find(s => String(s.id) === String(id));
+      if (!sub) { showToast('⚠ Kiriman tidak ditemukan.', 'error'); return; }
+    }
+
+    document.getElementById('diffTitle').textContent =
+      sub.status === 'pending_edit' ? 'Review Permintaan Edit' : 'Review Artikel Baru';
+    document.getElementById('diffMeta').textContent =
+      `${sub.author} · ${sub.category} · Dikirim ${fmtReqDate(sub.created_at)}`;
+
+    let bodyHtml = '';
+    if (sub.status === 'pending_edit' && sub.original_id) {
+      const orig = await dbGetById(sub.original_id);
+      bodyHtml = `
+        <div class="diff-section"><h4>Judul</h4>
+          <div class="diff-cols">
+            <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.title||'—'}</div>
+            <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.title||'—'}</div>
+          </div>
+        </div>
+        <div class="diff-section"><h4>Ringkasan</h4>
+          <div class="diff-cols">
+            <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${orig?.subtitle||'—'}</div>
+            <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${sub.subtitle||'—'}</div>
+          </div>
+        </div>
+        <div class="diff-section"><h4>Isi (200 karakter pertama)</h4>
+          <div class="diff-cols">
+            <div class="diff-col original"><div class="diff-col-label">Sebelum</div>${(orig?.body||'—').slice(0,200)}…</div>
+            <div class="diff-col proposed"><div class="diff-col-label">Diusulkan</div>${(sub.body||'—').slice(0,200)}…</div>
+          </div>
+        </div>`;
+    } else {
+      bodyHtml = `
+        <div class="diff-section"><h4>Judul</h4>
+          <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.title||'—'}</div>
+        </div>
+        <div class="diff-section"><h4>Ringkasan</h4>
+          <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Baru</div>${sub.subtitle||'—'}</div>
+        </div>
+        <div class="diff-section"><h4>Kategori · Estimasi Baca</h4>
+          <div class="diff-col proposed" style="width:100%;box-sizing:border-box;"><div class="diff-col-label">Info</div>${sub.category||'—'} · ${sub.read_time||5} menit</div>
+        </div>
+        <div class="diff-section"><h4>Isi Artikel</h4>
+          <div class="diff-col proposed" style="width:100%;box-sizing:border-box;max-height:300px;overflow-y:auto;">
+            <div class="diff-col-label">Konten</div>
+            <div style="white-space:pre-wrap;font-size:12px;">${sub.body||'—'}</div>
+          </div>
+        </div>`;
+    }
+
+    document.getElementById('diffBody').innerHTML = bodyHtml;
+    document.getElementById('rejectInputWrap').style.display   = 'none';
+    document.getElementById('diffConfirmReject').style.display = 'none';
+    document.getElementById('diffRejectToggle').style.display  = 'inline-flex';
+    document.getElementById('rejectReasonInput').value         = '';
+    document.getElementById('diffModal').style.display         = 'flex';
+  }
+
+  function closeDiff() {
+    document.getElementById('diffModal').style.display = 'none';
+    _diffCurrentId = null;
+  }
+
+  function toggleRejectInput() {
+    const wrap    = document.getElementById('rejectInputWrap');
+    const showing = wrap.style.display !== 'none';
+    wrap.style.display = showing ? 'none' : 'flex';
+    document.getElementById('diffConfirmReject').style.display = showing ? 'none'        : 'inline-flex';
+    document.getElementById('diffRejectToggle').style.display  = showing ? 'inline-flex' : 'none';
+  }
+
+  async function approveFromDiff() {
+    if (!_diffCurrentId) return;
+    const btn = document.getElementById('diffApproveBtn');
+    btn.textContent = 'Menerbitkan...'; btn.disabled = true;
+    const result = await dbApproveSubmission(_diffCurrentId);
+    btn.textContent = '✓ Terbitkan'; btn.disabled = false;
+    if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+    showToast('✓ Artikel diterbitkan!');
+    closeDiff();
+    renderKiriman();
+  }
+
+  async function confirmReject() {
+    if (!_diffCurrentId) return;
+    const reason = document.getElementById('rejectReasonInput').value.trim();
+    await dbRejectSubmission(_diffCurrentId, reason);
+    showToast('✓ Artikel ditolak.');
+    closeDiff();
+    renderKiriman();
+  }
+
+  async function quickApprove(id) {
+    if (!confirm('Terbitkan artikel ini?')) return;
+    const result = await dbApproveSubmission(id);
+    if (!result.ok) { showToast('⚠ ' + result.error, 'error'); return; }
+    showToast('✓ Artikel diterbitkan!');
+    renderKiriman();
+  }
+
+  async function quickReject(id) {
+    const reason = prompt('Alasan penolakan (opsional):') || '';
+    await dbRejectSubmission(id, reason);
+    showToast('✓ Artikel ditolak.');
+    renderKiriman();
+  }
+
+  // ══ REQUESTS ═════════════════════════════════════════════════
+  let _allReqCache = [];
+
+  async function renderRequests() {
+    const q        = (document.getElementById('reqSearch').value || '').toLowerCase();
+    const statusF  = document.getElementById('reqStatusFilter').value;
+    const subjectF = document.getElementById('reqSubjectFilter').value;
+    const tbody    = document.getElementById('requestsBody');
+    tbody.innerHTML = '<tr><td colspan="7" style="color:var(--text-muted);font-size:13px;padding:1rem;">Memuat...</td></tr>';
+
+    const all = await dbGetContactRequests();
+    _allReqCache = all;
+
+    const counts = { baru:0, dibaca:0, selesai:0 };
+    all.forEach(r => { counts[r.status] = (counts[r.status] || 0) + 1; });
+    document.getElementById('reqStatsRow').innerHTML = `
+      <div class="stat-card" style="border-color:rgba(196,68,68,.3);">
+        <div class="sc-num" style="color:#C44444;">${counts.baru}</div>
+        <div class="sc-label">🔴 Baru</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(127,119,221,.3);">
+        <div class="sc-num" style="color:#533AB7;">${counts.dibaca}</div>
+        <div class="sc-label">🟣 Dibaca</div>
+      </div>
+      <div class="stat-card" style="border-color:rgba(29,158,117,.3);">
+        <div class="sc-num" style="color:#0F6E56;">${counts.selesai}</div>
+        <div class="sc-label">🟢 Selesai</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num">${all.length}</div>
+        <div class="sc-label">Total Permintaan</div>
+      </div>
+    `;
+
+    const filtered = all
+      .filter(r => !statusF  || r.status  === statusF)
+      .filter(r => !subjectF || r.subject === subjectF)
+      .filter(r => !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q) || (r.message||'').toLowerCase().includes(q));
+
+    document.getElementById('requestsCount').textContent = filtered.length + ' permintaan ditampilkan';
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);font-size:13px;padding:2rem;">Tidak ada permintaan ditemukan.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(r => {
+      const statusCls   = { baru:'req-status-baru', dibaca:'req-status-dibaca', selesai:'req-status-selesai' }[r.status] || 'req-status-baru';
+      const statusLabel = { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[r.status] || 'Baru';
+      const msgPreview  = (r.message||'').slice(0, 60) + ((r.message||'').length > 60 ? '…' : '');
+      return `
+        <tr style="${r.status === 'baru' ? 'background:rgba(196,68,68,.02);' : ''}">
+          <td style="font-weight:600;">${r.name}</td>
+          <td style="font-size:12px;color:var(--text-muted);">${r.email}</td>
+          <td><span class="req-subject">${r.subject || '—'}</span></td>
+          <td class="req-message-cell" onclick="openReqDetail('${r.id}')" title="Klik untuk lihat pesan lengkap">
+            ${msgPreview || '<span style="color:var(--text-muted);font-style:italic;">Tidak ada pesan</span>'}
+          </td>
+          <td style="font-size:12px;color:var(--text-muted);white-space:nowrap;">${fmtReqDate(r.created_at)}</td>
+          <td><span class="${statusCls}">${statusLabel}</span></td>
+          <td class="td-actions">
+            <button class="btn-icon" onclick="openReqDetail('${r.id}')">👁</button>
+            ${r.status === 'baru'    ? `<button class="btn-icon" onclick="markRequest('${r.id}','dibaca')">Baca</button>` : ''}
+            ${r.status !== 'selesai' ? `<button class="btn-icon" onclick="markRequest('${r.id}','selesai')">✓</button>` : ''}
+            <button class="btn-icon danger" onclick="askDeleteRequest('${r.id}')">✕</button>
+          </td>
+        </tr>`;
+    }).join('');
+
+    refreshPendingBadge();
+  }
+
+  async function markRequest(id, status) {
+    await dbUpdateContactRequest(id, { status });
+    showToast('✓ Status diperbarui: ' + { baru:'Baru', dibaca:'Dibaca', selesai:'Selesai' }[status]);
+    renderRequests();
+  }
+
+  async function markAllRead() {
+    const all     = await dbGetContactRequests();
+    const newOnes = all.filter(r => r.status === 'baru');
+    await Promise.all(newOnes.map(r => dbUpdateContactRequest(r.id, { status: 'dibaca' })));
+    showToast(`✓ ${newOnes.length} permintaan ditandai dibaca.`);
+    renderRequests();
+  }
+
+  async function openReqDetail(id) {
+    if (_allReqCache.length === 0) _allReqCache = await dbGetContactRequests();
+    let r = _allReqCache.find(x => String(x.id) === String(id));
+    if (!r) {
+      _allReqCache = await dbGetContactRequests();
+      r = _allReqCache.find(x => String(x.id) === String(id));
+    }
+    if (!r) return;
+
+    document.getElementById('rdName').textContent    = r.name;
+    document.getElementById('rdEmail').textContent   = r.email;
+    document.getElementById('rdSubject').textContent = r.subject || '—';
+    document.getElementById('rdDate').textContent    = fmtReqDate(r.created_at);
+    document.getElementById('rdMessage').innerHTML   = linkify(r.message || '(Tidak ada pesan)');
+
+    const statusLabel = { baru:'🔴 Baru', dibaca:'🟣 Dibaca', selesai:'🟢 Selesai' }[r.status] || '—';
+    document.getElementById('rdStatus').textContent = statusLabel;
+
+    const doneBtn = document.getElementById('rdMarkDone');
+    if (r.status !== 'selesai') {
+      doneBtn.style.display = 'inline-flex';
+      doneBtn.onclick = async () => { await markRequest(r.id, 'selesai'); closeReqDetail(); };
+    } else {
+      doneBtn.style.display = 'none';
+    }
+
+    document.getElementById('rdDelete').onclick = async () => { await askDeleteRequest(r.id); closeReqDetail(); };
+    document.getElementById('reqDetailModal').style.display = 'flex';
+
+    if (r.status === 'baru') {
+      await dbUpdateContactRequest(r.id, { status: 'dibaca' });
+      renderRequests();
+    }
+  }
+
+  function closeReqDetail() {
+    document.getElementById('reqDetailModal').style.display = 'none';
+  }
+
+  let pendingDeleteReqId = null;
+
+  function askDeleteRequest(id) {
+    pendingDeleteReqId = id;
+    document.getElementById('modalArticleTitle').textContent = 'Permintaan ini akan dihapus permanen.';
+    document.getElementById('modalOverlay').style.display = 'flex';
+    document.querySelector('#modalOverlay .btn-delete').onclick = confirmDeleteRequest;
+  }
+
+  async function confirmDeleteRequest() {
+    if (!pendingDeleteReqId) return;
+    await dbDeleteContactRequest(pendingDeleteReqId);
+    showToast('✓ Permintaan dihapus.');
+    pendingDeleteReqId = null;
+    document.getElementById('modalOverlay').style.display = 'none';
+    document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
+    renderRequests();
+  }
+
+  // ══ WRITE / EDIT ══════════════════════════════════════════════
+  function setTodayDate() {
+    document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
+  }
+
+  function clearForm() {
+    ['fTitle','fSubtitle','fAuthor','fAuthorRole','fBody','fCoverUrl'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('fCategory').value   = '';
+    clearCover();
+    document.getElementById('fReadTime').value   = '5';
+    document.getElementById('fFeatured').checked = false;
+    document.getElementById('featuredLabel').textContent = 'Tidak';
+    document.getElementById('editingId').value   = '';
+    document.getElementById('writeTitle').textContent   = 'Tulis Artikel Baru';
+    document.getElementById('publishLabel').textContent = 'Terbitkan Artikel';
+    setTodayDate();
+    updateCounts();
+    document.getElementById('previewPanel').style.display = 'none';
+    document.getElementById('editorPanel').style.display  = 'block';
+  }
+
+  async function editArticle(id) {
+    const a = await dbGetById(id);
+    if (!a) return;
+    showView('write');
+    document.getElementById('fTitle').value      = a.title;
+    document.getElementById('fSubtitle').value   = a.subtitle || '';
+    document.getElementById('fCategory').value   = a.category;
+    document.getElementById('fReadTime').value   = a.read_time || 5;
+    document.getElementById('fAuthor').value     = a.author;
+    document.getElementById('fAuthorRole').value = a.author_role || '';
+    document.getElementById('fDate').value       = a.date || '';
+    if (a.cover_image) {
+      document.getElementById('fCoverUrl').value = a.cover_image;
+      previewCoverUrl(a.cover_image);
+    } else {
+      clearCover();
+    }
+    document.getElementById('fFeatured').checked = !!a.featured;
+    document.getElementById('featuredLabel').textContent = a.featured ? 'Ya' : 'Tidak';
+    document.getElementById('fBody').value       = a.body || '';
+    document.getElementById('editingId').value   = a.id;
+    document.getElementById('writeTitle').textContent   = 'Edit Artikel';
+    document.getElementById('publishLabel').textContent = 'Simpan Perubahan';
+    updateCounts();
+    document.getElementById('previewPanel').style.display = 'none';
+    document.getElementById('editorPanel').style.display  = 'block';
+  }
+
+  function cancelEdit() {
+    clearForm();
+    showView('manage');
+  }
+
+  async function publishArticle() {
+    const title       = document.getElementById('fTitle').value.trim();
+    const subtitle    = document.getElementById('fSubtitle').value.trim();
+    const category    = document.getElementById('fCategory').value;
+    const author      = document.getElementById('fAuthor').value.trim();
+    const body        = document.getElementById('fBody').value.trim();
+    const read_time   = parseInt(document.getElementById('fReadTime').value) || 5;
+    const author_role = document.getElementById('fAuthorRole').value.trim();
+    const date        = document.getElementById('fDate').value;
+    const featured    = document.getElementById('fFeatured').checked;
+    const editingId   = document.getElementById('editingId').value;
+    const btn         = document.getElementById('publishBtn');
+
+    if (!title || !subtitle || !category || !author || !body) {
+      showToast('⚠ Lengkapi semua kolom wajib.', 'error');
+      return;
+    }
+
+    const date_label  = date
+      ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
+      : formatDateLabel(new Date().toISOString());
+    const cover_image = document.getElementById('fCoverUrl').value.trim() || null;
+
+    const payload = {
+      title, subtitle, category, author,
+      author_initials: toInitials(author),
+      author_role, date: date || new Date().toISOString().split('T')[0],
+      date_label, read_time, featured, body, cover_image,
+    };
+
+    const publishLabel = document.getElementById('publishLabel');
+    if (btn) btn.disabled = true;
+    if (publishLabel) publishLabel.textContent = 'Menyimpan...';
+
+    if (editingId) {
+      await dbUpdate(editingId, payload);
+      showToast('✓ Artikel berhasil diperbarui!');
+    } else {
+      await dbAdd({ ...payload, status: 'published' });
+      showToast('✓ Artikel berhasil diterbitkan!');
+    }
+
+    if (btn) btn.disabled = false;
+    if (publishLabel) publishLabel.textContent = editingId ? 'Simpan Perubahan' : 'Terbitkan Artikel';
+    clearForm();
+    showView('manage');
+  }
+
+  // ══ INLINE PREVIEW ════════════════════════════════════════════
+  function togglePreview() { toggleInlinePreview(); }
+
+  function toggleInlinePreview() {
+    const btn     = document.getElementById('adminPreviewToggle');
+    const editor  = document.getElementById('adminEditorPane');
+    const preview = document.getElementById('adminPreviewPane');
+    const isOpen  = preview.classList.contains('visible');
+    if (isOpen) {
+      preview.classList.remove('visible');
+      editor.style.display = 'block';
+      btn.classList.remove('active');
+      btn.textContent = '👁 Pratinjau';
+      document.getElementById('previewBtn').textContent  = 'Pratinjau';
+      document.getElementById('previewBtn2').textContent = 'Pratinjau';
+    } else {
+      _buildInlinePreview();
+      editor.style.display = 'none';
+      preview.classList.add('visible');
+      btn.classList.add('active');
+      btn.textContent = '✎ Editor';
+      document.getElementById('previewBtn').textContent  = '✎ Editor';
+      document.getElementById('previewBtn2').textContent = '✎ Editor';
+    }
+  }
+
+  function _buildInlinePreview() {
+    const title      = document.getElementById('fTitle').value    || '(Judul kosong)';
+    const subtitle   = document.getElementById('fSubtitle').value || '';
+    const category   = document.getElementById('fCategory').value || '';
+    const author     = document.getElementById('fAuthor').value   || '';
+    const body       = document.getElementById('fBody').value     || '';
+    const date       = document.getElementById('fDate').value;
+    const date_label = date
+      ? new Date(date).toLocaleDateString('id-ID', { month:'long', year:'numeric' })
+      : 'Hari ini';
+
+    const pane = document.getElementById('adminPreviewPane');
+    if (!body.trim()) {
+      pane.innerHTML = '<div class="editor-preview-empty">Belum ada isi artikel untuk ditampilkan.</div>';
+      return;
+    }
+    pane.innerHTML = `
+      <div class="${catClass(category)}"
+        style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.07em;
+               text-transform:uppercase;padding:.2rem .6rem;border-radius:4px;margin-bottom:1rem;">
+        ${category || 'Kategori'}
+      </div>
+      <h1 style="font-family:'Syne',sans-serif;font-size:1.75rem;font-weight:800;
+                 color:#1A1816;margin-bottom:.65rem;line-height:1.15;">${title}</h1>
+      <p style="font-size:1rem;color:#6B6460;margin-bottom:1.1rem;">${subtitle}</p>
+      <div style="display:flex;gap:.5rem;align-items:center;font-size:13px;color:#6B6460;
+                  padding:.85rem 0;border-top:1px solid rgba(26,24,22,.1);
+                  border-bottom:1px solid rgba(26,24,22,.1);margin-bottom:1.75rem;">
+        <strong style="color:#1A1816;">${author || 'Penulis'}</strong>
+        <span>·</span><span>${date_label}</span>
+      </div>
+      <div class="editor-preview-pane" style="display:block;min-height:unset;padding:0;border:none;">
+        ${bodyToHtml(body)}
+      </div>`;
+  }
+
+  // ══ DELETE ARTICLE ════════════════════════════════════════════
+  let pendingDeleteId = null;
+
+  function askDelete(id, title) {
+    pendingDeleteId = id;
+    document.getElementById('modalArticleTitle').textContent = '"' + title + '"';
+    document.getElementById('modalOverlay').style.display = 'flex';
+    document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
+  }
+
+  function closeModal() {
+    pendingDeleteId    = null;
+    pendingDeleteReqId = null;
+    document.getElementById('modalOverlay').style.display = 'none';
+    document.querySelector('#modalOverlay .btn-delete').onclick = confirmDelete;
+  }
+
+  async function confirmDelete() {
+    if (!pendingDeleteId) return;
+    await dbDelete(pendingDeleteId);
+    showToast('✓ Artikel dihapus.');
+    closeModal();
+    renderManage();
+  }
+
+  // ══ COVER IMAGE ═══════════════════════════════════════════════
+  function previewCoverUrl(url) {
+    const preview     = document.getElementById('coverPreview');
+    const placeholder = document.getElementById('coverPlaceholder');
+    const wrap        = document.getElementById('coverWrap');
+    if (!url) { clearCover(); return; }
+    preview.src = url;
+    preview.style.display     = 'block';
+    placeholder.style.display = 'none';
+    wrap.classList.add('has-image');
+    wrap.onclick = () => document.getElementById('coverFileInput').click();
+  }
+
+  function handleCoverUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    e.target.value = '';
+    openCropModal(file, (url) => {
+      document.getElementById('fCoverUrl').value = url;
+      previewCoverUrl(url);
+      const s = document.getElementById('coverStatus');
+      s.textContent = '✓ Gambar berhasil diproses';
+      s.style.color = 'var(--accent)';
+      setTimeout(() => s.textContent = '', 3000);
+    });
+  }
+
+  function clearCover() {
+    const preview     = document.getElementById('coverPreview');
+    const placeholder = document.getElementById('coverPlaceholder');
+    const wrap        = document.getElementById('coverWrap');
+    preview.src = '';
+    preview.style.display     = 'none';
+    placeholder.style.display = 'flex';
+    wrap.classList.remove('has-image');
+    wrap.onclick = () => document.getElementById('coverFileInput').click();
+    document.getElementById('fCoverUrl').value        = '';
+    document.getElementById('coverStatus').textContent = '';
+  }
+
+  // ══ CROP MODAL ════════════════════════════════════════════════
+  let _cropper      = null;
+  let _cropCallback = null;
+  let _cropFlipX    = 1;
+  let _cropFlipY    = 1;
+  let _cropRatio    = 4/3;
+
+  function openCropModal(file, onSave) {
+    _cropCallback = onSave;
+    _cropFlipX = 1; _cropFlipY = 1;
+    _cropRatio = 4/3;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = document.getElementById('cropImg');
+      img.src = e.target.result;
+      document.getElementById('cropOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      document.querySelectorAll('.ratio-btn').forEach((b, i) => b.classList.toggle('active', i === 2));
+      if (_cropper) { _cropper.destroy(); _cropper = null; }
+      _cropper = new Cropper(img, {
+        aspectRatio: _cropRatio, viewMode: 1, autoCropArea: 0.85,
+        movable: true, zoomable: true, rotatable: true, scalable: true,
+        checkOrientation: true, responsive: true, restore: false,
+        guides: true, center: true, highlight: false,
+        cropBoxMovable: true, cropBoxResizable: true, toggleDragModeOnDblclick: false,
+        zoom(e) { document.getElementById('cropZoomSlider').value = e.detail.ratio; },
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function cropCancel() {
+    if (_cropper) { _cropper.destroy(); _cropper = null; }
+    document.getElementById('cropOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+    _cropCallback = null;
+  }
+
+  async function cropSave() {
+    const saveBtn   = document.getElementById('cropSaveBtn');
+    const saveLabel = document.getElementById('cropSavingLabel');
+    if (!_cropper)      { alert('Crop belum siap. Coba pilih gambar lagi.'); return; }
+    if (!_cropCallback) { console.error('cropSave: _cropCallback is null'); return; }
+
+    saveBtn.disabled = true;
+    saveLabel.style.display = 'inline';
+
+    try {
+      const canvas = _cropper.getCroppedCanvas({ maxWidth:1600, maxHeight:1200,
+        imageSmoothingEnabled:true, imageSmoothingQuality:'high' });
+      if (!canvas) throw new Error('getCroppedCanvas() returned null.');
+
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob((b) => {
+          if (b && b.size > 0) { resolve(b); return; }
+          canvas.toBlob((b2) => {
+            if (b2 && b2.size > 0) resolve(b2);
+            else reject(new Error('toBlob() returned empty blob.'));
+          }, 'image/png');
+        }, 'image/jpeg', 0.88);
+      });
+
+      const ext    = blob.type === 'image/png' ? 'png' : 'jpg';
+      const file   = new File([blob], `cover.${ext}`, { type: blob.type });
+      const result = await uploadArticleImage(file);
+      if (!result.ok) throw new Error(result.error || 'Upload gagal.');
+
+      const cb = _cropCallback;
+      cropCancel();
+      if (cb) cb(result.url);
+    } catch (err) {
+      console.error('cropSave error:', err);
+      alert('Gagal memproses gambar: ' + err.message);
+    } finally {
+      saveBtn.disabled = false;
+      saveLabel.style.display = 'none';
+    }
+  }
+
+  function setRatio(ratio, btn) {
+    _cropRatio = ratio;
+    document.querySelectorAll('.ratio-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (_cropper) _cropper.setAspectRatio(isNaN(ratio) ? NaN : ratio);
+  }
+  function cropRotate(deg)  { if (_cropper) _cropper.rotate(deg); }
+  function cropFlip(axis)   {
+    if (!_cropper) return;
+    if (axis === 'x') { _cropFlipX *= -1; _cropper.scaleX(_cropFlipX); }
+    else              { _cropFlipY *= -1; _cropper.scaleY(_cropFlipY); }
+  }
+  function cropZoom(delta)  { if (_cropper) _cropper.zoom(delta); }
+  function cropZoomTo(val)  { if (_cropper) _cropper.zoomTo(val); }
+  function cropReset()      {
+    if (_cropper) {
+      _cropper.reset();
+      _cropFlipX = 1; _cropFlipY = 1;
+      document.getElementById('cropZoomSlider').value = 1;
+    }
+  }
+
+  // ══ EDITOR HELPERS ════════════════════════════════════════════
+  function insertMd(before, after = '') {
+    const ta = document.getElementById('fBody');
+    const s = ta.selectionStart, e = ta.selectionEnd;
+    const selected = ta.value.slice(s, e);
+    const blockPrefixes = ['## ','### ','- ','> '];
+    let prefix = '';
+    if (blockPrefixes.includes(before) && s > 0 && ta.value[s - 1] !== '\n') prefix = '\n';
+    const replacement = prefix + before + selected + after;
+    ta.value = ta.value.slice(0, s) + replacement + ta.value.slice(e);
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = s + replacement.length - after.length;
+    fBodyUpdateCounts();
+    autoGrowBody(ta);
+  }
+
+  function insertDivider() {
+    const ta = document.getElementById('fBody');
+    const s = ta.selectionStart;
+    const ins = '\n---\n\n';
+    ta.value = ta.value.slice(0, s) + ins + ta.value.slice(s);
+    ta.focus();
+    ta.selectionStart = ta.selectionEnd = s + ins.length;
+    fBodyUpdateCounts();
+  }
+
+  function fBodyUpdateCounts() {
+    const val = document.getElementById('fBody').value;
+    const words = val.trim() ? val.trim().split(/\s+/).length : 0;
+    document.getElementById('fWordCount').textContent = words + ' kata';
+    document.getElementById('fCharCount').textContent = val.length + ' karakter';
+  }
+
+  function autoGrowBody(ta) {
+    ta.style.height = 'auto';
+    ta.style.height = Math.max(380, Math.min(ta.scrollHeight, 700)) + 'px';
+  }
+
+  function updateCounts() {
+    document.getElementById('titleCount').textContent =
+      document.getElementById('fTitle').value.length + ' / 120';
+    document.getElementById('subtitleCount').textContent =
+      document.getElementById('fSubtitle').value.length + ' / 220';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('fTitle').addEventListener('input', updateCounts);
+    document.getElementById('fSubtitle').addEventListener('input', updateCounts);
+    document.getElementById('fFeatured').addEventListener('change', function () {
+      document.getElementById('featuredLabel').textContent = this.checked ? 'Ya' : 'Tidak';
+    });
+    const ta = document.getElementById('fBody');
+    ta.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const s = ta.selectionStart, end = ta.selectionEnd;
+        const ins = e.shiftKey ? '\n' : '\n\n';
+        ta.value = ta.value.slice(0, s) + ins + ta.value.slice(end);
+        ta.selectionStart = ta.selectionEnd = s + ins.length;
+        fBodyUpdateCounts();
+        autoGrowBody(ta);
+      }
+    });
+    ta.addEventListener('input', () => { fBodyUpdateCounts(); autoGrowBody(ta); });
+  });
+
+  // ══ GENERIC HELPERS ═══════════════════════════════════════════
+  function fmtReqDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('id-ID', {
+      day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+  }
+
+  function linkify(text) {
+    const escaped = text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return escaped.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, url => {
+      const href = url.startsWith('http') ? url : 'https://' + url;
+      return `<a href="${href}" target="_blank" rel="noopener noreferrer"
+        style="color:var(--accent);text-decoration:underline;word-break:break-all;">${url}</a>`;
+    });
+  }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show ' + type;
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.className = 'toast', 3000);
+  }
+  </script>
 
 </body>
 </html>

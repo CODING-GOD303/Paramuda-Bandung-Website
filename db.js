@@ -3,9 +3,7 @@ const SUPABASE_KEY = 'sb_publishable_SZSKyiX5OU4KYhSUijEoVA_AsDNhGqa';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ── ARTICLES (public) ─────────────────────────────────────────
 async function dbGetPublished() {
-  // No 'body' column — cards only need metadata. Fetch body only in dbGetById.
   const { data, error } = await db
     .from('articles')
     .select('id,title,subtitle,author,author_initials,author_role,category,date,date_label,read_time,featured,views,likes,status,cover_image,created_at')
@@ -17,8 +15,7 @@ async function dbGetPublished() {
 }
  
 async function dbGetAll() {
-  // Admin-only: fetches all columns including body, status, submitted_by.
-  // Protected server-side by RLS (is_admin() policy).
+
   const { data, error } = await db
     .from('articles')
     .select('*')
@@ -53,7 +50,6 @@ async function dbDelete(id) {
   return { ok: true };
 }
  
-// ── SUBMISSION WORKFLOW ───────────────────────────────────────
  
 async function dbSubmitArticle(payload, status = 'pending') {
   const { data: userData } = await db.auth.getUser();
@@ -134,7 +130,6 @@ async function dbWithdrawSubmission(id) {
   return { ok: true };
 }
  
-// ── CONTACT REQUESTS ─────────────────────────────────────────
  
 async function dbSubmitContact({ name, email, subject, message }) {
   const { data, error } = await db.from('contact_requests')
@@ -160,7 +155,6 @@ async function dbDeleteContactRequest(id) {
   if (error) console.error(error);
 }
  
-// ── AUTH ──────────────────────────────────────────────────────
  
 async function authRegister(name, email, password) {
   const { data, error } = await db.auth.signUp({
@@ -182,16 +176,14 @@ async function authLogin(email, password) {
  
 async function authLogout() {
   await db.auth.signOut();
-  sessionStorage.clear();           // clear user cache and liked articles
 }
  
 async function authGetCurrentUser() {
-  // Check session-level cache first — avoids a round-trip on every page load
+
   const cached = sessionStorage.getItem('paramuda_user');
   if (cached) {
     try {
       const parsed = JSON.parse(cached);
-      // Still verify the Supabase session is alive (lightweight check)
       const { data } = await db.auth.getSession();
       if (data.session && parsed.id) return parsed;
     } catch (_) { /* fall through to fresh fetch */ }
@@ -204,15 +196,7 @@ async function authGetCurrentUser() {
   if (user) sessionStorage.setItem('paramuda_user', JSON.stringify(user));
   return user;
 }
- 
- 
-// ── ARTICLE IMAGE UPLOAD ─────────────────────────────────────
- 
-/**
- * Upload a cover image to the article-images bucket.
- * File is stored at: {userId}/{timestamp}_{filename}
- * Returns the public URL on success.
- */
+
 async function uploadArticleImage(file) {
   const { data: userData } = await db.auth.getUser();
   if (!userData.user) return { ok: false, error: 'Harus login.' };
@@ -233,8 +217,7 @@ async function uploadArticleImage(file) {
   const { data } = db.storage.from('article-images').getPublicUrl(path);
   return { ok: true, url: data.publicUrl };
 }
- 
-// ── HELPERS ───────────────────────────────────────────────────
+
  
 function catClass(cat) {
   const map = {
@@ -286,9 +269,7 @@ function bodyToHtml(text) {
   if (inList) html += '</ul>';
   return html;
 }
-// ── RECRUITMENT SETTINGS ─────────────────────────────────────
-// Returns the most recent recruitment_settings row, or null if
-// the table doesn't exist yet. Safe to call before the table is created.
+
 async function dbGetRecruitment() {
   const { data, error } = await db
     .from('recruitment_settings')
@@ -310,7 +291,6 @@ async function dbUpdateRecruitment(id, updates) {
 }
 
 async function dbUpsertRecruitment(payload) {
-  // Inserts a new row if none exists, otherwise updates the latest one.
   const existing = await dbGetRecruitment();
   if (existing) return dbUpdateRecruitment(existing.id, payload);
   const { data, error } = await db
@@ -338,26 +318,18 @@ async function dbSubmitJoinRequest({ name, email, university, major, motivation 
   if (error) return { ok: false, error: error.message };
   return { ok: true, data };
 }
- 
-/**
- * Admin: get all members filtered by status.
- * status = 'pending' | 'approved' | 'rejected' | 'active' | undefined (all)
- */
+
 async function dbGetMembers(status) {
   let query = db
     .from('members')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('joined_at', { ascending: false });
   if (status) query = query.eq('status', status);
   const { data, error } = await query;
   if (error) { console.error(error); return []; }
   return data;
 }
- 
-/**
- * Admin: approve a join request.
- * Calls the Edge Function to generate a token and send the invite email.
- */
+
 async function dbApproveMember(memberId) {
   const { data: { session } } = await db.auth.getSession();
   if (!session) return { ok: false, error: 'Tidak ada sesi admin.' };
@@ -381,11 +353,7 @@ async function dbApproveMember(memberId) {
  
   return { ok: true };
 }
- 
-/**
- * Admin: reject a join request.
- * Calls the Edge Function to send a rejection notification email.
- */
+
 async function dbRejectMember(memberId, reason = '') {
   const { data: { session } } = await db.auth.getSession();
   if (!session) return { ok: false, error: 'Tidak ada sesi admin.' };
@@ -409,11 +377,7 @@ async function dbRejectMember(memberId, reason = '') {
  
   return { ok: true };
 }
- 
-/**
- * Public: validate an invite token from the URL.
- * Returns the member record if the token is valid, not expired, and unused.
- */
+
 async function dbValidateInviteToken(token) {
   const { data, error } = await db
     .from('members')
@@ -435,15 +399,8 @@ async function dbValidateInviteToken(token) {
  
   return { ok: true, member: data };
 }
- 
-/**
- * Public: complete registration after invite link validation.
- * 1. Creates Supabase Auth account with the approved email.
- * 2. Marks the invite token as used.
- * 3. Updates member status to 'active'.
- */
+
 async function dbCompleteRegistration(token, email, name, password) {
-  // Step 1: Create the Supabase Auth account
   const { data, error } = await db.auth.signUp({
     email,
     password,
@@ -452,8 +409,7 @@ async function dbCompleteRegistration(token, email, name, password) {
  
   if (error) return { ok: false, error: error.message };
   if (!data.user) return { ok: false, error: 'Gagal membuat akun. Email mungkin sudah terdaftar.' };
- 
-  // Step 2: Mark invite as used & set status active
+
   const { error: updateError } = await db
     .from('members')
     .update({
@@ -464,12 +420,9 @@ async function dbCompleteRegistration(token, email, name, password) {
     .eq('invite_token', token);
  
   if (updateError) {
-    // Auth account was created but member update failed — non-fatal,
-    // admin can fix this manually. Still return ok so user gets in.
     console.error('dbCompleteRegistration: failed to mark invite used:', updateError.message);
   }
  
-  // Step 3: Wait a moment for the profile trigger to fire, then cache user
   await new Promise(r => setTimeout(r, 800));
   const { data: profile } = await db.from('profiles').select('*').eq('id', data.user.id).single();
   if (profile) sessionStorage.setItem('paramuda_user', JSON.stringify({ ...data.user, ...profile }));

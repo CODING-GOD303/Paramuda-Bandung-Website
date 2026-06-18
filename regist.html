@@ -8,8 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="auth.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="db.js"></script>
 </head>
 <body>
 
@@ -101,14 +99,12 @@
 
         <form id="joinForm" novalidate>
 
-          <!-- Name -->
           <div class="form-field">
             <label for="name">Nama Lengkap <span class="req">*</span></label>
             <input type="text" id="name" placeholder="Masukkan nama lengkapmu" autocomplete="name" />
             <span class="field-error" id="nameError"></span>
           </div>
 
-          <!-- Email -->
           <div class="form-field">
             <label for="email">Email Aktif <span class="req">*</span></label>
             <input type="email" id="email" placeholder="email@contoh.com" autocomplete="email" />
@@ -116,31 +112,30 @@
             <span class="field-error" id="emailError"></span>
           </div>
 
-          <!-- University -->
           <div class="form-field">
-            <label for="university">*Informasi <span class="req">*</span></label>
-            <input type="text" id="*Info" placeholder="Lorem Ipsum" />
-            <span class="field-error" id="Gagal"></span>
+            <label for="university">Asal Universitas <span class="req">*</span></label>
+            <input type="text" id="university" placeholder="Universitas Padjadjaran, ITB, dst..." />
+            <span class="field-error" id="universityError"></span>
           </div>
 
-          <!-- Major -->
           <div class="form-field">
-            <label for="Division">Divisi <span class="req">*</span></label>
-            <input type="text" id="major" placeholder="Public Relation, Social Manager..." />
-            <span class="field-error" id="Divisi salah"></span>
+            <label for="major">Program Studi <span class="req">*</span></label>
+            <input type="text" id="major" placeholder="Teknik Informatika, Hukum, dst..." />
+            <span class="field-error" id="majorError"></span>
           </div>
 
-          <!-- Motivation -->
           <div class="form-field">
             <label for="motivation">Motivasi Bergabung <span class="req">*</span></label>
             <textarea id="motivation" rows="4"
-              placeholder="Ceritakan mengapa kamu ingin bergabung dengan Paramuda dan kontribusi apa yang ingin kamu berikan..."
-              style="resize:vertical;min-height:100px;"></textarea>
+              placeholder="Ceritakan mengapa kamu ingin bergabung dengan Paramuda..."
+              style="resize:vertical;min-height:100px;width:100%;background:var(--bg);
+                     border:1.5px solid var(--border);border-radius:var(--radius-sm);
+                     padding:.65rem 1rem;font-family:var(--font-body);font-size:14px;
+                     color:var(--text);outline:none;transition:border-color .2s;box-sizing:border-box;"></textarea>
             <span class="field-hint" id="motivationCount">0 / 500 karakter</span>
             <span class="field-error" id="motivationError"></span>
           </div>
 
-          <!-- Terms -->
           <div class="form-check" style="margin-bottom:1.25rem;">
             <label class="check-label">
               <input type="checkbox" id="agreeTerms" />
@@ -165,34 +160,16 @@
     </div>
   </div>
 
-  <style>
-    .field-hint {
-      display: block;
-      font-size: 11px;
-      color: var(--text-muted, #6B6460);
-      margin-top: .25rem;
-    }
-    textarea {
-      width: 100%;
-      background: var(--bg, #F8F6F2);
-      border: 1.5px solid var(--border, rgba(26,24,22,0.12));
-      border-radius: var(--radius-sm, 6px);
-      padding: .65rem 1rem;
-      font-family: var(--font-body, 'Manrope', sans-serif);
-      font-size: 14px;
-      color: var(--text, #1A1816);
-      outline: none;
-      transition: border-color .2s;
-      box-sizing: border-box;
-    }
-    textarea:focus { border-color: var(--accent, #005a1b); }
-  </style>
-
+  <!-- scripts at bottom = guaranteed load order, no race condition -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="db.js"></script>
   <script>
     // ── REDIRECT IF ALREADY LOGGED IN ─────────────────────────
     (async () => {
-      const { data: { session } } = await db.auth.getSession();
-      if (session) window.location.href = '../articles/articles-new.html';
+      try {
+        const { data: { session } } = await db.auth.getSession();
+        if (session) window.location.href = 'articles-new.html';
+      } catch(e) { /* not logged in, continue */ }
     })();
 
     // ── MOTIVATION COUNTER ────────────────────────────────────
@@ -214,14 +191,14 @@
       const agreed     = document.getElementById('agreeTerms').checked;
       let valid = true;
 
-      if (!name || name.length < 2)         { showFieldError('nameError',       'Nama wajib diisi (minimal 2 karakter).'); valid = false; }
-      if (!email)                            { showFieldError('emailError',      'Email wajib diisi.'); valid = false; }
-      else if (!/\S+@\S+\.\S+/.test(email)) { showFieldError('emailError',      'Format email tidak valid.'); valid = false; }
-      if (!university)                       { showFieldError('universityError', 'Asal universitas wajib diisi.'); valid = false; }
-      if (!major)                            { showFieldError('majorError',      'Program studi wajib diisi.'); valid = false; }
-      if (!motivation || motivation.length < 20) { showFieldError('motivationError', 'Motivasi wajib diisi (minimal 20 karakter).'); valid = false; }
-      if (motivation.length > 500)           { showFieldError('motivationError', 'Motivasi maksimal 500 karakter.'); valid = false; }
-      if (!agreed)                           { showFieldError('termsError',      'Kamu harus menyetujui ketentuan penggunaan.'); valid = false; }
+      if (!name || name.length < 2)              { showFieldError('nameError',       'Nama wajib diisi (minimal 2 karakter).'); valid = false; }
+      if (!email)                                 { showFieldError('emailError',      'Email wajib diisi.'); valid = false; }
+      else if (!/\S+@\S+\.\S+/.test(email))      { showFieldError('emailError',      'Format email tidak valid.'); valid = false; }
+      if (!university)                            { showFieldError('universityError', 'Asal universitas wajib diisi.'); valid = false; }
+      if (!major)                                 { showFieldError('majorError',      'Program studi wajib diisi.'); valid = false; }
+      if (!motivation || motivation.length < 20)  { showFieldError('motivationError', 'Motivasi wajib diisi (minimal 20 karakter).'); valid = false; }
+      if (motivation.length > 500)                { showFieldError('motivationError', 'Motivasi maksimal 500 karakter.'); valid = false; }
+      if (!agreed)                                { showFieldError('termsError',      'Kamu harus menyetujui ketentuan penggunaan.'); valid = false; }
       if (!valid) return;
 
       setLoading(true);
@@ -245,7 +222,7 @@
 
       } catch (err) {
         console.error('Join request error:', err);
-        showBanner('error', 'Terjadi kesalahan. Periksa koneksi dan coba lagi.');
+        showBanner('error', 'Terjadi kesalahan: ' + err.message);
         setLoading(false);
       }
     });
@@ -272,7 +249,7 @@
     function showFieldError(id, msg) {
       const el = document.getElementById(id);
       if (!el) return;
-      el.textContent  = msg;
+      el.textContent   = msg;
       el.style.display = 'block';
     }
 

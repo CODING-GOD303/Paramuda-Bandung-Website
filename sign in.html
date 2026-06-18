@@ -11,8 +11,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="auth.css" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    <script src="members.js"></script>
   </head>
   <body>
     <div class="auth-page">
@@ -74,10 +72,10 @@
           >
             <span>⏳</span>
             <div>
-              <strong>Akun menunggu persetujuan</strong>
+              <strong>Pendaftaran sedang ditinjau</strong>
               <span
-                >Admin belum menyetujui pendaftaranmu. Coba lagi setelah
-                mendapat konfirmasi.</span
+                >Admin belum menyetujui permintaan bergabungmu. Cek emailmu
+                untuk undangan aktivasi.</span
               >
             </div>
           </div>
@@ -157,20 +155,26 @@
 
           <div class="auth-divider"><span>atau</span></div>
           <div class="auth-footer">
-            Belum punya akun? <a href="regist.html">Daftar sekarang →</a>
+            Belum punya akun? <a href="regist.html">Ajukan permintaan bergabung →</a>
           </div>
-          <a href="index.html  " class="back-link">← Kembali ke beranda</a>
+          <a href="index.html" class="back-link">← Kembali ke beranda</a>
         </div>
       </div>
     </div>
 
+    <!-- Scripts at bottom = guaranteed load order, no race condition -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
     <script>
-      if (memberIsLoggedIn()) {
-        const redirect =
-          new URLSearchParams(window.location.search).get("redirect") ||
-          "articles.html";
-        window.location.href = redirect;
-      }
+      // ── REDIRECT IF ALREADY LOGGED IN ──────────────────────
+      (async () => {
+        try {
+          const user = await authGetCurrentUser();
+          if (user) {
+            window.location.href = user.role === 'admin' ? 'admin.html' : 'articles-new.html';
+          }
+        } catch (e) { /* not logged in, continue */ }
+      })();
 
       document
         .getElementById("loginForm")
@@ -197,26 +201,38 @@
 
           setLoading(true);
 
-          const result = await memberLogin(email, password);
-          setLoading(false);
+          try {
+            const result = await authLogin(email, password);
+            setLoading(false);
 
-          if (result.ok) {
+            if (!result.ok) {
+              const msg = result.error || '';
+              if (msg.toLowerCase().includes('invalid login credentials')) {
+                showBanner('error', 'Email atau password salah.');
+              } else {
+                showBanner('error', msg);
+              }
+              return;
+            }
+
+            // Store session
+            sessionStorage.setItem('paramuda_user', JSON.stringify(result.user));
+
             showBanner(
               "success",
-              `Selamat datang, ${result.member.name.split(" ")[0]}! Mengalihkan...`,
+              `Selamat datang, ${(result.user.name || '').split(" ")[0]}! Mengalihkan...`,
             );
+
             setTimeout(() => {
-              const redirect =
-                new URLSearchParams(window.location.search).get("redirect") ||
-                "articles.html";
-              window.location.href = redirect;
-            }, 900);
-          } else if (result.status === "pending") {
-            document.getElementById("pendingBanner").style.display = "flex";
-          } else if (result.status === "rejected") {
-            document.getElementById("rejectedBanner").style.display = "flex";
-          } else {
-            showBanner("error", result.error);
+              window.location.href = result.user.role === 'admin'
+                ? 'admin.html'
+                : 'articles-new.html';
+            }, 700);
+
+          } catch (err) {
+            console.error('Login error:', err);
+            setLoading(false);
+            showBanner('error', 'Terjadi kesalahan. Periksa koneksi dan coba lagi.');
           }
         });
 

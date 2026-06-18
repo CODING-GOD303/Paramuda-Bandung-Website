@@ -3,6 +3,7 @@ const SUPABASE_KEY = 'sb_publishable_SZSKyiX5OU4KYhSUijEoVA_AsDNhGqa';
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+
 const MEMBER_SESSION_KEY = 'paramuda_member_session';
 
 
