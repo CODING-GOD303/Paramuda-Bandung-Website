@@ -14,8 +14,6 @@
   <script src="db.js"></script>
 </head>
 <body>
-
-  <!-- ══ LOGIN SCREEN ══════════════════════════════════════════ -->
   <div class="login-screen" id="loginScreen">
     <div class="login-card">
       <div class="login-logo">Paramuda</div>
@@ -35,10 +33,7 @@
     </div>
   </div>
 
-  <!-- ══ ADMIN PANEL ════════════════════════════════════════════ -->
   <div class="admin-panel" id="adminPanel" style="display:none;">
-
-    <!-- SIDEBAR -->
     <aside class="admin-sidebar">
       <div class="sidebar-logo">Paramuda.Id</div>
       <div class="sidebar-label">Menu</div>
@@ -74,10 +69,7 @@
       </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
     <main class="admin-main">
-
-      <!-- ══ DASHBOARD ══════════════════════════════════════════ -->
       <div class="view" id="view-dashboard">
         <div class="view-header">
           <h1>Dashboard</h1>
@@ -99,8 +91,6 @@
           <div id="dashReqList"></div>
         </div>
       </div>
-
-      <!-- ══ PENDAFTARAN ANGGOTA ═════════════════════════════════ -->
       <div class="view" id="view-pendaftaran" style="display:none;">
         <div class="view-header">
           <h1>Pendaftaran Anggota</h1>
@@ -140,8 +130,6 @@
           </table>
         </div>
       </div>
-
-      <!-- ══ TULIS ARTIKEL ══════════════════════════════════════ -->
       <div class="view" id="view-write" style="display:none;">
         <div class="view-header">
           <h1 id="writeTitle">Tulis Artikel Baru</h1>
@@ -208,7 +196,6 @@
               </div>
             </div>
 
-            <!-- COVER IMAGE -->
             <div class="field-group">
               <label>Gambar Cover</label>
               <div class="cover-upload-wrap" id="coverWrap" onclick="document.getElementById('coverFileInput').click()">
@@ -228,7 +215,6 @@
               <div class="cover-status" id="coverStatus"></div>
             </div>
 
-            <!-- BODY EDITOR -->
             <div class="field-group body-field">
               <label>
                 Isi Artikel <span class="req">*</span>
@@ -265,7 +251,6 @@
 
             <input type="hidden" id="editingId" value="" />
           </div>
-          <!-- legacy stub -->
           <div id="previewPanel" style="display:none;"></div>
         </div>
 
@@ -280,7 +265,6 @@
         </div>
       </div>
 
-      <!-- ══ KELOLA ARTIKEL ═════════════════════════════════════ -->
       <div class="view" id="view-manage" style="display:none;">
         <div class="view-header">
           <h1>Kelola Artikel</h1>
@@ -316,7 +300,6 @@
         <p class="manage-count" id="manageCount"></p>
       </div>
 
-      <!-- ══ KIRIMAN ARTIKEL ════════════════════════════════════ -->
       <div class="view" id="view-kiriman" style="display:none;">
         <div class="view-header">
           <h1>Kiriman Artikel</h1>
@@ -350,7 +333,6 @@
         </div>
       </div>
 
-      <!-- ══ PERMINTAAN (Contact Requests) ══════════════════════ -->
       <div class="view" id="view-requests" style="display:none;">
         <div class="view-header">
           <h1>Permintaan Masuk</h1>
@@ -400,9 +382,6 @@
     </main>
   </div>
 
-  <!-- ══ MODALS ════════════════════════════════════════════════ -->
-
-  <!-- Delete confirm (articles) -->
   <div class="modal-overlay" id="modalOverlay" style="display:none;">
     <div class="modal">
       <div class="modal-icon">⚠</div>
@@ -415,7 +394,6 @@
     </div>
   </div>
 
-  <!-- Contact request detail modal -->
   <div class="req-detail-modal" id="reqDetailModal" style="display:none;">
     <div class="req-detail-card">
       <h3 id="rdName"></h3>
@@ -432,7 +410,6 @@
     </div>
   </div>
 
-  <!-- Member detail modal -->
   <div class="req-detail-modal" id="memberDetailModal" style="display:none;">
     <div class="req-detail-card" style="max-width:540px;">
       <h3 id="mdName"></h3>
@@ -462,7 +439,6 @@
     </div>
   </div>
 
-  <!-- Diff / review modal -->
   <div class="diff-modal" id="diffModal" style="display:none;">
     <div class="diff-card">
       <div class="diff-header">
@@ -486,10 +462,8 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <!-- ══ CROP MODAL ════════════════════════════════════════════ -->
   <div class="crop-overlay" id="cropOverlay" style="display:none;">
     <div class="crop-modal">
       <div class="crop-header">
@@ -534,7 +508,6 @@
   </div>
 
   <script>
-  // ══ TAG STYLES ════════════════════════════════════════════════
   const _tagStyle = document.createElement('style');
   _tagStyle.textContent = `
     .tag-sains      { color:#185FA5; background:rgba(55,138,221,.1) }
@@ -546,7 +519,6 @@
   `;
   document.head.appendChild(_tagStyle);
 
-  // ══ AUTH ══════════════════════════════════════════════════════
   window.addEventListener('DOMContentLoaded', async () => {
     const user = await authGetCurrentUser();
     if (user && user.role === 'admin') showPanel();
@@ -609,7 +581,6 @@
     input.type = input.type === 'password' ? 'text' : 'password';
   }
 
-  // ══ VIEWS ═════════════════════════════════════════════════════
   const ALL_VIEWS = ['dashboard','pendaftaran','write','manage','kiriman','requests'];
 
   function showView(name) {
@@ -625,7 +596,6 @@
     if (name === 'write' && !document.getElementById('editingId').value) clearForm();
   }
 
-  // ══ SIDEBAR BADGES ════════════════════════════════════════════
   async function refreshPendingBadge() {
     const [reqs, subs] = await Promise.all([dbGetContactRequests(), dbGetPendingSubmissions()]);
     const reqCount  = reqs.filter(r => r.status === 'baru').length;
@@ -644,8 +614,6 @@
     badge.textContent    = pending.length > 99 ? '99+' : pending.length;
     badge.style.display  = pending.length > 0  ? 'inline-flex' : 'none';
   }
-
-  // ══ DASHBOARD ═════════════════════════════════════════════════
   async function renderDashboard() {
     document.getElementById('statsRow').innerHTML =
       '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
@@ -703,7 +671,6 @@
     }
   }
 
-  // ══ PENDAFTARAN ═══════════════════════════════════════════════
   let _memberCache = [];
 
   async function renderPendaftaran() {
@@ -715,7 +682,6 @@
     const all    = await dbGetMembers();
     _memberCache = all;
 
-    // Stats
     const counts = { pending:0, approved:0, active:0, rejected:0 };
     all.forEach(m => { if (counts[m.status] !== undefined) counts[m.status]++; });
     document.getElementById('memberStats').innerHTML = `
@@ -874,7 +840,6 @@
     renderPendaftaran();
   }
 
-  // ══ MANAGE ARTICLES ═══════════════════════════════════════════
   async function renderManage() {
     const q   = (document.getElementById('manageSearch').value || '').toLowerCase();
     const cat = document.getElementById('manageCat').value;
@@ -902,7 +867,6 @@
     `).join('');
   }
 
-  // ══ KIRIMAN ═══════════════════════════════════════════════════
   let _pendingSubs   = [];
   let _diffCurrentId = null;
 
@@ -1077,7 +1041,6 @@
     renderKiriman();
   }
 
-  // ══ REQUESTS ═════════════════════════════════════════════════
   let _allReqCache = [];
 
   async function renderRequests() {
@@ -1221,7 +1184,6 @@
     renderRequests();
   }
 
-  // ══ WRITE / EDIT ══════════════════════════════════════════════
   function setTodayDate() {
     document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
   }
@@ -1325,7 +1287,6 @@
     showView('manage');
   }
 
-  // ══ INLINE PREVIEW ════════════════════════════════════════════
   function togglePreview() { toggleInlinePreview(); }
 
   function toggleInlinePreview() {
@@ -1387,7 +1348,6 @@
       </div>`;
   }
 
-  // ══ DELETE ARTICLE ════════════════════════════════════════════
   let pendingDeleteId = null;
 
   function askDelete(id, title) {
@@ -1411,8 +1371,7 @@
     closeModal();
     renderManage();
   }
-
-  // ══ COVER IMAGE ═══════════════════════════════════════════════
+  
   function previewCoverUrl(url) {
     const preview     = document.getElementById('coverPreview');
     const placeholder = document.getElementById('coverPlaceholder');
@@ -1452,7 +1411,6 @@
     document.getElementById('coverStatus').textContent = '';
   }
 
-  // ══ CROP MODAL ════════════════════════════════════════════════
   let _cropper      = null;
   let _cropCallback = null;
   let _cropFlipX    = 1;
@@ -1554,7 +1512,6 @@
     }
   }
 
-  // ══ EDITOR HELPERS ════════════════════════════════════════════
   function insertMd(before, after = '') {
     const ta = document.getElementById('fBody');
     const s = ta.selectionStart, e = ta.selectionEnd;
@@ -1620,7 +1577,6 @@
     ta.addEventListener('input', () => { fBodyUpdateCounts(); autoGrowBody(ta); });
   });
 
-  // ══ GENERIC HELPERS ═══════════════════════════════════════════
   function fmtReqDate(iso) {
     if (!iso) return '—';
     return new Date(iso).toLocaleDateString('id-ID', {

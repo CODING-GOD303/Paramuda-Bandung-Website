@@ -26,7 +26,7 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden; /* prevent horizontal overflow from full-bleed elements */
+  overflow-x: hidden;
 }
 
 body {
@@ -36,7 +36,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden; /* belt-and-suspenders: stop any element causing h-scroll */
+  overflow-x: hidden; 
   width: 100%;
 }
 
@@ -68,9 +68,8 @@ body {
   color: #ffffff;
 }
 
-/*NAVBAR*/
 .Logo-navbar {
-  height: 50px; /* Adjust based on your navbar height */
+  height: 50px; 
   width: auto;
   gap: 10px;
   display: block;
@@ -150,7 +149,6 @@ body {
   background: #014d01 !important;
 }
 
-/*Hamburger*/
 .hamburger {
   display: none;
   flex-direction: column;
@@ -180,7 +178,6 @@ body {
   background: var(--text);
 }
 
-/*HERO*/
 .hero {
   min-height: 100vh;
   display: grid;
@@ -192,7 +189,6 @@ body {
   overflow: hidden;
 }
 
-/* VIDEO BACKGROUND */
 .hero-video {
   position: absolute;
   inset: 0;
@@ -321,7 +317,6 @@ body {
   background: var(--border);
 }
 
-/*Hero visual*/
 .hero-visual {
   display: flex;
   flex-direction: column;
@@ -380,7 +375,6 @@ body {
   color: #ffffff;
 }
 
-/*PROFILE*/
 .profile {
   padding: 6rem 0;
   border-top: 1px solid var(--border);
@@ -420,7 +414,6 @@ body {
   flex-shrink: 0;
 }
 
-/*ARTICLES*/
 .articles {
   padding: 6rem 0;
   background:
@@ -475,13 +468,12 @@ body {
     border-color var(--transition),
     transform var(--transition);
   cursor: pointer;
-  overflow: hidden; /* keeps thumb inside rounded corners */
+  overflow: hidden; 
 }
 
-/* Cover image thumbnail — bleeds to card edges above the padding */
 .article-card-thumb {
   display: block;
-  width: calc(100% + 3rem); /* cancel 1.5rem padding on each side */
+  width: calc(100% + 3rem); 
   margin: -1.5rem -1.5rem 1rem;
   height: 160px;
   object-fit: cover;
@@ -492,7 +484,6 @@ body {
   transform: scale(1.04);
 }
 
-/* Featured card thumb — taller since the card is full-width */
 .article-card-thumb.featured-thumb {
   height: 220px;
   grid-column: 1 / -1;
@@ -573,7 +564,6 @@ body {
   color: rgba(255, 255, 255, 0.35);
 }
 
-/*LOCATION*/
 .location {
   padding: 6rem 0;
   border-top: 1px solid var(--border);
@@ -674,7 +664,6 @@ body {
   opacity: 0.7;
 }
 
-/*CONTACT*/
 .contact {
   padding: 6rem 0;
   background:
@@ -778,7 +767,6 @@ body {
   transform: translateY(-1px);
 }
 
-/*FOOTER*/
 .footer {
   padding: 2rem 0;
   background: var(--bg-dark);
@@ -821,7 +809,6 @@ body {
   color: rgba(255, 255, 255, 0.25);
 }
 
-/*SCROLL REVEAL*/
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -834,7 +821,6 @@ body {
   transform: translateY(0);
 }
 
-/*RESPONSIVE SHIIII*/
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1031,7 +1017,6 @@ body {
   }
 }
 
-/* ── PHOTO GALLERY ──────────────────────────────────────────── */
 .gallery-label #gallery-label {
   margin-bottom: 1.5rem;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -1046,24 +1031,20 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Masonry-style grid — matches Homer layout */
 .pg-grid {
   display: grid;
   grid-template-columns: 2fr 1.4fr 1fr 1fr;
   grid-template-rows: 220px 220px;
   gap: 3px;
-  /* Full-bleed: escape section-container padding on both sides */
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 }
 
-/* tall: spans 2 rows (left feature) */
 .pg-item.pg-tall {
   grid-row: 1 / 3;
 }
 
-/* wide: spans 2 columns */
 .pg-item.pg-wide {
   grid-column: span 2;
 }
@@ -1115,7 +1096,6 @@ body {
   opacity: 1;
 }
 
-/* ── LIGHTBOX ────────────────────────────────────────────────── */
 .pg-lightbox {
   position: fixed;
   inset: 0;
@@ -1279,7 +1259,6 @@ body {
   color: #111;
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .pg-grid {
     grid-template-columns: 1fr 1fr 1fr;

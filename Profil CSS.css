@@ -1,5 +1,4 @@
-    /* ── PROFILE PAGE STYLES ─────────────────────────── */
-    :root {
+:root {
       --bg:         #F8F6F2;
       --bg-dark:    #141210;
       --text:       #1A1816;
@@ -14,7 +13,6 @@
       --max-w:      1160px;
     }
  
-    /* NOT LOGGED IN */
     .not-logged-in {
       min-height: 80vh;
       display: flex;
@@ -64,7 +62,6 @@
     }
     .btn-ghost:hover { border-color: var(--text); }
  
-    /*PAGE LAYOUT*/
     .profile-page {
       max-width: var(--max-w);
       margin: 0 auto;
@@ -74,8 +71,6 @@
       gap: 2.5rem;
       align-items: start;
     }
- 
-    /*LEFT SIDEBAR*/
     .profile-sidebar {
       position: sticky;
       top: 5.5rem;
@@ -115,7 +110,6 @@
       display: block;
     }
  
-    /* Avatar upload button */
     .avatar-wrap {
       position: relative;
       width: 80px;
@@ -188,7 +182,6 @@
     }
     .psm-label { font-size: 11px; color: var(--text-muted); margin-top: 0.2rem; }
  
-    /* Sidebar nav */
     .sidebar-nav {
       background: var(--white);
       border: 1px solid var(--border);
@@ -231,7 +224,6 @@
     }
     .btn-logout:hover { border-color: #C4622D; background: rgba(196,98,45,0.05); }
  
-    /* RIGHT MAIN AREA */
     .profile-main { min-width: 0; }
     .profile-section { display: none; }
     .profile-section.active { display: block; }
@@ -250,7 +242,6 @@
     }
     .section-head p { font-size: 13px; color: var(--text-muted); }
  
-    /* INFO GRID */
     .info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -279,7 +270,6 @@
     }
     .info-item.full { grid-column: 1 / -1; }
  
-    /* EDIT FORM */
     .edit-form {
       background: var(--white);
       border: 1px solid var(--border);
@@ -370,7 +360,6 @@
     .alert.success { background: rgba(0,128,38,0.1); color: #006020; display: block; }
     .alert.error   { background: rgba(196,98,45,0.1); color: #C4622D; display: block; }
  
-    /* ARTICLES LIST */
     .articles-empty {
       text-align: center;
       padding: 3rem 1rem;
@@ -385,7 +374,6 @@
       margin-bottom: 0.35rem;
     }
  
-    /* tab pills */
     .tab-row {
       display: flex;
       gap: 0.5rem;
@@ -409,8 +397,7 @@
       border-color: var(--accent);
       color: #fff;
     }
- 
-    /* RESPONSIVE */
+
     @media (max-width: 860px) {
       .profile-page {
         grid-template-columns: 1fr;

@@ -11,7 +11,6 @@
 </head>
 <body>
 
-  <!-- ── SUCCESS OVERLAY ───────────────────────────────────── -->
   <div class="verify-overlay" id="successOverlay" style="display:none;">
     <div class="verify-modal" id="successModal">
       <div class="verify-icon-wrap">
@@ -55,10 +54,8 @@
     </div>
   </div>
 
-  <!-- ── AUTH PAGE ──────────────────────────────────────────── -->
   <div class="auth-page">
 
-    <!-- LEFT PANEL -->
     <div class="auth-left">
       <a href="index.html" class="auth-logo">Paramuda</a>
       <div class="auth-left-body">
@@ -86,7 +83,6 @@
       </div>
     </div>
 
-    <!-- RIGHT PANEL -->
     <div class="auth-right">
       <div class="auth-form-wrap">
         <div class="auth-header">
@@ -160,11 +156,9 @@
     </div>
   </div>
 
-  <!-- scripts at bottom = guaranteed load order, no race condition -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="db.js"></script>
   <script>
-    // ── REDIRECT IF ALREADY LOGGED IN ─────────────────────────
     (async () => {
       try {
         const { data: { session } } = await db.auth.getSession();
@@ -172,13 +166,11 @@
       } catch(e) { /* not logged in, continue */ }
     })();
 
-    // ── MOTIVATION COUNTER ────────────────────────────────────
     document.getElementById('motivation').addEventListener('input', function () {
       document.getElementById('motivationCount').textContent =
         this.value.length + ' / 500 karakter';
     });
 
-    // ── FORM SUBMIT ───────────────────────────────────────────
     document.getElementById('joinForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       clearErrors();
@@ -227,7 +219,6 @@
       }
     });
 
-    // ── SUCCESS POPUP ─────────────────────────────────────────
     function showSuccessPopup(email) {
       document.getElementById('submittedEmail').textContent = email;
       const overlay = document.getElementById('successOverlay');
@@ -239,7 +230,6 @@
       });
     }
 
-    // ── HELPERS ───────────────────────────────────────────────
     function setLoading(on) {
       document.getElementById('btnText').style.display   = on ? 'none'         : 'inline';
       document.getElementById('btnLoader').style.display = on ? 'inline-block' : 'none';

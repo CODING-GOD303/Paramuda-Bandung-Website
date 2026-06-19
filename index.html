@@ -16,7 +16,7 @@
     <script src="db.js"></script>
   </head>
   <body>
-    <!--navbarnya-->
+  
     <nav class="navbar" id="navbar">
       <div class="nav-container">
         <a href="index.html" class="logo">
@@ -47,7 +47,6 @@
       </div>
     </nav>
 
-    <!--HERO-->
     <section class="hero" id="home">
       <video class="hero-video" autoplay muted loop playsinline>
         <source src="Images\Preview 5 - Finnal - Rev.mp4" type="video/mp4" />
@@ -99,7 +98,6 @@
       </div>
     </section>
 
-    <!--paramuda teh apa sih-->
     <section class="profile" id="profile">
       <div class="section-container">
         <div class="section-label">Tentang Kami</div>
@@ -149,7 +147,6 @@
             <img src="Images\DAV01813.jpg" alt="Judul" loading="lazy" />
             <div class="pg-hover"><span>VIEW →</span></div>
           </div>
-          <!-- wide feature (col-span 2) -->
           <div
             class="pg-item pg-wide"
             data-index="1"
@@ -160,7 +157,6 @@
             <img src="Images\DAV01925.jpg" alt="Akademik" loading="lazy" />
             <div class="pg-hover"><span>VIEW →</span></div>
           </div>
-          <!-- regular -->
           <div
             class="pg-item"
             data-index="2"
@@ -203,7 +199,6 @@
           </div>
         </div>
 
-        <!-- LIGHTBOX -->
         <div class="pg-lightbox" id="pgLightbox" aria-hidden="true">
           <div class="pg-lb-backdrop" id="pgBackdrop"></div>
           <div class="pg-lb-inner">
@@ -241,7 +236,6 @@
       </div>
     </section>
 
-    <!--artikel2-->
     <section class="articles" id="articles">
       <div class="section-container">
         <div class="articles-header">
@@ -268,7 +262,6 @@
       </div>
     </section>
 
-    <!-- ── OPEN RECRUITMENT ── -->
     <section class="recruitment" id="recruitment">
       <div class="section-container">
         <div class="section-label">Bergabung Bersama Kami</div>
@@ -303,7 +296,6 @@
             </div>
           </div>
 
-          <!-- Timeline info -->
           <div class="recruit-card">
             <div class="recruit-info-row">
               <strong>Periode Pendaftaran</strong><span>1 – 15 Juni 2025</span>
@@ -316,7 +308,6 @@
             </div>
           </div>
 
-          <!-- CTA card -->
           <div class="recruit-card">
             <h4>Daftar Sekarang</h4>
             <p>
@@ -334,7 +325,6 @@
       </div>
     </section>
 
-    <!--email-->
     <section class="contact" id="contact">
       <div class="section-container">
         <div class="contact-inner">
@@ -389,7 +379,6 @@
       </div>
     </section>
 
-    <!--futer-->
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-brand">
@@ -409,13 +398,11 @@
     </footer>
 
     <script>
-      //epek napbar
       const navbar = document.getElementById("navbar");
       window.addEventListener("scroll", () => {
         navbar.classList.toggle("scrolled", window.scrollY > 50);
       });
 
-      //Hamburgermenu
       const hamburger = document.getElementById("hamburger");
       const navMenu = document.getElementById("navMenu");
       hamburger.addEventListener("click", () => {
@@ -429,7 +416,6 @@
         });
       });
 
-      //Scrollreveal
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
@@ -445,7 +431,6 @@
           observer.observe(el);
         });
 
-      //Formsubmit
       document
         .getElementById("contactForm")
         .addEventListener("submit", async (e) => {
@@ -457,7 +442,6 @@
           const subject = document.getElementById("subject").value;
           const message = document.getElementById("message").value.trim();
 
-          // Basic validation
           if (!name || !email || !subject) {
             btn.textContent = "Lengkapi semua kolom!";
             setTimeout(() => {
@@ -497,7 +481,6 @@
           }, 3000);
         });
 
-      // ── LOAD ARTICLES FROM SUPABASE ───────────────────────────
       (async () => {
         const grid = document.getElementById("articlesGrid");
         const articles = await dbGetPublished();
@@ -508,10 +491,7 @@
         </div>`;
           return;
         }
-
-        // Featured = first article marked featured, or fallback to latest
         const featured = articles.find((a) => a.featured) || articles[0];
-        // Regular = up to 4 latest articles excluding featured
         const regular = articles
           .filter((a) => a.id !== featured.id)
           .slice(0, 4);
@@ -546,18 +526,15 @@
 
         grid.innerHTML = featuredHtml + regularHtml;
 
-        // Re-run scroll reveal on dynamically added cards
         grid.querySelectorAll(".article-card").forEach((el) => {
           el.classList.add("reveal");
           observer.observe(el);
         });
       })();
 
-      // Photo collage — no JS needed, pure CSS hover
     </script>
 
     <script>
-      // ── PHOTO GALLERY LIGHTBOX ────────────────────────────────
       const pgItems = Array.from(document.querySelectorAll(".pg-item"));
       const lightbox = document.getElementById("pgLightbox");
       const lbImg = document.getElementById("pgLbImg");

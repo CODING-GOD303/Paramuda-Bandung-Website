@@ -27,7 +27,7 @@ async function memberRegister({ name, email, password }) {
   const { data: authData, error: authErr } = await _sb.auth.signUp({
     email,
     password,
-    options: { data: { full_name: name } }   // stored in auth.users.raw_user_meta_data
+    options: { data: { full_name: name } }  
   });
 
   if (authErr) {
@@ -37,14 +37,13 @@ async function memberRegister({ name, email, password }) {
     return { ok: false, error: authErr.message };
   }
 
-  const userId = authData.user.id;   // UUID from Supabase Auth
+  const userId = authData.user.id;  
 
-  // 2. Insert into public.members
   const initials = name.trim().split(' ').slice(0, 2).map(w => w[0].toUpperCase()).join('');
   const { data: member, error: dbErr } = await _sb
     .from('members')
     .insert({
-      id:        userId,          // same UUID as auth.users
+      id:        userId,          
       name:      name.trim(),
       email:     email.trim().toLowerCase(),
       initials,
@@ -55,7 +54,6 @@ async function memberRegister({ name, email, password }) {
     .single();
 
   if (dbErr) {
-    // Rollback: delete the auth user so the email is freed
     await _sb.auth.admin?.deleteUser(userId).catch(() => {});
     return { ok: false, error: 'Gagal menyimpan data pendaftaran.' };
   }
@@ -63,11 +61,7 @@ async function memberRegister({ name, email, password }) {
   return { ok: true, member };
 }
 
-// ── LOGIN ─────────────────────────────────────────────────────────────────
-// Returns { ok, member?, status?, error? }
-
 async function memberLogin(email, password) {
-  // 1. Authenticate with Supabase Auth (password check happens server-side)
   const { data: authData, error: authErr } = await _sb.auth.signInWithPassword({
     email,
     password,
@@ -77,11 +71,9 @@ async function memberLogin(email, password) {
     if (authErr.message === 'Email not confirmed') {
       return { ok: false, status: 'unconfirmed', error: 'Email belum dikonfirmasi.' };
     }
-    // "Invalid login credentials" covers wrong email OR wrong password
     return { ok: false, error: 'Email atau password salah.' };
   }
 
-  // 2. Fetch approval status from the members table
   const { data: member, error: dbErr } = await _sb
     .from('members')
     .select('id, name, email, initials, status, joined_at')
@@ -103,7 +95,6 @@ async function memberLogin(email, password) {
     return { ok: false, status: 'rejected', error: 'Pendaftaranmu tidak disetujui. Hubungi admin.' };
   }
 
-  // 3. Cache a lightweight session in sessionStorage
   sessionStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify({
     id:       member.id,
     name:     member.name,
@@ -114,20 +105,14 @@ async function memberLogin(email, password) {
   return { ok: true, member };
 }
 
-// ── ADMIN: read all members ───────────────────────────────────────────────
-// Returns plain array (for admin.html renderMembers())
-
 async function membersGetAll() {
   const { data, error } = await _sb
     .from('members')
     .select('*')
     .order('joined_at', { ascending: false });
   if (error) { console.error('membersGetAll:', error); return []; }
-  // Normalise snake_case → camelCase so existing admin.html code keeps working
   return (data || []).map(_normMember);
 }
-
-// ── ADMIN: approve / reject / delete ─────────────────────────────────────
 
 async function memberApprove(id) {
   const { error } = await _sb
@@ -146,13 +131,9 @@ async function memberReject(id) {
 }
 
 async function memberDelete(id) {
-  // Delete from public.members; the auth user can be cleaned up via a
-  // Supabase Edge Function or manually in the Auth dashboard.
   const { error } = await _sb.from('members').delete().eq('id', id);
   if (error) console.error('memberDelete:', error);
 }
-
-// ── ADMIN: email-existence check (used in register.html validation) ───────
 
 async function memberFindByEmail(email) {
   const { data } = await _sb
@@ -162,9 +143,6 @@ async function memberFindByEmail(email) {
     .maybeSingle();
   return data ?? null;
 }
-
-// ── NAVBAR INJECTION ──────────────────────────────────────────────────────
-// Still synchronous — reads from cached sessionStorage.
 
 function injectMemberNav() {
   const el = document.getElementById('memberNav');
@@ -185,9 +163,6 @@ function injectMemberNav() {
       <a href="register.html" class="nav-link btn-nav">Daftar</a>`;
   }
 }
-
-// ── INTERNAL HELPERS ──────────────────────────────────────────────────────
-
 function _normMember(m) {
   return {
     id:         m.id,

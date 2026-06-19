@@ -1,8 +1,3 @@
-/* =========================================
-   PARAMUDA — admin.css
-   Admin panel styles
-   ========================================= */
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -29,7 +24,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── LOGIN ────────────────────────────────────────────────── */
 .login-screen {
   min-height: 100vh;
   display: flex;
@@ -124,13 +118,11 @@ body {
   text-align: center;
 }
 
-/* ── ADMIN PANEL LAYOUT ───────────────────────────────────── */
 .admin-panel {
   display: flex;
   min-height: 100vh;
 }
 
-/* SIDEBAR */
 .admin-sidebar {
   width: var(--sidebar-w);
   background: var(--bg-dark);
@@ -212,7 +204,6 @@ body {
 }
 .btn-logout:hover { background: rgba(224,82,82,0.1); color: #E05252; }
 
-/* MAIN */
 .admin-main {
   margin-left: var(--sidebar-w);
   flex: 1;
@@ -221,7 +212,6 @@ body {
   overflow-x: hidden;
 }
 
-/* VIEW HEADER */
 .view-header {
   display: flex;
   align-items: center;
@@ -239,7 +229,6 @@ body {
 .view-date { font-size: 13px; color: var(--text-muted); }
 .header-actions { display: flex; gap: 0.75rem; }
 
-/* ── DASHBOARD ────────────────────────────────────────────── */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -328,7 +317,6 @@ body {
 .ri-author,
 .ri-date { font-size: 12px; color: var(--text-muted); }
 
-/* ── WRITE / EDIT ─────────────────────────────────────────── */
 .write-layout { display: flex; gap: 0; }
 .editor-panel { width: 100%; }
 
@@ -376,7 +364,6 @@ body {
   gap: 1.25rem;
 }
 
-/* TOGGLE */
 .toggle-wrap { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem; }
 .toggle { position: relative; display: inline-block; width: 40px; height: 22px; }
 .toggle input { opacity: 0; width: 0; height: 0; }
@@ -401,7 +388,6 @@ body {
 .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
 .toggle-label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
 
-/* TOOLBAR */
 .body-field { margin-top: 0.5rem; }
 .toolbar {
   display: flex;
@@ -440,7 +426,6 @@ body {
   min-height: 380px;
 }
 
-/* PREVIEW */
 .preview-panel {
   width: 100%;
   background: var(--white);
@@ -487,7 +472,6 @@ body {
 .article-body ul { margin: 0.5rem 0 1rem 1.5rem; }
 .article-body ul li { margin-bottom: 0.35rem; line-height: 1.7; }
 
-/* WRITE FOOTER */
 .write-footer {
   display: flex;
   align-items: center;
@@ -500,7 +484,6 @@ body {
 }
 .footer-right { display: flex; gap: 0.75rem; align-items: center; }
 
-/* BUTTONS */
 .btn-publish {
   font-family: var(--font-body);
   font-size: 13px;
@@ -540,7 +523,6 @@ body {
 }
 .btn-cancel:hover { color: var(--text); }
 
-/* ── MANAGE ───────────────────────────────────────────────── */
 .manage-controls {
   display: flex;
   gap: 0.75rem;
@@ -633,7 +615,6 @@ body {
   margin-top: 0.75rem;
 }
 
-/* Article tag pills for manage table */
 .article-tag-pill {
   display: inline-block;
   font-size: 10px;
@@ -651,7 +632,6 @@ body {
 .tag-lingkungan { color:#0F6E56;background:rgba(29,158,117,.1) }
 .tag-seni       { color:#993556;background:rgba(212,83,126,.1) }
 
-/* ── MODAL ────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -693,7 +673,6 @@ body {
 }
 .btn-delete:hover { background: #a33; }
 
-/* ── TOAST ────────────────────────────────────────────────── */
 .toast {
   position: fixed;
   bottom: 2rem;
@@ -713,7 +692,6 @@ body {
 .toast.show { opacity: 1; transform: translateY(0); }
 .toast.error { background: #C44444; }
 
-/* ── RESPONSIVE ───────────────────────────────────────────── */
 @media (max-width: 860px) {
   :root { --sidebar-w: 0px; }
   .admin-sidebar { display: none; }
@@ -726,7 +704,6 @@ body {
   .manage-controls { flex-direction: column; }
 }
 
-/* ── MEMBERS PANEL ───────────────────────────────────────── */
 .members-filter-wrap {
   display: flex;
   gap: 0.5rem;
@@ -766,7 +743,6 @@ body {
   color: var(--accent);
 }
 
-/* MEMBER GRID */
 .members-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -876,7 +852,6 @@ body {
 }
 .btn-reject:hover { background: rgba(196,68,68,0.15); }
 
-/* MEMBERS EMPTY STATE */
 .members-empty {
   display: flex;
   flex-direction: column;
@@ -890,7 +865,6 @@ body {
 }
 .empty-icon-wrap { font-size: 2rem; }
 
-/* SIDEBAR BADGE (pending count) */
 .snav-badge {
   display: inline-flex;
   align-items: center;
@@ -906,7 +880,6 @@ body {
   padding: 0 4px;
 }
 
-/* PENDING POPUP STYLES (in auth.css but needed here too for consistency) */
 .pending-icon-circle {
   width: 52px; height: 52px;
   background: rgba(196,98,45,0.1);
@@ -924,18 +897,7 @@ body {
   70%  { transform: scale(1.1); }
   100% { transform: scale(1);   opacity: 1; }
 }
-/* ═══════════════════════════════════════════════════════════
-   ADDITIONS TO admin.css
-   Paste this entire block at the very bottom of your admin.css
-   These styles are required by the rewritten admin.html
-   (Pendaftaran tab, Kiriman review diff modal, image crop modal,
-   contact request detail modal, and supporting elements)
-   ═══════════════════════════════════════════════════════════ */
 
-/* ── REQUEST / MEMBER DETAIL MODAL ──────────────────────────
-   Used by: Permintaan tab (contact request detail)
-            Pendaftaran tab (member detail / approve / reject)
-   ─────────────────────────────────────────────────────────── */
 .req-detail-modal {
   position: fixed;
   inset: 0;
@@ -984,7 +946,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* ── REQUEST STATUS PILLS (Permintaan / Dashboard) ──────────── */
 .req-status-baru {
   color: #C44444;
   background: rgba(196,68,68,.1);
@@ -1051,7 +1012,6 @@ body {
 }
 .req-controls input { flex: 1; min-width: 160px; }
 
-/* ── KIRIMAN SUBMISSION TYPE PILLS ───────────────────────────── */
 .sub-type-new {
   color: #0F6E56;
   background: rgba(29,158,117,.1);
@@ -1071,7 +1031,6 @@ body {
   white-space: nowrap;
 }
 
-/* ── DIFF / REVIEW MODAL (Kiriman tab) ───────────────────────── */
 .diff-modal {
   position: fixed;
   inset: 0;
@@ -1176,7 +1135,6 @@ body {
   box-sizing: border-box;
 }
 
-/* ── COVER IMAGE UPLOAD ─────────────────────────────────────── */
 .cover-upload-wrap {
   position: relative;
   width: 100%;
@@ -1230,7 +1188,6 @@ body {
   min-height: 16px;
 }
 
-/* ── BODY EDITOR / INLINE PREVIEW ────────────────────────────── */
 .editor-wrap { display: flex; flex-direction: column; }
 .toolbar-sep { width: 1px; height: 18px; background: var(--border); margin: 0 .25rem; }
 .toolbar-preview-btn {
@@ -1287,7 +1244,6 @@ body {
   margin-top: .5rem;
 }
 
-/* ── CROP MODAL ──────────────────────────────────────────────── */
 .crop-overlay {
   position: fixed;
   inset: 0;

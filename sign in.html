@@ -14,7 +14,6 @@
   </head>
   <body>
     <div class="auth-page">
-      <!-- LEFT PANEL -->
       <div class="auth-left">
         <a href="index.html" class="auth-logo">Paramuda</a>
         <div class="auth-left-body">
@@ -51,7 +50,6 @@
         </div>
       </div>
 
-      <!-- RIGHT PANEL -->
       <div class="auth-right">
         <div class="auth-form-wrap">
           <div class="auth-header">
@@ -59,7 +57,6 @@
             <p>Masuk ke akun Paramuda kamu</p>
           </div>
 
-          <!-- STATUS BANNERS -->
           <div
             class="auth-banner error"
             id="errorBanner"
@@ -161,12 +158,9 @@
         </div>
       </div>
     </div>
-
-    <!-- Scripts at bottom = guaranteed load order, no race condition -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="db.js"></script>
     <script>
-      // ── REDIRECT IF ALREADY LOGGED IN ──────────────────────
       (async () => {
         try {
           const user = await authGetCurrentUser();
@@ -214,8 +208,6 @@
               }
               return;
             }
-
-            // Store session
             sessionStorage.setItem('paramuda_user', JSON.stringify(result.user));
 
             showBanner(

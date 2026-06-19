@@ -1,4 +1,3 @@
-/* PROGRESS BAR */
 .progress-bar {
   position: fixed;
   top: 0;
@@ -10,7 +9,6 @@
   transition: width 0.1s linear;
 }
 
-/* LAYOUT */
 .detail-layout {
   display: grid;
   grid-template-columns: 1fr 280px;
@@ -28,7 +26,6 @@
   overflow: hidden;
 }
 
-/* BREADCRUMB */
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -50,7 +47,6 @@
   color: var(--text-muted);
 }
 
-/* ARTICLE HEADER */
 .article-header {
   margin-bottom: 2.5rem;
 }
@@ -136,7 +132,6 @@
   font-size: 14px;
 }
 
-/* ARTICLE BODY */
 .article-body {
   font-family: "Times New Roman", Times, serif;
   font-size: 1.05rem;
@@ -247,7 +242,6 @@
   margin-bottom: 0;
 }
 
-/* TAGS */
 .article-tags {
   display: flex;
   align-items: center;
@@ -277,7 +271,6 @@
   color: var(--accent);
 }
 
-/* AUTHOR BIO */
 .author-bio {
   display: flex;
   gap: 1.25rem;
@@ -300,7 +293,6 @@
   line-height: 1.65;
 }
 
-/* SIDEBAR */
 .article-sidebar {
   position: sticky;
   top: 5rem;
@@ -405,7 +397,6 @@
   line-height: 1.6;
 }
 
-/* ---- RESPONSIVE ---- */
 @media (max-width: 1020px) {
   .detail-layout {
     grid-template-columns: 1fr;

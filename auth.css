@@ -1,8 +1,3 @@
-/* =========================================
-   PARAMUDA — auth.css
-   Shared styles for login.html & register.html
-   ========================================= */
-
 *,
 *::before,
 *::after {
@@ -33,14 +28,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── TWO-COLUMN LAYOUT ───────────────────────────────────── */
 .auth-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
 }
 
-/* ── LEFT PANEL ──────────────────────────────────────────── */
 .auth-left {
   background:
     radial-gradient(ellipse 60% 50% at 20% 15%, #1f5233 0%, transparent 60%),
@@ -230,8 +223,6 @@ body {
   color: rgba(255, 255, 255, 0.4);
   line-height: 1.5;
 }
-
-/* ── RIGHT PANEL ─────────────────────────────────────────── */
 .auth-right {
   background: var(--bg);
   display: flex;
@@ -547,7 +538,6 @@ body {
   color: var(--text);
 }
 
-/* ── MEMBER NAV CHIP ─────────────────────────────────────── */
 .member-chip {
   position: relative;
   display: flex;
@@ -627,10 +617,6 @@ body {
   color: var(--text);
 }
 
-/* ══════════════════════════════════════════
-   EMAIL VERIFICATION POPUP
-   ══════════════════════════════════════════ */
-
 .verify-overlay {
   position: fixed;
   inset: 0;
@@ -663,8 +649,6 @@ body {
 .verify-modal.active {
   transform: translateY(0) scale(1);
 }
-
-/* Close button */
 .verify-close {
   position: absolute;
   top: 1rem;
@@ -689,7 +673,6 @@ body {
   color: var(--text);
 }
 
-/* Envelope animation */
 .verify-icon-wrap {
   position: relative;
   display: flex;
@@ -795,7 +778,6 @@ body {
   }
 }
 
-/* Text */
 .verify-title {
   font-family: var(--font-head);
   font-size: 1.4rem;
@@ -814,7 +796,6 @@ body {
   font-weight: 600;
 }
 
-/* Steps */
 .verify-steps {
   display: flex;
   align-items: center;
@@ -865,7 +846,6 @@ body {
   margin-bottom: 1rem;
 }
 
-/* Actions */
 .verify-actions {
   display: flex;
   flex-direction: column;
@@ -919,7 +899,6 @@ body {
   color: var(--text);
 }
 
-/* ── SETUP NOTICE ────────────────────────────────────────── */
 .setup-notice {
   display: flex;
   align-items: flex-start;
@@ -965,7 +944,6 @@ body {
   color: var(--text);
 }
 
-/* ── RESPONSIVE ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   .auth-page {
     grid-template-columns: 1fr;
@@ -992,7 +970,6 @@ body {
   }
 }
 
-/* ── EXTRA BANNER TYPES ──────────────────────────────────── */
 .auth-banner.warning {
   background: rgba(186, 117, 23, 0.1);
   color: #854f0b;
@@ -1026,7 +1003,6 @@ body {
   line-height: 1.5;
 }
 
-/* ── PENDING APPROVAL POPUP ──────────────────────────────── */
 .pending-icon-circle {
   width: 52px;
   height: 52px;
@@ -1063,7 +1039,6 @@ body {
   }
 }
 
-/* Pending progress steps */
 .pending-steps {
   display: flex;
   flex-direction: column;

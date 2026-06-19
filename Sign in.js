@@ -5,7 +5,6 @@ document.getElementById('signinForm').addEventListener('submit', async function 
   const password = document.getElementById('password').value;
   const btn      = this.querySelector('button[type="submit"]');
 
-  // Loading state
   btn.textContent = 'Masuk...';
   btn.disabled = true;
 
@@ -18,10 +17,8 @@ document.getElementById('signinForm').addEventListener('submit', async function 
     return;
   }
 
-  // Store session and redirect
   sessionStorage.setItem('paramuda_user', JSON.stringify(result.user));
 
-  // Admins go to the admin panel, members go to the home page
   if (result.user.role === 'admin') {
     window.location.href = 'admin.html';
   } else {

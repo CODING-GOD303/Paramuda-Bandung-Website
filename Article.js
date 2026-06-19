@@ -1,4 +1,3 @@
-    //\Hamburger
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('navMenu');
     hamburger.addEventListener('click', () => {
@@ -6,7 +5,6 @@
       navMenu.classList.toggle('active');
     });
 
-    // Data
     const allCards = Array.from(document.querySelectorAll('.acard'));
     let activeCategory = 'all';
     let searchQuery = '';
@@ -27,7 +25,7 @@
         return catMatch && searchMatch;
       });
 
-      // Sort
+      
       filtered.sort((a, b) => {
         if (sortOrder === 'newest') return getDate(b).localeCompare(getDate(a));
         if (sortOrder === 'oldest') return getDate(a).localeCompare(getDate(b));
@@ -35,7 +33,6 @@
         return 0;
       });
 
-      // Hide all
       allCards.forEach(c => { c.style.display = 'none'; c.classList.remove('reveal', 'visible'); });
 
       const visible = filtered.slice(0, showCount);
@@ -57,7 +54,6 @@
         filtered.length > showCount ? 'flex' : 'none';
     }
 
-    // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -68,7 +64,6 @@
       });
     });
 
-    // Search
     const searchInput = document.getElementById('searchInput');
     const searchClear = document.getElementById('searchClear');
     searchInput.addEventListener('input', () => {
@@ -84,13 +79,11 @@
       filterAndRender();
     });
 
-    // Sort
     document.getElementById('sortSelect').addEventListener('change', (e) => {
       sortOrder = e.target.value;
       filterAndRender();
     });
 
-    // Load more
     document.getElementById('loadMoreBtn').addEventListener('click', () => {
       showCount += 6;
       filterAndRender();
@@ -107,5 +100,4 @@
       filterAndRender();
     }
 
-    // Init
     filterAndRender();

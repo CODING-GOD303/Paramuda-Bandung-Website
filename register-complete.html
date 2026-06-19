@@ -15,7 +15,6 @@
 
   <div class="auth-page">
 
-    <!-- LEFT PANEL -->
     <div class="auth-left">
       <a href="index.html" class="auth-logo">Paramuda</a>
       <div class="auth-left-body">
@@ -39,17 +38,14 @@
       </div>
     </div>
 
-    <!-- RIGHT PANEL -->
     <div class="auth-right">
       <div class="auth-form-wrap">
 
-        <!-- LOADING STATE -->
         <div id="stateLoading" style="text-align:center;padding:3rem 0;">
           <div class="btn-loader" style="display:inline-block;width:28px;height:28px;border-width:3px;"></div>
           <p style="margin-top:1rem;color:var(--text-muted);font-size:14px;">Memvalidasi undangan...</p>
         </div>
 
-        <!-- INVALID / EXPIRED TOKEN -->
         <div id="stateInvalid" style="display:none;text-align:center;padding:3rem 0;">
           <div style="font-size:2.5rem;margin-bottom:1rem;">⚠️</div>
           <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;margin-bottom:.75rem;">
@@ -63,7 +59,6 @@
           </a>
         </div>
 
-        <!-- ACTIVATION FORM -->
         <div id="stateForm" style="display:none;">
           <div class="auth-header">
             <h1>Aktifkan Akunmu</h1>
@@ -73,7 +68,6 @@
           <div class="auth-banner error"   id="errorBanner"   style="display:none;"></div>
           <div class="auth-banner success" id="successBanner" style="display:none;"></div>
 
-          <!-- Read-only email display -->
           <div class="form-field">
             <label>Email</label>
             <input type="email" id="displayEmail" disabled
@@ -119,7 +113,6 @@
           </form>
         </div>
 
-        <!-- SUCCESS STATE -->
         <div id="stateSuccess" style="display:none;text-align:center;padding:3rem 0;">
           <div style="font-size:2.5rem;margin-bottom:1rem;">🎉</div>
           <h2 style="font-family:var(--font-head);font-size:1.4rem;font-weight:800;margin-bottom:.75rem;">
@@ -147,10 +140,8 @@
   </style>
 
   <script>
-    let _memberRecord = null;  // the members row from Supabase
+    let _memberRecord = null;  
     let _inviteToken  = null;
-
-    // ── ON LOAD: validate token from URL ──────────────────────
     window.addEventListener('DOMContentLoaded', async () => {
       const params = new URLSearchParams(window.location.search);
       _inviteToken  = params.get('token');
@@ -162,7 +153,6 @@
         return;
       }
 
-      // Validate the token against the members table
       const result = await dbValidateInviteToken(_inviteToken);
 
       if (!result.ok) {
@@ -177,8 +167,6 @@
       document.getElementById('displayEmail').value      = _memberRecord.email;
       showState('form');
     });
-
-    // ── ACTIVATION FORM ───────────────────────────────────────
     document.getElementById('activateForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       clearErrors();
@@ -215,7 +203,6 @@
       }
     });
 
-    // ── HELPERS ───────────────────────────────────────────────
     function showState(state) {
       ['loading', 'invalid', 'form', 'success'].forEach(s => {
         document.getElementById('state' + s.charAt(0).toUpperCase() + s.slice(1)).style.display =

@@ -6,7 +6,6 @@ async function doRegister() {
   const errorEl  = document.getElementById('regError');
   const btn      = document.querySelector('.btn-login');
 
-  // Validation
   if (!name || !email || !password) {
     return showError(errorEl, 'Semua kolom wajib diisi.');
   }
@@ -20,7 +19,6 @@ async function doRegister() {
     return showError(errorEl, 'Password tidak cocok.');
   }
 
-  // Loading state
   btn.textContent = 'Mendaftar...';
   btn.disabled = true;
   errorEl.style.display = 'none';
@@ -33,7 +31,6 @@ async function doRegister() {
     return showError(errorEl, result.error);
   }
 
-  // Success — store session and redirect
   sessionStorage.setItem('paramuda_user', JSON.stringify(result.user));
   window.location.href = '/Hero Page/Hero Page.html';
 }
@@ -47,6 +44,6 @@ function togglePw(inputId) {
   const input = document.getElementById(inputId);
   input.type = input.type === 'password' ? 'text' : 'password';
 }
-const EMAILJS_PUBLIC_KEY  = 'abc123...';   // Account → API Keys
-const EMAILJS_SERVICE_ID  = 'service_xyz'; // Email Services
-const EMAILJS_TEMPLATE_ID = 'template_xyz';// Email Templates
+const EMAILJS_PUBLIC_KEY  = 'abc123...';   
+const EMAILJS_SERVICE_ID  = 'service_xyz'; 
+const EMAILJS_TEMPLATE_ID = 'template_xyz';
