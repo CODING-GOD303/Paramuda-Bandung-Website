@@ -147,12 +147,14 @@ async function dbGetContactRequests() {
  
 async function dbUpdateContactRequest(id, updates) {
   const { error } = await db.from('contact_requests').update(updates).eq('id', id);
-  if (error) console.error(error);
+  if (error) { console.error(error); return { ok: false, error: error.message }; }
+  return { ok: true };
 }
  
 async function dbDeleteContactRequest(id) {
   const { error } = await db.from('contact_requests').delete().eq('id', id);
-  if (error) console.error(error);
+  if (error) { console.error(error); return { ok: false, error: error.message }; }
+  return { ok: true };
 }
  
  
@@ -346,12 +348,13 @@ async function dbApproveMember(memberId) {
     }
   );
  
+  const result = await response.json().catch(() => ({}));
+ 
   if (!response.ok) {
-    const err = await response.text();
-    return { ok: false, error: err || 'Gagal mengirim undangan.' };
+    return { ok: false, error: result.error || 'Gagal mengirim undangan.' };
   }
  
-  return { ok: true };
+  return { ok: true, link: result.link, emailSent: !!result.emailSent, emailError: result.emailError };
 }
 
 async function dbRejectMember(memberId, reason = '') {
@@ -370,12 +373,13 @@ async function dbRejectMember(memberId, reason = '') {
     }
   );
  
+  const result = await response.json().catch(() => ({}));
+ 
   if (!response.ok) {
-    const err = await response.text();
-    return { ok: false, error: err || 'Gagal mengirim notifikasi.' };
+    return { ok: false, error: result.error || 'Gagal mengirim notifikasi.' };
   }
  
-  return { ok: true };
+  return { ok: true, emailSent: !!result.emailSent, emailError: result.emailError };
 }
 
 async function dbValidateInviteToken(token) {
