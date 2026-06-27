@@ -17,6 +17,7 @@
 
   <style>
 
+    /* ══ CROP MODAL ═══════════════════════════════════════════ */
     .crop-overlay {
       position: fixed; inset: 0; z-index: 99999;
       background: rgba(0,0,0,.85);
@@ -47,11 +48,14 @@
     }
     .crop-close:hover { background: rgba(255,255,255,.2); color:#fff; }
 
+    /* canvas area */
     .crop-canvas-wrap {
       background: #111; position: relative;
       height: 380px; overflow: hidden;
     }
     .crop-canvas-wrap img { max-width: 100%; display: block; }
+
+    /* ratio + controls bar */
     .crop-controls {
       padding: .75rem 1.25rem;
       border-top: 1px solid rgba(255,255,255,.08);
@@ -99,6 +103,7 @@
       width: 90px; accent-color: var(--accent,#008026); cursor: pointer;
     }
 
+    /* footer */
     .crop-footer {
       display: flex; gap: .6rem; justify-content: flex-end;
       padding: .85rem 1.25rem;
@@ -122,6 +127,7 @@
     .crop-btn-save:disabled { opacity: .5; cursor:not-allowed; }
     .crop-saving-label { font-size:12px; color:rgba(255,255,255,.45); align-self:center; }
 
+    /* ── STATUS BADGES ─────────────────────── */
     .sub-badge { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.06em;
       text-transform:uppercase; padding:.2rem .6rem; border-radius:50px; white-space:nowrap; }
     .sub-draft    { color:#533AB7; background:rgba(127,119,221,.12); }
@@ -130,6 +136,7 @@
     .sub-rejected { color:#C44444; background:rgba(196,68,68,.12); }
     .sub-pending_edit { color:#185FA5; background:rgba(55,138,221,.12); }
 
+    /* ── SLIDE-IN PANEL ─────────────────────── */
     .submit-overlay {
       position:fixed; inset:0; background:rgba(0,0,0,.5);
       z-index:9000; opacity:0; pointer-events:none; transition:opacity .3s;
@@ -162,6 +169,7 @@
       flex:1; overflow-y:auto; padding:1.5rem 1.75rem;
       display:flex; flex-direction:column; gap:1rem;
     }
+    /* rejection banner */
     .reject-banner {
       display:flex; gap:.75rem; align-items:flex-start;
       background:rgba(196,68,68,.07); border:1px solid rgba(196,68,68,.25);
@@ -169,6 +177,7 @@
       line-height:1.6;
     }
     .reject-banner strong { display:block; font-weight:700; margin-bottom:.2rem; }
+    /* form fields (reuse profile styles) */
     .sp-field { display:flex; flex-direction:column; gap:.35rem; }
     .sp-field label {
       font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
@@ -182,6 +191,7 @@
     .sp-field input:focus,.sp-field select:focus,.sp-field textarea:focus { border-color:var(--accent); }
     .sp-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
 
+    /* ── COVER IMAGE FIELD (submission panel) ─────────────── */
     .sp-cover-wrap {
       border: 1.5px dashed var(--border); border-radius: var(--radius);
       overflow: hidden; cursor: pointer; transition: border-color .2s; position: relative;
@@ -196,6 +206,7 @@
     .sp-cover-placeholder span { font-size:1.4rem; }
     .sp-cover-row { display:flex; gap:.5rem; margin-top:.5rem; align-items:center; }
     .sp-cover-status { font-size:11px; color:var(--text-muted); min-height:14px; }
+    /* ── EDITOR WRAPPER ─────────────────────── */
     .sp-editor-wrap {
       border:1.5px solid var(--border); border-radius:var(--radius-sm);
       overflow:hidden; display:flex; flex-direction:column;
@@ -203,6 +214,7 @@
     }
     .sp-editor-wrap:focus-within { border-color:var(--accent); }
 
+    /* toolbar */
     .sp-toolbar {
       display:flex; flex-wrap:wrap; align-items:center; gap:.3rem;
       padding:.5rem .75rem; background:rgba(26,24,22,.03);
@@ -224,6 +236,7 @@
     .sp-preview-toggle:hover { background:rgba(0,128,38,.13); }
     .sp-preview-toggle.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 
+    /* editor / preview panes */
     .sp-editor-pane, .sp-preview-pane {
       width:100%; display:block;
     }
@@ -233,6 +246,7 @@
       line-height:1.85; color:var(--text);
       background:#fdfcfa; border:none; outline:none;
       resize:none; overflow-y:auto;
+      /* KEY: proper wrapping — no horizontal overflow */
       white-space:pre-wrap;
       word-wrap:break-word;
       overflow-wrap:break-word;
@@ -240,6 +254,7 @@
     }
     .sp-body-textarea::placeholder { color:rgba(26,24,22,.3); font-style:italic; }
 
+    /* live preview pane */
     .sp-preview-pane {
       display:none;
       min-height:260px; max-height:420px; overflow-y:auto;
@@ -270,6 +285,7 @@
       min-height:200px; color:var(--text-muted); font-size:13px; font-style:italic;
     }
 
+    /* word / char counter */
     .sp-editor-footer {
       display:flex; align-items:center; justify-content:space-between;
       padding:.35rem .75rem; background:rgba(26,24,22,.02);
@@ -284,6 +300,7 @@
     .sp-alert { font-size:13px; padding:.55rem .9rem; border-radius:6px; display:none; }
     .sp-alert.error   { background:rgba(196,68,68,.1); color:#C44444; display:block; }
     .sp-alert.success { background:rgba(0,128,38,.1); color:#006020; display:block; }
+    /* submission card in "Artikel Saya" list */
     .sub-card {
       background:#fff; border:1px solid var(--border); border-radius:var(--radius);
       padding:1.25rem 1.5rem; display:flex; flex-direction:column; gap:.65rem;
@@ -333,6 +350,7 @@
     </div>
   </nav>
  
+  <!-- NOT LOGGED IN -->
   <div class="not-logged-in" id="notLoggedIn" style="display:none;">
     <div class="icon">◎</div>
     <h2>Kamu belum masuk</h2>
@@ -343,8 +361,10 @@
     </div>
   </div>
  
+  <!-- PROFILE PAGE -->
   <div class="profile-page" id="profilePage" style="display:none;">
  
+    <!-- SIDEBAR -->
     <aside class="profile-sidebar">
       <div class="profile-card">
         <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()" title="Klik untuk ganti foto">
@@ -382,11 +402,14 @@
           <span class="nav-icon">⚙</span> Edit Profil
         </button>
       </nav>
+
+      <!-- Submit Article Button (members only) -->
       <button class="btn-solid" id="btnOpenSubmit" style="display:none;width:100%;margin-top:0;"
         onclick="openSubmitPanel()">✦ Kirim Artikel Baru</button>
  
       <button class="btn-logout" onclick="doLogout()">Keluar dari Akun</button>
  
+      <!-- Only visible for admins -->
       <a href="admin.html" id="adminPanelBtn" style="display:none;
         width:100%; box-sizing:border-box;
         background: rgba(45, 196, 83, 0.08);
@@ -404,8 +427,10 @@
       </a>
     </aside>
  
+    <!-- MAIN CONTENT -->
     <main class="profile-main">
  
+      <!-- TAB: INFO -->
       <div class="profile-section active" id="tab-info">
         <div class="section-head">
           <h2>Informasi Akun</h2>
@@ -435,6 +460,7 @@
         </div>
       </div>
  
+      <!-- TAB: WRITTEN ARTICLES -->
       <div class="profile-section" id="tab-written">
         <div class="section-head" style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
           <div>
@@ -444,6 +470,7 @@
           <button class="btn-solid" style="white-space:nowrap;font-size:13px;padding:.6rem 1.25rem;"
             onclick="openSubmitPanel()">✦ Kirim Artikel Baru</button>
         </div>
+        <!-- Filter pills -->
         <div class="tab-row" id="subFilterRow">
           <button class="tab-pill active" data-filter="all"          onclick="filterSubs(this)">Semua</button>
           <button class="tab-pill"        data-filter="pending"      onclick="filterSubs(this)">Menunggu</button>
@@ -455,6 +482,7 @@
         <div id="writtenList"></div>
       </div>
  
+      <!-- TAB: LIKED ARTICLES -->
       <div class="profile-section" id="tab-liked">
         <div class="section-head">
           <h2>Artikel Disukai</h2>
@@ -463,12 +491,14 @@
         <div id="likedList"></div>
       </div>
  
+      <!-- TAB: EDIT PROFILE -->
       <div class="profile-section" id="tab-edit">
         <div class="section-head">
           <h2>Edit Profil</h2>
           <p>Perbarui nama atau password akun kamu.</p>
         </div>
  
+        <!-- Edit Name -->
         <div class="edit-form">
           <h3>Ubah Nama</h3>
           <div class="form-row single">
@@ -483,6 +513,7 @@
           </div>
         </div>
  
+        <!-- Change Password -->
         <div class="edit-form">
           <h3>Ubah Password</h3>
           <div class="form-row">
@@ -523,6 +554,7 @@
  
   <script>
 
+    //CROP MODAL ENGINE
     let _cropper      = null;
     let _cropCallback = null;
     let _cropFlipX    = 1;
@@ -563,6 +595,8 @@
     async function cropSave() {
       const saveBtn   = document.getElementById('cropSaveBtn');
       const saveLabel = document.getElementById('cropSavingLabel');
+
+      // Guard: cropper and callback must exist
       if (!_cropper) {
         alert('Crop belum siap. Coba pilih gambar lagi.');
         return;
@@ -576,6 +610,7 @@
       saveLabel.style.display = 'inline';
 
       try {
+        // 1. Get the cropped canvas
         const canvas = _cropper.getCroppedCanvas({
           maxWidth:  1600,
           maxHeight: 1200,
@@ -587,10 +622,13 @@
           throw new Error('getCroppedCanvas() returned null — crop box may be outside image.');
         }
 
+        // 2. Convert to blob (wrapped in a Promise so we can await it)
         const blob = await new Promise((resolve, reject) => {
+          // Try JPEG first; fall back to PNG if toBlob returns null blob
           canvas.toBlob((b) => {
             if (b && b.size > 0) { resolve(b); }
             else {
+              // Some browsers/environments return null for JPEG — fall back to PNG
               canvas.toBlob((b2) => {
                 if (b2 && b2.size > 0) resolve(b2);
                 else reject(new Error('toBlob() returned empty blob on both JPEG and PNG.'));
@@ -599,6 +637,7 @@
           }, 'image/jpeg', 0.88);
         });
 
+        // 3. Upload to Supabase Storage
         const ext      = blob.type === 'image/png' ? 'png' : 'jpg';
         const file     = new File([blob], `cover.${ext}`, { type: blob.type });
         const result   = await uploadArticleImage(file);
@@ -607,7 +646,8 @@
           throw new Error(result.error || 'Upload gagal tanpa pesan error.');
         }
 
-        const cb = _cropCallback;
+        // 4. Success — close modal and pass URL to caller
+        const cb = _cropCallback;   // save before cropCancel() nulls it
         cropCancel();
         if (cb) cb(result.url);
 
@@ -640,16 +680,19 @@
         document.getElementById('cropZoomSlider').value = 1;
       }
     }
+    // ══ END CROP MODAL ENGINE ════════════════════════════════
 
+    // ── HAMBURGER ─────────────────────────────────────────────
     document.getElementById('hamburger').addEventListener('click', function () {
       this.classList.toggle('active');
       document.getElementById('navMenu').classList.toggle('active');
     });
 
     let currentUser = null;
-    let _allSubs = [];
+    let _allSubs = [];          // cached submissions for filter
     let _activeSubFilter = 'all';
  
+    // ── INIT ──────────────────────────────────────────────────
     window.addEventListener('DOMContentLoaded', async () => {
       currentUser = await authGetCurrentUser();
  
@@ -662,18 +705,23 @@
       populateProfile(currentUser);
       switchTab('info');
 
+      // Load stats eagerly so the sidebar numbers are correct on first paint
       dbGetMySubmissions().then(subs => {
         const publishedCount = subs.filter(a => a.status === 'published' && !a.original_id).length;
         document.getElementById('statArticles').textContent = publishedCount;
-        _allSubs = subs;
+        _allSubs = subs;   // cache so Artikel Saya tab renders instantly
       });
-      document.getElementById('statLiked').textContent = getLikedIds().length;
+
+      // Refresh liked count from the database now that currentUser is known
+      refreshLikedStat();
     });
  
+    // ── POPULATE ──────────────────────────────────────────────
     function populateProfile(user) {
       const initials = toInitials(user.name || user.email);
       const roleCls  = user.role === 'admin' ? 'role-admin' : 'role-member';
  
+      // Sidebar avatar — show photo if exists, else initials
       const avatarEl = document.getElementById('sidebarAvatar');
       if (user.avatar_url) {
         avatarEl.innerHTML = `<img src="${user.avatar_url}" alt="Foto profil" />`;
@@ -687,6 +735,7 @@
       roleBadge.textContent = user.role || 'member';
       roleBadge.className   = 'role-badge ' + roleCls;
  
+      // Info tab
       document.getElementById('infoName').textContent   = user.name   || '—';
       document.getElementById('infoEmail').textContent  = user.email  || '—';
       document.getElementById('infoRole').textContent   = user.role   || 'member';
@@ -694,20 +743,26 @@
       document.getElementById('infoJoined').textContent = user.created_at
         ? new Date(user.created_at).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })
         : '—';
+ 
+      // Show admin panel button only for admins
       const adminBtn = document.getElementById('adminPanelBtn');
       if (adminBtn) adminBtn.style.display = user.role === 'admin' ? 'block' : 'none';
 
+      // Show "Kirim Artikel" button for all logged-in users (member or admin)
       const submitBtn = document.getElementById('btnOpenSubmit');
       if (submitBtn) submitBtn.style.display = 'block';
  
+      // Pre-fill edit name field
       document.getElementById('editName').value = user.name || '';
-
-      document.getElementById('statLiked').textContent = getLikedIds().length;
     }
+ 
+    // ── AVATAR UPLOAD ─────────────────────────────────────────
     async function handleAvatarUpload(e) {
       const file   = e.target.files[0];
       const status = document.getElementById('avatarStatus');
       if (!file) return;
+ 
+      // Validate: image only, max 2 MB
       if (!file.type.startsWith('image/')) {
         status.textContent = '⚠ File harus berupa gambar.';
         status.style.color = '#C4622D';
@@ -729,15 +784,38 @@
         status.style.color = '#C4622D';
         return;
       }
+ 
+      // Persist the new URL to the database explicitly and verify it actually
+      // wrote a row. uploadAvatar() only uploads the file to storage and hands
+      // back a URL — it does NOT guarantee the profiles row was updated. If an
+      // RLS policy silently blocks the update, Supabase returns no error but
+      // zero rows affected, so we must check `data` (not just `error`) or the
+      // change will be lost on refresh.
+      const { data: dbData, error: dbErr } = await db
+        .from('profiles')
+        .update({ avatar_url: result.url })
+        .eq('id', currentUser.id)
+        .select();
+ 
+      if (dbErr || !dbData || dbData.length === 0) {
+        status.textContent = '⚠ Foto diunggah tapi gagal disimpan ke profil. Coba lagi.';
+        status.style.color = '#C4622D';
+        console.error('handleAvatarUpload: profiles update failed or blocked by RLS', dbErr);
+        return;
+      }
+ 
+      // Update UI immediately
       currentUser.avatar_url = result.url;
       populateProfile(currentUser);
       status.textContent = '✓ Foto berhasil diperbarui!';
       status.style.color = 'var(--accent)';
       setTimeout(() => status.textContent = '', 3000);
  
+      // Reset input so the same file can be re-selected
       e.target.value = '';
     }
-
+ 
+    // ── TAB SWITCHER ──────────────────────────────────────────
     function switchTab(name) {
       ['info','written','liked','edit'].forEach(t => {
         document.getElementById('tab-'  + t).classList.toggle('active', t === name);
@@ -746,11 +824,15 @@
       if (name === 'written') loadWritten();
       if (name === 'liked')   loadLiked();
     }
+ 
+    // ── WRITTEN ARTICLES ─────────────────────────────────────
     async function loadWritten() {
       const wrap = document.getElementById('writtenList');
       wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
 
       _allSubs = await dbGetMySubmissions();
+
+      // Stat: only count published + submitted articles (not edit requests)
       const publishedCount = _allSubs.filter(a => a.status === 'published' && !a.original_id).length;
       document.getElementById('statArticles').textContent = publishedCount;
 
@@ -841,7 +923,7 @@
       const wrap = document.getElementById('likedList');
       wrap.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Memuat...</p>';
  
-      const liked = getLikedIds();
+      const liked = await getLikedArticleIds();
       if (liked.length === 0) {
         wrap.innerHTML = `
           <div class="articles-empty">
@@ -870,6 +952,8 @@
           ${likedArticles.map(a => articleCard(a)).join('')}
         </div>`;
     }
+ 
+    //ARTICLE CARD TEMPLATE
     function articleCard(a) {
       return `
         <a href="/articles/article-detail-new.html?id=${a.id}" class="acard">
@@ -888,6 +972,8 @@
           </div>
         </a>`;
     }
+
+    // ── COVER IMAGE HELPERS ───────────────────────────────────
     function spPreviewCover(url) {
       const preview = document.getElementById('spCoverPreview');
       const placeholder = document.getElementById('spCoverPlaceholder');
@@ -926,6 +1012,8 @@
         setTimeout(() => { statusEl.textContent = ''; }, 3000);
       });
     }
+
+        //SUBMISSION PANEL LOGIC
     function openSubmitPanel(prefill = null, editingId = null, originalId = null, rejectionReason = null) {
       const overlay = document.getElementById('submitOverlay');
       const isEdit  = !!editingId;
@@ -945,6 +1033,7 @@
       document.getElementById('spReadTime').value   = prefill?.read_time || 5;
       document.getElementById('spAuthorRole').value = prefill?.author_role || '';
       document.getElementById('spDate').value       = prefill?.date || new Date().toISOString().split('T')[0];
+      // Cover image
       if (prefill?.cover_image) {
         document.getElementById('spCoverUrl').value = prefill.cover_image;
         spPreviewCover(prefill.cover_image);
@@ -991,6 +1080,7 @@
       openSubmitPanel(a, null, originalId);
     }
 
+    //EDITOR HELPERS
     function spInsert(before, after = '') {
       const ta = document.getElementById('spBody');
       const s = ta.selectionStart, e = ta.selectionEnd;
@@ -998,7 +1088,7 @@
       const needsNewline = ['## ','### ','- ','> '].includes(before);
       let prefix = '';
       if (needsNewline && s > 0) {
-
+        // Check if we're already at the start of a line
         const charBefore = ta.value[s - 1];
         if (charBefore !== '\n') prefix = '\n';
       }
@@ -1025,7 +1115,7 @@
       const words = val.trim() ? val.trim().split(/\s+/).length : 0;
       document.getElementById('spWordCount').textContent = words + ' kata';
       document.getElementById('spCharCount').textContent = val.length + ' karakter';
-
+      // Update preview if open
       if (document.getElementById('spPreviewPane').classList.contains('visible')) {
         _renderPreview();
       }
@@ -1060,6 +1150,7 @@
       pane.innerHTML = bodyToHtml(val);
     }
 
+    // ── ENTER KEY = paragraph, Shift+Enter = line break ──────
     document.addEventListener('DOMContentLoaded', () => {
       const ta = document.getElementById('spBody');
       if (!ta) return;
@@ -1175,6 +1266,7 @@
       _renderSubList();
     }
  
+    // ── EDIT: SAVE NAME ───────────────────────────────────────
     async function saveName() {
       const name  = document.getElementById('editName').value.trim();
       const alert = document.getElementById('nameAlert');
@@ -1190,10 +1282,11 @@
       btn.textContent = 'Menyimpan...';
       btn.disabled    = true;
  
-      const { error } = await db
+      const { data, error } = await db
         .from('profiles')
         .update({ name })
-        .eq('id', currentUser.id);
+        .eq('id', currentUser.id)
+        .select();
  
       btn.textContent = 'Simpan Nama';
       btn.disabled    = false;
@@ -1203,6 +1296,19 @@
         alert.className   = 'alert error';
         return;
       }
+ 
+      // Supabase returns no `error` but zero rows when an UPDATE is silently
+      // blocked by RLS — without this check the UI shows "success" even
+      // though nothing was actually saved, which is exactly why it reverts
+      // after a refresh.
+      if (!data || data.length === 0) {
+        alert.textContent = 'Gagal menyimpan: perubahan tidak tersimpan (kemungkinan masalah izin akses/RLS di tabel profiles).';
+        alert.className   = 'alert error';
+        console.error('saveName: update affected 0 rows — check RLS UPDATE policy on profiles');
+        return;
+      }
+ 
+      // Refresh local user data
       currentUser.name = name;
       populateProfile(currentUser);
       alert.textContent = '✓ Nama berhasil diperbarui!';
@@ -1210,6 +1316,7 @@
       setTimeout(() => alert.className = 'alert', 3000);
     }
  
+    // ── EDIT: CHANGE PASSWORD ─────────────────────────────────
     async function savePassword() {
       const newPw  = document.getElementById('newPassword').value;
       const confPw = document.getElementById('confirmPassword').value;
@@ -1250,26 +1357,33 @@
       setTimeout(() => alert.className = 'alert', 4000);
     }
  
+    // ── LOGOUT ────────────────────────────────────────────────
     async function doLogout() {
       await authLogout();
       window.location.href = 'index.html';
     }
  
-    function getLikedIds() {
-
-      const key = currentUser ? 'paramuda_liked_' + currentUser.id : 'paramuda_liked';
-      const ls  = localStorage.getItem(key);
-      if (ls !== null) return JSON.parse(ls);
-
-      const legacy = localStorage.getItem('paramuda_liked') || sessionStorage.getItem('paramuda_liked');
-      if (legacy && currentUser) {
-        localStorage.setItem(key, legacy);
-        localStorage.removeItem('paramuda_liked');
+    // ── LIKED IDS (now sourced from the article_likes table, not localStorage) ─
+    async function getLikedArticleIds() {
+      if (!currentUser) return [];
+      const { data, error } = await db
+        .from('article_likes')
+        .select('article_id')
+        .eq('user_id', currentUser.id);
+      if (error) {
+        console.error('getLikedArticleIds error:', error);
+        return [];
       }
-      return JSON.parse(legacy || '[]');
+      return (data || []).map(r => String(r.article_id));
+    }
+
+    async function refreshLikedStat() {
+      const ids = await getLikedArticleIds();
+      document.getElementById('statLiked').textContent = ids.length;
     }
   </script>
 
+  <!-- ══ SUBMISSION SLIDE-IN PANEL ══════════════════════════ -->
   <div class="submit-overlay" id="submitOverlay" onclick="handleOverlayClick(event)">
     <div class="submit-panel" id="submitPanel">
 
@@ -1283,6 +1397,7 @@
 
       <div class="submit-panel-body">
 
+        <!-- Rejection reason banner (shown when editing a rejected article) -->
         <div class="reject-banner" id="rejectBanner" style="display:none;">
           <div>
             <strong>Artikel Ditolak</strong>
@@ -1358,6 +1473,7 @@
 
           <div class="sp-editor-wrap">
 
+            <!-- Toolbar -->
             <div class="sp-toolbar">
               <button type="button" onclick="spInsert('## ', '')"     title="Heading besar">H2</button>
               <button type="button" onclick="spInsert('### ', '')"    title="Heading kecil">H3</button>
@@ -1373,6 +1489,7 @@
                 onclick="toggleEditorPreview()">👁 Pratinjau</button>
             </div>
 
+            <!-- Editor pane -->
             <div class="sp-editor-pane" id="spEditorPane">
               <textarea id="spBody" class="sp-body-textarea"
                 placeholder="Mulai menulis artikel kamu di sini...
@@ -1387,19 +1504,21 @@ Gunakan toolbar di atas untuk format:
   • → - item list"></textarea>
             </div>
 
+            <!-- Preview pane -->
             <div class="sp-preview-pane" id="spPreviewPane"></div>
 
+            <!-- Footer: word count + hint -->
             <div class="sp-editor-footer">
               <span id="spWordCount">0 kata</span>
               <span id="spCharCount">0 karakter</span>
             </div>
 
-          </div>
+          </div><!-- /.sp-editor-wrap -->
         </div>
 
         <div class="sp-alert" id="spAlert"></div>
 
-      </div>
+      </div><!-- /body -->
 
       <div class="submit-panel-footer">
         <input type="hidden" id="spEditingId" value="" />
@@ -1408,10 +1527,11 @@ Gunakan toolbar di atas untuk format:
         <button class="btn-solid" style="font-size:13px;" onclick="spSubmit()" id="spSubmitBtn">Kirim untuk Review →</button>
       </div>
 
-    </div>
-  </div>
+    </div><!-- /panel -->
+  </div><!-- /overlay -->
 
 
+  <!-- ══ SHARED CROP MODAL ════════════════════════════════════ -->
   <div class="crop-overlay" id="cropOverlay" style="display:none;">
     <div class="crop-modal">
       <div class="crop-header">
@@ -1424,6 +1544,7 @@ Gunakan toolbar di atas untuk format:
       </div>
 
       <div class="crop-controls">
+        <!-- Aspect ratios -->
         <div class="crop-ratios">
           <span>Rasio</span>
           <button class="ratio-btn"        onclick="setRatio(16/9,  this)" title="Landscape">16:9</button>
@@ -1433,6 +1554,7 @@ Gunakan toolbar di atas untuk format:
           <button class="ratio-btn"        onclick="setRatio(2/3,   this)" title="Portrait">2:3</button>
           <button class="ratio-btn"        onclick="setRatio(NaN,   this)" title="Bebas">Bebas</button>
         </div>
+        <!-- Transform tools -->
         <div class="crop-tools">
           <button class="crop-tool-btn" onclick="cropRotate(-90)"  title="Putar kiri">↺</button>
           <button class="crop-tool-btn" onclick="cropRotate(90)"   title="Putar kanan">↻</button>
