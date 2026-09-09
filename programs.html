@@ -1,0 +1,2417 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Program & Kegiatan — Paramuda.id</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="programs.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+  </head>
+  <body>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo pm-logo">
+          <img
+            class="Logo-navbar"
+            src="Images\Logo Paramuda Indonesia.png"
+            alt="Logo Paramuda"
+          />
+          <span class="pm-logo-text">
+            PARAMUDA.ID
+            <small>(KAULA MUDA)</small>
+          </span>
+        </a>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html#home" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">Tentang Kami</a></li>
+          <li><a href="index.html#pilar" class="nav-link">3 Pilar</a></li>
+          <li>
+            <a href="index.html#gerakan" class="nav-link">Gerakan Kami</a>
+          </li>
+          <li>
+            <a href="program-kegiatan.html" class="nav-link active">Program</a>
+          </li>
+          <li>
+            <a href="struktur-organisasi.html" class="nav-link">Struktur</a>
+          </li>
+          <li>
+            <a href="index.html#recruitment" class="nav-link">Join Paramuda</a>
+          </li>
+          <li class="nav-divider" aria-hidden="true"></li>
+          <li>
+            <a href="profile.html" class="nav-link nav-link-sub">Profile</a>
+          </li>
+          <li>
+            <a href="regist.html" class="nav-link nav-link-sub">Sign In</a>
+          </li>
+        </ul>
+        <a href="regist.html" class="btn-joinus">Join Us</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ============ PAGE HEADER ============ -->
+    <section class="org-hero">
+      <div class="section-container">
+        <div class="org-breadcrumb">
+          <a href="index.html">Home</a>
+          <span>/</span>
+          <span>Program & Kegiatan</span>
+        </div>
+        <h1>Program &amp; <span class="text-accent">Kegiatan</span></h1>
+        <p>
+          Kumpulan proyek dan kegiatan yang telah dan sedang digerakkan oleh
+          Paramuda.id bersama Kaula Muda di seluruh Indonesia.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ JUMP LINKS ============ -->
+    <div class="jump-links">
+      <div class="section-container jump-links-inner">
+        <a href="#proyek">Proyek <span>(7)</span></a>
+        <a href="#kegiatan">Kegiatan <span>(8)</span></a>
+      </div>
+    </div>
+
+    <!-- ============ PROYEK ============ -->
+    <section class="programs-section" id="proyek">
+      <div class="section-container">
+        <h2 class="section-title-center">
+          Proyek <span class="text-accent">Kami</span>
+        </h2>
+        <div class="card-grid">
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 01</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Pengembangan Inovasi & Pendidikan</span>
+              <h3 class="item-title">Nama Proyek 01</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 02</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Sosial & Kemanusiaan</span>
+              <h3 class="item-title">Nama Proyek 02</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 03</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Kesenian & Kebudayaan</span>
+              <h3 class="item-title">Nama Proyek 03</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 04</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Pengembangan Inovasi & Pendidikan</span>
+              <h3 class="item-title">Nama Proyek 04</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 05</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Sosial & Kemanusiaan</span>
+              <h3 class="item-title">Nama Proyek 05</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 06</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Kesenian & Kebudayaan</span>
+              <h3 class="item-title">Nama Proyek 06</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Proyek 07</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Pengembangan Inovasi & Pendidikan</span>
+              <h3 class="item-title">Nama Proyek 07</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai proyek ini: latar belakang,
+                tujuan, dan siapa saja yang terlibat. Ganti teks placeholder ini
+                dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari proyek ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ KEGIATAN / EVENT ============ -->
+    <section class="events-section" id="kegiatan">
+      <div class="section-container">
+        <h2 class="section-title-center">
+          Kegiatan <span class="text-accent">&amp; Event</span>
+        </h2>
+        <div class="card-grid">
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 01</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Workshop</span>
+              <h3 class="item-title">Nama Kegiatan 01</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 02</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Seminar</span>
+              <h3 class="item-title">Nama Kegiatan 02</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 03</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Bakti Sosial</span>
+              <h3 class="item-title">Nama Kegiatan 03</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 04</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Lomba & Kompetisi</span>
+              <h3 class="item-title">Nama Kegiatan 04</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 05</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Gathering Komunitas</span>
+              <h3 class="item-title">Nama Kegiatan 05</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 06</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Workshop</span>
+              <h3 class="item-title">Nama Kegiatan 06</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 07</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Seminar</span>
+              <h3 class="item-title">Nama Kegiatan 07</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="item-card reveal">
+            <div class="item-card-image">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="30"
+                height="30"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Foto Utama — Kegiatan 08</span>
+            </div>
+            <div class="item-card-body">
+              <span class="item-tag">Bakti Sosial</span>
+              <h3 class="item-title">Nama Kegiatan 08</h3>
+              <div class="item-meta">
+                <span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                  Tanggal —</span
+                ><span
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="15"
+                    height="15"
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Lokasi —</span
+                >
+              </div>
+              <p class="item-desc">
+                Tuliskan deskripsi singkat mengenai kegiatan ini: latar
+                belakang, tujuan, dan siapa saja yang terlibat. Ganti teks
+                placeholder ini dengan cerita sebenarnya.
+              </p>
+              <div class="item-doc-row">
+                <span class="item-doc-label">Dokumentasi</span>
+                <div class="doc-thumbs">
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      width="18"
+                      height="18"
+                    >
+                      <path
+                        d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                      />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <div class="doc-thumb doc-thumb-more">+</div>
+                </div>
+              </div>
+              <div class="item-impact">
+                <span class="impact-label"
+                  ><svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    width="16"
+                    height="16"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="1.2"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                  Dampak</span
+                >
+                <p class="impact-text">
+                  Tuliskan dampak atau hasil nyata dari kegiatan ini di sini
+                  (misalnya jumlah penerima manfaat, perubahan yang tercipta,
+                  atau capaian lainnya).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer-v2">
+      <div class="section-container footer-v2-grid">
+        <div class="footer-v2-brand">
+          <a href="index.html" class="pm-logo">
+            <img
+              class="Logo-navbar"
+              src="Images\Logo Paramuda Indonesia.png"
+              alt="Logo Paramuda"
+            />
+            <span class="pm-logo-text">
+              PARAMUDA.ID
+              <small>(KAULA MUDA)</small>
+            </span>
+          </a>
+          <p class="footer-v2-tag">KOMUNITAS GENERASI MUDA</p>
+          <p class="footer-v2-hashtags">#BergerakSerempak #MemberiDampak</p>
+          <p class="footer-v2-desc">
+            Bersama pemuda, kita bisa menciptakan perubahan untuk masa depan
+            yang lebih baik.
+          </p>
+          <div class="footer-v2-social">
+            <a href="https://instagram.com/paramudabdg" aria-label="Instagram"
+              >IG</a
+            >
+            <a href="#" aria-label="TikTok">TT</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Quick Links</h4>
+          <a href="index.html#home">Home</a>
+          <a href="index.html#about">Tentang Kami</a>
+          <a href="index.html#pilar">3 Pilar</a>
+          <a href="index.html#gerakan">Gerakan Kami</a>
+          <a href="program-kegiatan.html">Program &amp; Kegiatan</a>
+          <a href="struktur-organisasi.html">Struktur Organisasi</a>
+          <a href="index.html#recruitment">Join Paramuda</a>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Divisi</h4>
+          <a href="struktur-organisasi.html#divisions">Human Resource</a>
+          <a href="struktur-organisasi.html#divisions">Public Relation</a>
+          <a href="struktur-organisasi.html#divisions">Business Development</a>
+          <a href="struktur-organisasi.html#divisions"
+            >Social Media Specialist</a
+          >
+          <a href="struktur-organisasi.html#divisions">Project Management</a>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Contact Us</h4>
+          <a href="mailto:paramuda.id@gmail.com" class="footer-v2-contact-item">
+            <span>✉</span> paramuda.id@gmail.com
+          </a>
+          <a href="tel:+6281234567890" class="footer-v2-contact-item">
+            <span>☎</span> +62 812-3456-7890
+          </a>
+          <span class="footer-v2-contact-item">
+            <span>📍</span> Bandung, Indonesia
+          </span>
+        </div>
+      </div>
+      <div class="footer-v2-bottom">
+        © 2025 Paramuda.id. All Rights Reserved.
+      </div>
+    </footer>
+
+    <script>
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("navMenu");
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+      navMenu.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

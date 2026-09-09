@@ -14,7 +14,6 @@
   <script src="db.js"></script>
 
   <style>
-    /* ── COVER IMAGE ─────────────────────────────────────── */
     .article-cover {
       width: 100%;
       max-height: 480px;
@@ -41,7 +40,7 @@
       margin-top: .5rem;
       font-style: italic;
     }
-    /* thumbnail on related + sidebar cards */
+
     .acard-thumb {
       width: 100%;
       height: 140px;
@@ -81,7 +80,6 @@
 
   <div class="progress-bar" id="progressBar"></div>
 
-  <!-- ARTICLE NOT FOUND -->
   <div id="notFound" style="display:none; min-height:80vh; align-items:center; justify-content:center; flex-direction:column; gap:1rem; text-align:center; padding:4rem 2rem;">
     <div style="font-size:2rem;">◎</div>
     <h2 style="font-family:'Syne',sans-serif; font-weight:800;">Artikel tidak ditemukan</h2>
@@ -142,7 +140,7 @@
     </aside>
   </div>
 
-  <!-- RELATED -->
+  <!-- RELATED BAR -->
   <section class="related-section" id="relatedSection" style="display:none;">
     <div class="section-container">
       <h2 class="section-title" style="font-size:1.5rem;margin-bottom:1.5rem;">Artikel Terkait</h2>
@@ -167,13 +165,11 @@
   </footer>
 
   <script>
-    // Hamburger
     document.getElementById('hamburger').addEventListener('click', function () {
       this.classList.toggle('active');
       document.getElementById('navMenu').classList.toggle('active');
     });
 
-    // Reading progress
     window.addEventListener('scroll', () => {
       const ac = document.getElementById('articleContent');
       if (!ac) return;
@@ -182,7 +178,6 @@
       document.getElementById('progressBar').style.width = pct + '%';
     });
 
-    // ── LOAD ARTICLE (async) ──────────────────────────────────
     (async () => {
       const params  = new URLSearchParams(window.location.search);
       const id      = params.get('id');
@@ -198,19 +193,14 @@
         return;
       }
 
-      // Show layout
       document.getElementById('detailLayout').style.display = 'grid';
 
-      // Increment view count (fire-and-forget)
       dbUpdate(article.id, { views: (article.views || 0) + 1 });
 
-      // Page title
       document.title = article.title + ' — Paramuda Bandung';
 
-      // Breadcrumb
       document.getElementById('bcCategory').textContent = article.category;
 
-      // Header
       document.getElementById('hTag').innerHTML =
         `<div class="article-tag-pill ${catClass(article.category)}">${article.category}</div>`;
       document.getElementById('hTitle').textContent    = article.title;
@@ -231,9 +221,6 @@
         <span class="meta-sep">·</span>
         <span>${(article.views || 0).toLocaleString()} pembaca</span>`;
 
-      // Like button — restore real state from the database (article_likes).
-      // Source of truth is now Postgres, not browser storage, so it
-      // survives refresh, tab close, and works across devices.
       currentArticleId = article.id;
       currentLikeCount = article.likes || 0;
       document.getElementById('likeCount').textContent = currentLikeCount;
@@ -256,7 +243,6 @@
         document.getElementById('likeIcon').style.color = '#C4622D';
       }
 
-      // Cover image (between header and body)
       const coverWrap = document.getElementById('articleCover');
       if (article.cover_image) {
         coverWrap.innerHTML = `
@@ -266,16 +252,13 @@
           </div>`;
       }
 
-      // Body
       document.getElementById('articleBody').innerHTML = bodyToHtml(article.body);
 
-      // Tags
       const tagWords = article.category.split(/[&,]/g).map(t => t.trim()).filter(Boolean);
       document.getElementById('articleTags').innerHTML =
         '<span>Tag:</span>' +
         tagWords.map(t => `<a href="articles-new.html">${t}</a>`).join('');
 
-      // Author bio
       document.getElementById('authorBio').innerHTML = `
         <div class="author-avatar lg">${initials}</div>
         <div>
@@ -283,7 +266,6 @@
           <div class="author-role-bio">${article.author_role || 'Anggota Paramuda Bandung'}</div>
         </div>`;
 
-      // Sidebar: other articles
       const all = await dbGetAll();
       const others = all.filter(a => a.id !== article.id).slice(0, 4);
       document.getElementById('sidebarArticles').innerHTML = others.map(a => `
@@ -294,7 +276,6 @@
           <span>${a.author} · ${a.date_label || formatDateLabel(a.date)}</span>
         </a>`).join('');
 
-      // Sidebar: categories with count
       const catCounts = {};
       all.forEach(a => { catCounts[a.category] = (catCounts[a.category] || 0) + 1; });
       document.getElementById('sidebarCats').innerHTML = Object.entries(catCounts)
@@ -303,7 +284,6 @@
           `<a href="articles-new.html">${cat} <span>${count}</span></a>`
         ).join('');
 
-      // Related articles (same category)
       const related = all
         .filter(a => a.id !== article.id && a.category === article.category)
         .slice(0, 3);
@@ -328,12 +308,11 @@
       }
     })();
 
-    // ── INTERACTIONS ──────────────────────────────────────────
     let liked = false;
-    let currentArticleId = null;   // set when the article finishes loading
-    let currentUser      = null;   // set when the article finishes loading
+    let currentArticleId = null;  
+    let currentUser      = null;  
     let currentLikeCount = 0;
-    let _likeBusy         = false; // guards against double-submits
+    let _likeBusy         = false; 
     let _loginHintTimer   = null;
 
     function showLoginHint() {
@@ -347,8 +326,6 @@
     async function toggleLike() {
       if (!currentArticleId || _likeBusy) return;
 
-      // Likes are tied to an account now (article_likes.user_id), so liking
-      // requires being logged in — no more anonymous/local-only likes.
       if (!currentUser) {
         showLoginHint();
         return;
@@ -360,14 +337,10 @@
       liked          = !liked;
       const newCount = liked ? wasCount + 1 : Math.max(0, wasCount - 1);
 
-      // Optimistic UI update
       document.getElementById('likeIcon').textContent = liked ? '♥' : '♡';
       document.getElementById('likeIcon').style.color = liked ? '#C4622D' : '';
       document.getElementById('likeCount').textContent = newCount;
 
-      // Persist to the database. A row in article_likes = "this user likes
-      // this article"; a DB trigger keeps articles.likes in sync atomically,
-      // so the count is correct even with multiple users liking at once.
       let dbError = null;
       if (liked) {
         const { error } = await db
@@ -384,7 +357,6 @@
       }
 
       if (dbError) {
-        // Roll back UI state — nothing actually saved
         liked = wasLiked;
         document.getElementById('likeIcon').textContent = liked ? '♥' : '♡';
         document.getElementById('likeIcon').style.color = liked ? '#C4622D' : '';

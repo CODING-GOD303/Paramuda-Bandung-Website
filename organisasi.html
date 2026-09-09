@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Struktur Organisasi — Paramuda.id</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+      />
+    <link rel="stylesheet" href="organisasi.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="db.js"></script>
+  </head>
+  <body>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="logo pm-logo">
+          <img
+            class="Logo-navbar"
+            src="Images\Logo Paramuda Indonesia.png"
+            alt="Logo Paramuda"
+          />
+          <span class="pm-logo-text">
+            PARAMUDA.ID
+            <small>(KAULA MUDA)</small>
+          </span>
+        </a>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="index.html#home" class="nav-link">Home</a></li>
+          <li><a href="index.html#about" class="nav-link">Tentang Kami</a></li>
+          <li><a href="index.html#pilar" class="nav-link">3 Pilar</a></li>
+          <li><a href="index.html#gerakan" class="nav-link">Gerakan Kami</a></li>
+          <li><a href="index.html#articles" class="nav-link">Program</a></li>
+          <li><a href="struktur-organisasi.html" class="nav-link active">Struktur</a></li>
+          <li><a href="index.html#recruitment" class="nav-link">Join Paramuda</a></li>
+          <li class="nav-divider" aria-hidden="true"></li>
+          <li><a href="profile.html" class="nav-link nav-link-sub">Profile</a></li>
+          <li><a href="regist.html" class="nav-link nav-link-sub">Sign In</a></li>
+        </ul>
+        <a href="regist.html" class="btn-joinus">Join Us</a>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ============ PAGE HEADER ============ -->
+    <section class="org-hero">
+      <div class="section-container">
+        <div class="org-breadcrumb">
+          <a href="index.html">Home</a>
+          <span>/</span>
+          <span>Struktur Organisasi</span>
+        </div>
+        <h1>Struktur <span class="text-accent">Organisasi</span></h1>
+        <p>
+          Kenali jajaran pengurus Paramuda.id, mulai dari pembina hingga
+          setiap divisi yang menggerakkan program dan kegiatan kami.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ JAJARAN PIMPINAN ============ -->
+    <section class="org-leadership">
+      <div class="section-container">
+        <div class="org-tree">
+          <div class="org-card org-card-advisor reveal">
+            <div class="org-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="30" height="30"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+            </div>
+            <span class="org-role">Pembina</span>
+            <span class="org-name">Nama Pembina</span>
+          </div>
+
+          <div class="org-connector-v"></div>
+
+          <div class="org-card org-card-chair reveal">
+            <div class="org-avatar org-avatar-lg">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="34" height="34"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+            </div>
+            <span class="org-role">Ketua Umum</span>
+            <span class="org-name">Nama Ketua Umum</span>
+          </div>
+
+          <div class="org-connector-v"></div>
+
+          <div class="org-row">
+            <div class="org-card reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Wakil Ketua Umum</span>
+              <span class="org-name">Nama Wakil Ketua</span>
+            </div>
+            <div class="org-card reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Sekretaris</span>
+              <span class="org-name">Nama Sekretaris</span>
+            </div>
+            <div class="org-card reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Bendahara</span>
+              <span class="org-name">Nama Bendahara</span>
+            </div>
+          </div>
+
+          <div class="org-connector-v"></div>
+          <div class="org-connector-h"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DIVISI ============ -->
+    <section class="org-divisions" id="divisions">
+      <div class="section-container">
+        <h2 class="section-title-center">
+          Divisi <span class="text-accent">Paramuda.id</span>
+        </h2>
+
+        <!--
+          DIVISION TEMPLATE — duplicate a whole ".division-block" for each
+          new division you send over. Update the icon, name, description,
+          the head card, and the staff-grid cards (add/remove <div class="staff-card">
+          as needed).
+        -->
+
+        <div class="division-block reveal">
+          <div class="division-block-header">
+            <span class="division-block-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </span>
+            <div>
+              <h3>Human Resource</h3>
+              <p>Mengelola SDM organisasi dan kesejahteraan anggota.</p>
+            </div>
+          </div>
+          <div class="division-people">
+            <div class="org-card org-card-head reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Kepala Divisi</span>
+              <span class="org-name">Nama Kepala Divisi</span>
+            </div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="division-block reveal">
+          <div class="division-block-header">
+            <span class="division-block-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 11v3a1 1 0 0 0 1 1h2l3.5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M14 8a4 4 0 0 1 0 8"/><path d="M17.5 5a8 8 0 0 1 0 14"/></svg>
+            </span>
+            <div>
+              <h3>Public Relation</h3>
+              <p>Membangun citra positif dan hubungan baik dengan pihak eksternal.</p>
+            </div>
+          </div>
+          <div class="division-people">
+            <div class="org-card org-card-head reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Kepala Divisi</span>
+              <span class="org-name">Nama Kepala Divisi</span>
+            </div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="division-block reveal">
+          <div class="division-block-header">
+            <span class="division-block-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M22 2 11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </span>
+            <div>
+              <h3>Business Development</h3>
+              <p>Mencari peluang kerjasama dan mengembangkan potensi organisasi.</p>
+            </div>
+          </div>
+          <div class="division-people">
+            <div class="org-card org-card-head reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Kepala Divisi</span>
+              <span class="org-name">Nama Kepala Divisi</span>
+            </div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="division-block reveal">
+          <div class="division-block-header">
+            <span class="division-block-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </span>
+            <div>
+              <h3>Social Media Specialist</h3>
+              <p>Mengelola konten kreatif dan strategi media sosial Paramuda.</p>
+            </div>
+          </div>
+          <div class="division-people">
+            <div class="org-card org-card-head reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Kepala Divisi</span>
+              <span class="org-name">Nama Kepala Divisi</span>
+            </div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="division-block reveal">
+          <div class="division-block-header">
+            <span class="division-block-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9z"/><path d="m9 13 2 2 4-4"/></svg>
+            </span>
+            <div>
+              <h3>Project Management</h3>
+              <p>Merencanakan dan mengeksekusi kegiatan agar berjalan efektif.</p>
+            </div>
+          </div>
+          <div class="division-people">
+            <div class="org-card org-card-head reveal">
+              <div class="org-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+              </div>
+              <span class="org-role">Kepala Divisi</span>
+              <span class="org-name">Nama Kepala Divisi</span>
+            </div>
+            <div class="staff-grid">
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+              <div class="staff-card">
+                <div class="org-avatar org-avatar-sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <span class="org-name-sm">Nama Anggota</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- END DIVISION TEMPLATE -->
+      </div>
+    </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer-v2">
+      <div class="section-container footer-v2-grid">
+        <div class="footer-v2-brand">
+          <a href="index.html" class="pm-logo">
+            <img
+              class="Logo-navbar"
+              src="Images\Logo Paramuda Indonesia.png"
+              alt="Logo Paramuda"
+            />
+            <span class="pm-logo-text">
+              PARAMUDA.ID
+              <small>(KAULA MUDA)</small>
+            </span>
+          </a>
+          <p class="footer-v2-tag">KOMUNITAS GENERASI MUDA</p>
+          <p class="footer-v2-hashtags">#BergerakSerempak #MemberiDampak</p>
+          <p class="footer-v2-desc">
+            Bersama pemuda, kita bisa menciptakan perubahan untuk masa depan
+            yang lebih baik.
+          </p>
+          <div class="footer-v2-social">
+            <a href="https://instagram.com/paramudabdg" aria-label="Instagram">IG</a>
+            <a href="#" aria-label="TikTok">TT</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Quick Links</h4>
+          <a href="index.html#home">Home</a>
+          <a href="index.html#about">Tentang Kami</a>
+          <a href="index.html#pilar">3 Pilar</a>
+          <a href="index.html#gerakan">Gerakan Kami</a>
+          <a href="index.html#articles">Program &amp; Kegiatan</a>
+          <a href="struktur-organisasi.html">Struktur Organisasi</a>
+          <a href="index.html#recruitment">Join Paramuda</a>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Divisi</h4>
+          <a href="struktur-organisasi.html#divisions">Human Resource</a>
+          <a href="struktur-organisasi.html#divisions">Public Relation</a>
+          <a href="struktur-organisasi.html#divisions">Business Development</a>
+          <a href="struktur-organisasi.html#divisions">Social Media Specialist</a>
+          <a href="struktur-organisasi.html#divisions">Project Management</a>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Contact Us</h4>
+          <a href="mailto:paramuda.id@gmail.com" class="footer-v2-contact-item">
+            <span>✉</span> paramuda.id@gmail.com
+          </a>
+          <a href="tel:+6281234567890" class="footer-v2-contact-item">
+            <span>☎</span> +62 812-3456-7890
+          </a>
+          <span class="footer-v2-contact-item">
+            <span>📍</span> Bandung, Indonesia
+          </span>
+        </div>
+      </div>
+      <div class="footer-v2-bottom">
+        © 2025 Paramuda.id. All Rights Reserved.
+      </div>
+    </footer>
+
+    <script>
+      const navbar = document.getElementById("navbar");
+      window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 50);
+      });
+
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("navMenu");
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+      navMenu.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Paramuda Bandung</title>
+    <title>Paramuda.id — Bergerak Serempak, Memberi Dampak</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Manrope:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="Style.css" />
@@ -16,29 +16,36 @@
     <script src="db.js"></script>
   </head>
   <body>
-  
     <nav class="navbar" id="navbar">
       <div class="nav-container">
-        <a href="index.html" class="logo">
+        <a href="index.html" class="logo pm-logo">
           <img
             class="Logo-navbar"
             src="Images\Logo Paramuda Indonesia.png"
             alt="Logo Paramuda"
           />
-          Paramuda.Id
+          <span class="pm-logo-text">
+            PARAMUDA.ID
+            <small>(KAULA MUDA)</small>
+          </span>
         </a>
         <ul class="nav-menu" id="navMenu">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#about" class="nav-link">Tentang Kami</a></li>
+          <li><a href="#pilar" class="nav-link">3 Pilar</a></li>
+          <li><a href="#gerakan" class="nav-link">Gerakan Kami</a></li>
+          <li><a href="#articles" class="nav-link">Program</a></li>
+          <li><a href="#kaula-muda" class="nav-link">Kaula Muda</a></li>
+          <li><a href="#recruitment" class="nav-link">Join Paramuda</a></li>
+          <li class="nav-divider" aria-hidden="true"></li>
           <li>
-            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="profile.html" class="nav-link nav-link-sub">Profile</a>
           </li>
-          <li><a href="#articles" class="nav-link">Articles</a></li>
-          <li><a href="#recruitment" class="nav-link">Join Us</a></li>
           <li>
-            <a href="regist.html" class="nav-link btn-nav"
-              >Sign In</a
-            >
+            <a href="regist.html" class="nav-link nav-link-sub">Sign In</a>
           </li>
         </ul>
+        <a href="regist.html" class="btn-joinus">Join Us</a>
         <button class="hamburger" id="hamburger" aria-label="Toggle menu">
           <span class="bar"></span>
           <span class="bar"></span>
@@ -47,205 +54,742 @@
       </div>
     </nav>
 
+    <!-- ============ HERO ============ -->
     <section class="hero" id="home">
-      <video class="hero-video" autoplay muted loop playsinline>
-        <source src="Images\Preview 5 - Finnal - Rev.mp4" type="video/mp4" />
-      </video>
+      <div class="hero-bg">
+        <video class="hero-video" autoplay muted loop playsinline>
+          <source src="Images\Preview 5 - Finnal - Rev.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-bg-overlay"></div>
+      </div>
       <div class="hero-container">
-        <div class="hero-tag">Paramuda!</div>
         <h1 class="hero-title">
-          Paramuda<br />
-          <span class="hero-accent">Indonesia</span>
+          Bergerak<br />
+          Serempak.<br />
+          <span class="hero-accent">Memberi<br />Dampak.</span>
         </h1>
         <p class="hero-desc">
-          Mari bergabung bersama kami di bandung komunitas terbuka untuk kalian
-          Kaula muda!
+          Wadah bagi Kaula Muda untuk berinteraksi, memberi solusi, dan beraksi
+          bersama menciptakan perubahan positif.
         </p>
         <div class="hero-actions">
-          <a href="#articles" class="btn-primary">Baca Artikel</a>
-          <a href="#profile" class="btn-secondary">Kenali Kami</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-num">676767</span>
-            <span class="stat-label">Artikel Diterbitkan</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-num">67</span>
-            <span class="stat-label">Anggota Aktif</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-num">67</span>
-            <span class="stat-label">Bidang Kajian</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="visual-card vc1">
-          <div class="vc-icon">✦</div>
-          <p>Jurnal Ilmiah</p>
-        </div>
-        <div class="visual-card vc2">
-          <div class="vc-icon">◈</div>
-          <p>Opini & Esai</p>
-        </div>
-        <div class="visual-card vc3">
-          <div class="vc-icon">◉</div>
-          <p>Riset Mahasiswa</p>
+          <a href="#recruitment" class="btn-primary">Join Paramuda →</a>
+          <a href="#about" class="btn-secondary btn-play">
+            <span class="play-circle">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="12"
+                height="12"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            Kenali Kami
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="profile" id="profile">
+    <!-- ============ HAI KAMU PARA KAULA MUDA (stats + intro) ============ -->
+    <section class="about-section" id="about">
+      <div class="section-container about-grid">
+        <div class="about-left">
+          <div class="about-heading">
+            <span class="about-heading-dark">Hai, Kamu Para</span>
+            <span class="about-heading-accent">Kaula Muda!</span>
+          </div>
+          <p class="about-desc">
+            Paramuda.id adalah wadah dimana para pemuda dapat berkumpul,
+            berinteraksi, saling mendukung dalam pengembangan diri,
+            pembelajaran, serta diskusi tentang isu-isu yang relevan bagi
+            generasi muda.
+          </p>
+          <div class="about-icons">
+            <div class="about-icon-item">
+              <span class="about-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <path
+                    d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"
+                  />
+                </svg>
+              </span>
+              <p>Berinteraksi</p>
+            </div>
+            <div class="about-icon-item">
+              <span class="about-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <path
+                    d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"
+                  />
+                </svg>
+              </span>
+              <p>Memberi Solusi</p>
+            </div>
+            <div class="about-icon-item">
+              <span class="about-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <path
+                    d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+                  />
+                  <path
+                    d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 19 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+                  />
+                </svg>
+              </span>
+              <p>Beraksi</p>
+            </div>
+          </div>
+          <a href="#pilar" class="btn-navy">Lebih Tentang Kami →</a>
+        </div>
+
+        <div class="about-right">
+          <div class="stat-cards">
+            <div class="stat-card reveal">
+              <span class="stat-card-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                  <circle cx="10" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
+              <span class="stat-card-num">500+</span>
+              <span class="stat-card-label">Kaula Muda Bergabung</span>
+            </div>
+            <div class="stat-card reveal">
+              <span class="stat-card-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" />
+                  <path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+              </span>
+              <span class="stat-card-num">25+</span>
+              <span class="stat-card-label">Program &amp; Kegiatan</span>
+            </div>
+            <div class="stat-card reveal">
+              <span class="stat-card-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <path
+                    d="M11 20A7 7 0 0 1 4 13V9a1 1 0 0 1 1-1h4a7 7 0 0 1 7 7v1a4 4 0 0 1-4 4H11z"
+                  />
+                  <path d="M11 20v-6" />
+                </svg>
+              </span>
+              <span class="stat-card-num">12+</span>
+              <span class="stat-card-label">Project Berjalan</span>
+            </div>
+            <div class="stat-card reveal">
+              <span class="stat-card-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="26"
+                  height="26"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </span>
+              <span class="stat-card-num">8+</span>
+              <span class="stat-card-label">Komunitas Terlibat</span>
+            </div>
+          </div>
+
+          <div class="about-video-banner reveal">
+            <div class="about-video-photo">
+              <img
+                src="Images/DSC09389.JPG"
+                alt="Kegiatan Paramuda"
+                loading="lazy"
+              />
+              <button class="about-video-play" aria-label="Putar video">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  width="16"
+                  height="16"
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </button>
+            </div>
+            <div class="about-video-caption">
+              <p>
+                BERSAMA KITA
+                <span>CIPTAKAN PERUBAHAN</span>
+                NYATA UNTUK NEGERI.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 PILAR ============ -->
+    <section class="pillars-section" id="pilar">
       <div class="section-container">
-        <div class="section-label">Tentang Kami</div>
-
-        <div class="profile-grid">
-          <div class="profile-left">
-            <h2 class="section-title">Bergerak Serempak! Memberi Dampak!</h2>
-          </div>
-          <div class="profile-right">
-            <p id="profile-p">
-              Mari bergabung bersama kami di Bandung, komunitas inklusif untuk
-              kalian Kaula muda!
-            </p>
-            <p id="profile-p">
-              Komunitas Paramuda.id adalah sebuah wadah atau platform di mana
-              para pemuda dapat berkumpul, berinteraksi, dan saling mendukung
-              dalam pengembangan diri, pembelajaran, serta diskusi tentang
-              isu-isu yang relevan bagi generasi muda. Sebagai Kaula Muda kita
-              berfokus pada interaksi, memberi solusi, dan beraksi terhadap
-              sesama
-            </p>
-            <div class="profile-values">
-              <div class="value-item">
-                <span class="value-dot"></span><span>Aksi dan Inisiatif</span>
-              </div>
-              <div class="value-item">
-                <span class="value-dot"></span><span>Dinamisme</span>
-              </div>
-              <div class="value-item">
-                <span class="value-dot"></span><span>Kesatuan</span>
-              </div>
-              <div class="value-item">
-                <span class="value-dot"></span><span>Kolaborasi</span>
-              </div>
+        <h2 class="section-title-center">
+          3 Pilar <span class="text-accent">Paramuda.id</span>
+        </h2>
+        <div class="pillars-grid">
+          <div class="pillar-card reveal">
+            <img
+              src="Images/DAV01813.jpg"
+              alt="Pengembangan Inovasi & Pendidikan"
+              loading="lazy"
+            />
+            <div class="pillar-overlay"></div>
+            <span class="pillar-num">01</span>
+            <div class="pillar-text">
+              <h3>Pengembangan Inovasi &amp; Pendidikan</h3>
+              <p>
+                Mengembangkan kemampuan berpikir kritis, problem-solving,
+                kreativitas, dan inovasi pemuda melalui pendidikan dan
+                teknologi.
+              </p>
             </div>
           </div>
-        </div>
-
-        <div class="pg-grid" id="pgGrid">
-          <div
-            class="pg-item pg-tall"
-            data-index="0"
-            data-title="Judul"
-            data-caption="Isi Caption."
-            data-label="Paramuda · Bandung"
-          >
-            <img src="Images\DAV01813.jpg" alt="Judul" loading="lazy" />
-            <div class="pg-hover"><span>VIEW →</span></div>
-          </div>
-          <div
-            class="pg-item pg-wide"
-            data-index="1"
-            data-title="Judul"
-            data-caption="Isi Caption."
-            data-label="Paramuda · Indonesia"
-          >
-            <img src="Images\DAV01925.jpg" alt="Akademik" loading="lazy" />
-            <div class="pg-hover"><span>VIEW →</span></div>
-          </div>
-          <div
-            class="pg-item"
-            data-index="2"
-            data-title="Judul"
-            data-caption="Isi Caption."
-            data-label="Paramuda · Indonesia"
-          >
-            <img src="Images\DAV01942.jpg" alt="Riset" loading="lazy" />
-            <div class="pg-hover"><span>VIEW →</span></div>
-          </div>
-          <div
-            class="pg-item"
-            data-index="3"
-            data-title="Judull"
-            data-caption="Isi Caption."
-            data-label="Paramuda · Indonesia"
-          >
-            <img src="Images\DSC06126.jpg" alt="Kolaborasi" loading="lazy" />
-            <div class="pg-hover"><span>VIEW →</span></div>
-          </div>
-          <div
-            class="pg-item"
-            data-index="4"
-            data-title="Judul"
-            data-caption="Isi Caption."
-            data-label="Paramuda · Indonesia"
-          >
-            <img src="Images\DAV01813.jpg" alt="Inovasi" loading="lazy" />
-            <div class="pg-hover"><span>VIEW →</span></div>
-          </div>
-          <div
-            class="pg-item"
-            data-index="5"
-            data-title="Judul"
-            data-caption="Isi Caption."
-            data-label="Paramuda · Indonesia"
-          >
-            <img src="Images\DSC09607.JPG" alt="Kreativitas" loading="lazy" />
-            <div class="pg-hover"><span>VIEW →</span></div>
-          </div>
-        </div>
-
-        <div class="pg-lightbox" id="pgLightbox" aria-hidden="true">
-          <div class="pg-lb-backdrop" id="pgBackdrop"></div>
-          <div class="pg-lb-inner">
-            <div class="pg-lb-img-wrap">
-              <img id="pgLbImg" src="" alt="" />
-              <button
-                class="pg-lb-arrow pg-lb-prev"
-                id="pgPrev"
-                aria-label="Previous"
-              >
-                ←
-              </button>
-              <button
-                class="pg-lb-arrow pg-lb-next"
-                id="pgNext"
-                aria-label="Next"
-              >
-                →
-              </button>
-              <div class="pg-lb-counter" id="pgCounter"></div>
+          <div class="pillar-card reveal">
+            <img
+              src="Images/DAV01925.jpg"
+              alt="Sosial & Kemanusiaan"
+              loading="lazy"
+            />
+            <div class="pillar-overlay"></div>
+            <span class="pillar-num">02</span>
+            <div class="pillar-text">
+              <h3>Sosial &amp; Kemanusiaan</h3>
+              <p>
+                Membangun empati, solidaritas, dan tanggung jawab sosial melalui
+                aksi nyata untuk masyarakat.
+              </p>
             </div>
-            <div class="pg-lb-info">
-              <p class="pg-lb-tag">PARAMUDA!</p>
-              <h3 class="pg-lb-title" id="pgLbTitle"></h3>
-              <p class="pg-lb-caption" id="pgLbCaption"></p>
-              <div class="pg-lb-footer">
-                <span id="pgLbLabel"></span>
-              </div>
-              <button class="pg-lb-close" id="pgClose" aria-label="Close">
-                ✕
-              </button>
+          </div>
+          <div class="pillar-card reveal">
+            <img
+              src="Images/DAV01942.jpg"
+              alt="Kesenian & Kebudayaan"
+              loading="lazy"
+            />
+            <div class="pillar-overlay"></div>
+            <span class="pillar-num">03</span>
+            <div class="pillar-text">
+              <h3>Kesenian &amp; Kebudayaan</h3>
+              <p>
+                Melestarikan budaya lokal sekaligus memberikan ruang bagi pemuda
+                untuk berekspresi melalui seni dan kreativitas.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ============ CARA KAMI BERGERAK ============ -->
+    <section class="steps-section" id="gerakan">
+      <div class="section-container">
+        <h2 class="section-title-center">
+          Cara Kami <span class="text-accent">Bergerak</span>
+        </h2>
+        <div class="steps-flow">
+          <div class="step-box reveal">
+            <span class="step-num">1</span>
+            <div class="step-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="24"
+                height="24"
+              >
+                <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                <circle cx="10" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+            <h4>Berinteraksi</h4>
+            <p>
+              Membangun hubungan, memperluas koneksi, dan memahami isu bersama.
+            </p>
+          </div>
+          <div class="step-arrow" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="22"
+              height="22"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </div>
+          <div class="step-box reveal">
+            <span class="step-num">2</span>
+            <div class="step-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="24"
+                height="24"
+              >
+                <path
+                  d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"
+                />
+              </svg>
+            </div>
+            <h4>Memberi Solusi</h4>
+            <p>
+              Mengidentifikasi masalah, menciptakan ide dan solusi yang relevan.
+            </p>
+          </div>
+          <div class="step-arrow" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="22"
+              height="22"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </div>
+          <div class="step-box reveal">
+            <span class="step-num">3</span>
+            <div class="step-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                width="24"
+                height="24"
+              >
+                <path
+                  d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"
+                />
+                <path
+                  d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 19 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"
+                />
+              </svg>
+            </div>
+            <h4>Beraksi</h4>
+            <p>
+              Mengubah solusi menjadi aksi nyata untuk memberikan dampak
+              positif.
+            </p>
+          </div>
+          <div class="step-arrow" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              width="22"
+              height="22"
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </div>
+          <div class="step-box step-dampak reveal">
+            <div class="step-icon step-icon-light">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="24"
+                height="24"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <circle cx="12" cy="12" r="5" />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="1.2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
+            </div>
+            <h4>Dampak</h4>
+            <p>
+              Bersama kita ciptakan perubahan nyata untuk masa depan yang lebih
+              baik.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ KENAPA HARUS JADI KAULA MUDA + FIND YOUR PLACE ============ -->
+    <section class="why-section" id="kaula-muda">
+      <div class="section-container why-grid">
+        <div class="why-left">
+          <h2 class="section-title-left">
+            Kenapa Harus<br />
+            <span class="text-accent">Paramuda</span>?
+          </h2>
+          <div class="why-list">
+            <div class="why-item">
+              <span class="why-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="22"
+                  height="22"
+                >
+                  <path
+                    d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <h4>Self Development</h4>
+                <p>Mengembangkan keterampilan dan meningkatkan potensi diri.</p>
+              </div>
+            </div>
+            <div class="why-item">
+              <span class="why-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="22"
+                  height="22"
+                >
+                  <path
+                    d="M11 20A7 7 0 0 1 4 13V9a1 1 0 0 1 1-1h4a7 7 0 0 1 7 7v1a4 4 0 0 1-4 4H11z"
+                  />
+                  <path d="M11 20v-6" />
+                </svg>
+              </span>
+              <div>
+                <h4>Social Impact</h4>
+                <p>
+                  Berpartisipasi dalam menciptakan perubahan positif di
+                  masyarakat.
+                </p>
+              </div>
+            </div>
+            <div class="why-item">
+              <span class="why-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="22"
+                  height="22"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                  />
+                </svg>
+              </span>
+              <div>
+                <h4>Knowledge Exchange</h4>
+                <p>
+                  Berbagi pengetahuan, pengalaman, dan ide dengan sesama pemuda.
+                </p>
+              </div>
+            </div>
+            <div class="why-item">
+              <span class="why-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="22"
+                  height="22"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+                  <circle cx="10" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+              </span>
+              <div>
+                <h4>Networking</h4>
+                <p>
+                  Bertemu orang baru dan membuka peluang kolaborasi yang luas.
+                </p>
+              </div>
+            </div>
+          </div>
+          <a href="programs.html" class="btn-navy">Lihat Kegiatan Kami →</a>
+        </div>
+
+        <div class="why-right">
+          <h2 class="section-title-left">
+            Find Your <span class="text-accent">Place</span> in Paramuda.id
+          </h2>
+          <div class="divisions-grid">
+            <div class="division-card reveal">
+              <span class="division-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="24"
+                  height="24"
+                >
+                  <rect x="2" y="7" width="20" height="14" rx="2" />
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+              </span>
+              <h4>Human Resource</h4>
+              <p>Mengelola SDM organisasi dan kesejahteraan anggota.</p>
+            </div>
+            <div class="division-card reveal">
+              <span class="division-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    d="M3 11v3a1 1 0 0 0 1 1h2l3.5 4V6L6 10H4a1 1 0 0 0-1 1z"
+                  />
+                  <path d="M14 8a4 4 0 0 1 0 8" />
+                </svg>
+              </span>
+              <h4>Public Relation</h4>
+              <p>
+                Membangun citra positif dan hubungan baik dengan pihak
+                eksternal.
+              </p>
+            </div>
+            <div class="division-card reveal">
+              <span class="division-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="24"
+                  height="24"
+                >
+                  <path d="M22 2 11 13" />
+                  <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+              </span>
+              <h4>Business Development</h4>
+              <p>
+                Mencari peluang kerjasama dan mengembangkan potensi organisasi.
+              </p>
+            </div>
+            <div class="division-card reveal">
+              <span class="division-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                  />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
+              </span>
+              <h4>Social Media Specialist</h4>
+              <p>
+                Mengelola konten kreatif dan strategi media sosial Paramuda.
+              </p>
+            </div>
+            <div class="division-card reveal">
+              <span class="division-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  width="24"
+                  height="24"
+                >
+                  <rect x="5" y="3" width="14" height="18" rx="2" />
+                  <path d="M9 3h6v3H9z" />
+                  <path d="m9 13 2 2 4-4" />
+                </svg>
+              </span>
+              <h4>Project Management</h4>
+              <p>
+                Merencanakan dan mengeksekusi kegiatan agar berjalan efektif.
+              </p>
+            </div>
+          </div>
+          <a href="organisasi.html" class="btn-navy">Lihat Semua Divisi →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ARTIKEL & JURNAL (kept as-is) ============ -->
     <section class="articles" id="articles">
+      <div class="articles-bg" aria-hidden="true">
+        <div class="articles-dots"></div>
+
+        <svg
+          class="articles-trail"
+          viewBox="0 0 900 500"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M -40 60 C 180 110, 340 180, 520 260 S 780 400, 940 460"
+            fill="none"
+            stroke="var(--pm-green)"
+            stroke-width="1.5"
+            stroke-dasharray="2 10"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <svg class="articles-plane" viewBox="0 0 64 64" fill="none">
+          <path
+            d="M4 34 L58 8 L36 58 L28 40 Z"
+            fill="var(--pm-green)"
+            fill-opacity="0.55"
+          />
+          <path
+            d="M4 34 L28 40 L58 8"
+            stroke="var(--pm-green)"
+            stroke-width="1.2"
+            stroke-opacity="0.8"
+            fill="none"
+          />
+        </svg>
+
+        <svg
+          class="articles-star articles-star--1"
+          viewBox="0 0 24 24"
+          fill="rgba(255,255,255,0.16)"
+        >
+          <path
+            d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"
+          />
+        </svg>
+        <svg
+          class="articles-star articles-star--2"
+          viewBox="0 0 24 24"
+          fill="rgba(255,255,255,0.1)"
+        >
+          <path
+            d="M12 0 L14.5 9.5 L24 12 L14.5 14.5 L12 24 L9.5 14.5 L0 12 L9.5 9.5 Z"
+          />
+        </svg>
+      </div>
       <div class="section-container">
         <div class="articles-header">
           <div>
             <div class="section-label">Publikasi Terbaru</div>
             <h2 class="section-title">Artikel & Jurnal</h2>
           </div>
-          <a href="articles-new.html" class="btn-outline"
-            >Lihat Semua →</a
-          >
+          <a href="articles-new.html" class="btn-outline">Lihat Semua →</a>
         </div>
         <div class="articles-grid" id="articlesGrid">
           <div
@@ -262,69 +806,230 @@
       </div>
     </section>
 
+    <!-- ============ ALUR RECRUITMENT + PERSYARATAN ============ -->
     <section class="recruitment" id="recruitment">
       <div class="section-container">
-        <div class="section-label">Bergabung Bersama Kami</div>
-        <h2 class="section-title">Open Recruitment 2025</h2>
-        <div class="recruitment-grid">
-          <div class="recruit-card main-card">
-            <div class="pdf-thumb">
-              <span style="font-size: 2rem">📄</span>
-              <p>PDF</p>
-            </div>
-            <div>
-              <span class="recruit-badge">Pendaftaran Dibuka</span>
-              <h3>Panduan Open Rekrutmen Paramuda 2025</h3>
-              <p>
-                Unduh atau lihat langsung berkas informasi rekrutmen — alur
-                pendaftaran, syarat, dan jadwal seleksi.
-              </p>
-              <div class="recruit-actions">
-                <a
-                  href="Images\BOOKLET PARAMUDA.ID.pdf"
-                  target="_blank"
-                  class="btn-outline"
-                  >👁 Lihat Dokumen</a
-                >
-                <a
-                  href="Images\BOOKLET PARAMUDA.ID.pdf"
-                  download
-                  class="btn-outline"
-                  >⬇ Unduh PDF</a
-                >
+        <div class="recruitment-top">
+          <div class="recruitment-col">
+            <h2 class="section-title-center small-align-left">
+              Alur <span class="text-accent">Recruitment</span>
+            </h2>
+            <div class="process-flow">
+              <div class="process-step">
+                <span class="process-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path
+                      d="M3 11v3a1 1 0 0 0 1 1h2l3.5 4V6L6 10H4a1 1 0 0 0-1 1z"
+                    />
+                    <path d="M14 8a4 4 0 0 1 0 8" />
+                  </svg>
+                </span>
+                <span class="process-num">01</span>
+                <p>Open Recruitment</p>
+              </div>
+              <span class="process-sep">→</span>
+              <div class="process-step">
+                <span class="process-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    />
+                    <path d="M14 2v6h6" />
+                    <path d="M9 13h6M9 17h6" />
+                  </svg>
+                </span>
+                <span class="process-num">02</span>
+                <p>Submit Berkas</p>
+              </div>
+              <span class="process-sep">→</span>
+              <div class="process-step">
+                <span class="process-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                </span>
+                <span class="process-num">03</span>
+                <p>Seleksi Berkas</p>
+              </div>
+              <span class="process-sep">→</span>
+              <div class="process-step">
+                <span class="process-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="m17 11 2 2 4-4" />
+                  </svg>
+                </span>
+                <span class="process-num">04</span>
+                <p>Interview</p>
+              </div>
+              <span class="process-sep">→</span>
+              <div class="process-step">
+                <span class="process-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+                  </svg>
+                </span>
+                <span class="process-num">05</span>
+                <p>Pengumuman</p>
+              </div>
+              <span class="process-sep">→</span>
+              <div class="process-step">
+                <span class="process-icon">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    width="22"
+                    height="22"
+                  >
+                    <path d="M4 22V4" />
+                    <path d="M4 4h14l-3 5 3 5H4" />
+                  </svg>
+                </span>
+                <span class="process-num">06</span>
+                <p>Welcome to Paramuda</p>
               </div>
             </div>
           </div>
 
-          <div class="recruit-card">
-            <div class="recruit-info-row">
-              <strong>Periode Pendaftaran</strong><span>1 – 15 Juni 2025</span>
+          <div class="recruitment-col">
+            <h2 class="section-title-center small-align-left">
+              <span class="text-accent">Persyaratan</span>
+            </h2>
+            <div class="requirements-grid">
+              <ul class="requirements-list">
+                <li>
+                  <span class="req-check">✓</span> Identitas (KTP/Kartu Pelajar)
+                </li>
+                <li><span class="req-check">✓</span> Curriculum Vitae (CV)</li>
+                <li>
+                  <span class="req-check">✓</span> Follow Instagram, TikTok
+                  &amp; LinkedIn
+                </li>
+                <li><span class="req-check">✓</span> Share Open Recruitment</li>
+              </ul>
+              <ul class="requirements-list">
+                <li>
+                  <span class="req-check">✓</span> Like postingan &amp; tag 3
+                  teman
+                </li>
+                <li>
+                  <span class="req-check">✓</span> Studi kasus (untuk divisi
+                  tertentu)
+                </li>
+                <li>
+                  <span class="req-check">✓</span> Portfolio
+                  <strong>(Social Media Specialist)</strong>
+                </li>
+              </ul>
             </div>
-            <div class="recruit-info-row">
-              <strong>Pengumuman Seleksi</strong><span>20 Juni 2025</span>
+            <div class="recruitment-cta-row">
+              <a
+                href="https://forms.google.com/YOUR_LINK"
+                target="_blank"
+                class="btn-navy"
+                >Daftar Sekarang →</a
+              >
+              <a
+                href="Images\BOOKLET PARAMUDA.ID.pdf"
+                target="_blank"
+                class="btn-ghost-sm"
+                >👁 Lihat Panduan PDF</a
+              >
+              <a
+                href="Images\BOOKLET PARAMUDA.ID.pdf"
+                download
+                class="btn-ghost-sm"
+                >⬇ Unduh PDF</a
+              >
             </div>
-            <div class="recruit-info-row">
-              <strong>Kuota</strong><span>30 anggota baru</span>
-            </div>
-          </div>
-
-          <div class="recruit-card">
-            <h4>Daftar Sekarang</h4>
-            <p>
-              Isi formulir pendaftaran online atau kunjungi sekretariat
-              langsung.
-            </p>
-            <a
-              href="https://forms.google.com/YOUR_LINK"
-              target="_blank"
-              class="btn-outline"
-              >Buka Form →</a
-            >
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ============ CTA BANNER ============ -->
+    <section class="cta-banner">
+      <div class="section-container cta-inner">
+        <div class="cta-plane" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            width="46"
+            height="46"
+          >
+            <path d="M22 2 11 13" />
+            <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+          </svg>
+        </div>
+        <div class="cta-text">
+          <h2>Be Part of the Movement!</h2>
+          <p>
+            Ide kamu penting. Aksi kamu penting.<br />Mari bersama menciptakan
+            perubahan!
+          </p>
+          <a href="#recruitment" class="btn-primary">Join Paramuda.id →</a>
+        </div>
+        <div class="cta-dots" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT (functional form, kept) ============ -->
     <section class="contact" id="contact">
       <div class="section-container">
         <div class="contact-inner">
@@ -338,8 +1043,8 @@
               kami!
             </p>
             <div class="contact-links">
-              <a href="mailto:paramuda@student.ac.id" class="contact-link">
-                <span>✉</span> paramuda@student.ac.id
+              <a href="mailto:paramuda.id@gmail.com" class="contact-link">
+                <span>✉</span> paramuda.id@gmail.com
               </a>
               <a href="https://instagram.com/paramudabdg" class="contact-link">
                 <span>◈</span> @paramuda.indonesia
@@ -379,21 +1084,72 @@
       </div>
     </section>
 
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-brand">
-          <span class="logo">Paramuda</span>
-          <p>Organisasi Pemuda · Indonesia</p>
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer-v2">
+      <div class="section-container footer-v2-grid">
+        <div class="footer-v2-brand">
+          <a href="index.html" class="pm-logo">
+            <img
+              class="Logo-navbar"
+              src="Images\Logo Paramuda Indonesia.png"
+              alt="Logo Paramuda"
+            />
+            <span class="pm-logo-text">
+              PARAMUDA.ID
+              <small>(KAULA MUDA)</small>
+            </span>
+          </a>
+          <p class="footer-v2-tag">KOMUNITAS GENERASI MUDA</p>
+          <p class="footer-v2-hashtags">#BergerakSerempak #MemberiDampak</p>
+          <p class="footer-v2-desc">
+            Bersama pemuda, kita bisa menciptakan perubahan untuk masa depan
+            yang lebih baik.
+          </p>
+          <div class="footer-v2-social">
+            <a href="https://instagram.com/paramudabdg" aria-label="Instagram"
+              >IG</a
+            >
+            <a href="#" aria-label="TikTok">TT</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="YouTube">YT</a>
+          </div>
         </div>
-        <div class="footer-links">
-          <a href="#profile">Profile</a>
-          <a href="#articles">Artikel</a>
-          <a href="#location">Lokasi</a>
-          <a href="#contact">Kontak</a>
+
+        <div class="footer-v2-col">
+          <h4>Quick Links</h4>
+          <a href="#home">Home</a>
+          <a href="#about">Tentang Kami</a>
+          <a href="#pilar">3 Pilar</a>
+          <a href="#gerakan">Gerakan Kami</a>
+          <a href="#articles">Program &amp; Kegiatan</a>
+          <a href="#kaula-muda">Kaula Muda</a>
+          <a href="#recruitment">Join Paramuda</a>
         </div>
-        <p class="footer-copy">
-          © 2025 Paramuda Indonesia. Semua hak dilindungi.
-        </p>
+
+        <div class="footer-v2-col">
+          <h4>Divisi</h4>
+          <a href="#kaula-muda">Human Resource</a>
+          <a href="#kaula-muda">Public Relation</a>
+          <a href="#kaula-muda">Business Development</a>
+          <a href="#kaula-muda">Social Media Specialist</a>
+          <a href="#kaula-muda">Project Management</a>
+        </div>
+
+        <div class="footer-v2-col">
+          <h4>Contact Us</h4>
+          <a href="mailto:paramuda.id@gmail.com" class="footer-v2-contact-item">
+            <span>✉</span> paramuda.id@gmail.com
+          </a>
+          <a href="tel:+6281234567890" class="footer-v2-contact-item">
+            <span>☎</span> +62 812-3456-7890
+          </a>
+          <span class="footer-v2-contact-item">
+            <span>📍</span> Bandung, Indonesia
+          </span>
+        </div>
+      </div>
+      <div class="footer-v2-bottom">
+        © 2025 Rumot Bandung. All Rights Reserved.
       </div>
     </footer>
 
@@ -425,7 +1181,9 @@
         { threshold: 0.1 },
       );
       document
-        .querySelectorAll(".photo-item, .article-card, .loc-item")
+        .querySelectorAll(
+          ".reveal, .article-card, .pillar-card, .division-card, .stat-card",
+        )
         .forEach((el) => {
           el.classList.add("reveal");
           observer.observe(el);
@@ -531,68 +1289,6 @@
           observer.observe(el);
         });
       })();
-
     </script>
-
-    <script>
-      const pgItems = Array.from(document.querySelectorAll(".pg-item"));
-      const lightbox = document.getElementById("pgLightbox");
-      const lbImg = document.getElementById("pgLbImg");
-      const lbTitle = document.getElementById("pgLbTitle");
-      const lbCaption = document.getElementById("pgLbCaption");
-      const lbLabel = document.getElementById("pgLbLabel");
-      const lbCounter = document.getElementById("pgCounter");
-      let currentIdx = 0;
-
-      function openLightbox(idx) {
-        currentIdx = idx;
-        const item = pgItems[idx];
-        lbImg.src = item.querySelector("img").src;
-        lbImg.alt = item.querySelector("img").alt;
-        lbTitle.textContent = item.dataset.title || "";
-        lbCaption.textContent = item.dataset.caption || "";
-        lbLabel.textContent = item.dataset.label || "";
-        lbCounter.textContent = idx + 1 + " / " + pgItems.length;
-        lightbox.classList.add("active");
-        lightbox.setAttribute("aria-hidden", "false");
-        document.body.style.overflow = "hidden";
-      }
-
-      function closeLightbox() {
-        lightbox.classList.remove("active");
-        lightbox.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
-      }
-
-      function navigate(dir) {
-        currentIdx = (currentIdx + dir + pgItems.length) % pgItems.length;
-        openLightbox(currentIdx);
-      }
-
-      pgItems.forEach((item, i) =>
-        item.addEventListener("click", () => openLightbox(i)),
-      );
-      document
-        .getElementById("pgClose")
-        .addEventListener("click", closeLightbox);
-      document
-        .getElementById("pgBackdrop")
-        .addEventListener("click", closeLightbox);
-      document.getElementById("pgPrev").addEventListener("click", (e) => {
-        e.stopPropagation();
-        navigate(-1);
-      });
-      document.getElementById("pgNext").addEventListener("click", (e) => {
-        e.stopPropagation();
-        navigate(1);
-      });
-
-      document.addEventListener("keydown", (e) => {
-        if (!lightbox.classList.contains("active")) return;
-        if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowLeft") navigate(-1);
-        if (e.key === "ArrowRight") navigate(1);
-      });
-    </script>+
   </body>
 </html>
