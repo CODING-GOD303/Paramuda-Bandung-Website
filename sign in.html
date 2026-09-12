@@ -152,7 +152,8 @@
 
           <div class="auth-divider"><span>atau</span></div>
           <div class="auth-footer">
-            Belum punya akun? <a href="regist.html">Ajukan permintaan bergabung →</a>
+            Belum punya akun?
+            <a href="regist.html">Ajukan permintaan bergabung →</a>
           </div>
           <a href="index.html" class="back-link">← Kembali ke beranda</a>
         </div>
@@ -165,9 +166,12 @@
         try {
           const user = await authGetCurrentUser();
           if (user) {
-            window.location.href = user.role === 'admin' ? 'admin.html' : 'articles-new.html';
+            window.location.href =
+              user.role === "admin" ? "admin.html" : "articles-new.html";
           }
-        } catch (e) { /* not logged in, continue */ }
+        } catch (e) {
+          /* not logged in, continue */
+        }
       })();
 
       document
@@ -200,31 +204,37 @@
             setLoading(false);
 
             if (!result.ok) {
-              const msg = result.error || '';
-              if (msg.toLowerCase().includes('invalid login credentials')) {
-                showBanner('error', 'Email atau password salah.');
+              const msg = result.error || "";
+              if (msg.toLowerCase().includes("invalid login credentials")) {
+                showBanner("error", "Email atau password salah.");
               } else {
-                showBanner('error', msg);
+                showBanner("error", msg);
               }
               return;
             }
-            sessionStorage.setItem('paramuda_user', JSON.stringify(result.user));
+            sessionStorage.setItem(
+              "paramuda_user",
+              JSON.stringify(result.user),
+            );
 
             showBanner(
               "success",
-              `Selamat datang, ${(result.user.name || '').split(" ")[0]}! Mengalihkan...`,
+              `Selamat datang, ${(result.user.name || "").split(" ")[0]}! Mengalihkan...`,
             );
 
             setTimeout(() => {
-              window.location.href = result.user.role === 'admin'
-                ? 'admin.html'
-                : 'articles-new.html';
+              window.location.href =
+                result.user.role === "admin"
+                  ? "admin.html"
+                  : "articles-new.html";
             }, 700);
-
           } catch (err) {
-            console.error('Login error:', err);
+            console.error("Login error:", err);
             setLoading(false);
-            showBanner('error', 'Terjadi kesalahan. Periksa koneksi dan coba lagi.');
+            showBanner(
+              "error",
+              "Terjadi kesalahan. Periksa koneksi dan coba lagi.",
+            );
           }
         });
 

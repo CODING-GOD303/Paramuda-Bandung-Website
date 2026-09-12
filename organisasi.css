@@ -2309,7 +2309,7 @@ body {
   height: 42px;
 }
 .org-role {
-  font-size: 11.5px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -2318,7 +2318,7 @@ body {
 .org-name {
   font-family: var(--font-head);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--pm-ink);
 }
 
@@ -2327,7 +2327,7 @@ body {
   background: var(--pm-card-bg);
 }
 .division-block {
-  background: #fff;
+  background: rgb(235, 233, 233);
   border: 1px solid var(--pm-line);
   border-radius: 16px;
   padding: 1.75rem;
@@ -2399,4 +2399,217 @@ body {
     flex-direction: column;
     align-items: center;
   }
+}
+
+/* ======================================================================
+   PROGRAM & KEGIATAN PAGE
+   ====================================================================== */
+.jump-links {
+  background: #fff;
+  border-bottom: 1px solid var(--pm-line);
+  position: sticky;
+  top: 64px;
+  z-index: 50;
+}
+.jump-links-inner {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.85rem 2rem;
+}
+.jump-links a {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--pm-ink);
+  text-decoration: none;
+}
+.jump-links a span {
+  color: var(--pm-muted);
+  font-weight: 500;
+}
+.jump-links a:hover {
+  color: var(--pm-green-dark);
+}
+
+.programs-section {
+  padding: 4rem 0;
+  background: #fff;
+}
+.events-section {
+  padding: 4rem 0 5.5rem;
+  background: var(--pm-card-bg);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.75rem;
+}
+.item-card {
+  background: #fff;
+  border: 1px solid var(--pm-line);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 18px rgba(13, 27, 61, 0.05);
+}
+.item-card-image {
+  aspect-ratio: 16 / 10;
+  background: var(--pm-card-bg);
+  color: var(--pm-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--pm-line);
+  position: relative;
+  overflow: hidden;
+}
+.item-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.item-card-image span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.item-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+.item-tag {
+  display: inline-block;
+  align-self: flex-start;
+  background: rgba(63, 181, 77, 0.12);
+  color: var(--pm-green-dark);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 50px;
+}
+.item-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--pm-ink);
+  margin: 0;
+}
+.item-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.item-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 12px;
+  color: var(--pm-muted);
+}
+.item-desc {
+  font-size: 13px;
+  color: var(--pm-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+.item-doc-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.item-doc-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--pm-ink);
+}
+.doc-thumbs {
+  display: flex;
+  gap: 0.5rem;
+}
+.doc-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--pm-card-bg);
+  border: 1px dashed var(--pm-line);
+  color: var(--pm-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.doc-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.doc-thumb-more {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--pm-green-dark);
+  border-style: solid;
+}
+.item-impact {
+  background: rgba(63, 181, 77, 0.06);
+  border: 1px solid rgba(63, 181, 77, 0.2);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin-top: auto;
+}
+.impact-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pm-green-dark);
+  margin-bottom: 0.4rem;
+}
+.impact-text {
+  font-size: 12.5px;
+  color: var(--pm-ink);
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .jump-links {
+    top: 0;
+  }
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Struktur Organisasi: division description (replaces staff list) ---------- */
+.division-desc {
+  flex: 1;
+  min-width: 220px;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.767);
+  line-height: 1.75;
+  margin: 0;
+  padding-top: 0.35rem;
+}
+
+.division-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--pm-ink);
+  margin-bottom: 0.25rem;
 }
